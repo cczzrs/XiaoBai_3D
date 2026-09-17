@@ -1,8 +1,16 @@
 import { APP_CONFIG } from './config.js';
+import { validateImage } from './image-io.js';
 
 const BASE64_PATTERN = /^[A-Za-z0-9+/]*={0,2}$/;
 const OBJ_NUMBER_PATTERN = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/;
 const PART_KEYS = ['name', 'format', 'data'];
+// 已发布 revision 1 的存储契约，与当前新建项目默认值分开维护。
+const LEGACY_DESIGN_KEYS = {
+  shape: ['headScale', 'bodyWidth', 'bodyHeight', 'bodyDepth'],
+  rig: ['rootY', 'neckY'],
+  pose: ['headYaw', 'headPitch', 'headRoll', 'bodyLean'],
+};
+const LEGACY_MOTION_KEYS = ['preset', 'playing', 'speed', 'amplitude', 'progress'];
 
 /** 新建可编辑设计。已批准的头、身体始终来自 config 中的固定资源。 */
 export function createDefaultProject() {
@@ -12,6 +20,8 @@ export function createDefaultProject() {
     design: structuredClone(APP_CONFIG.design.defaults),
     motion: structuredClone(APP_CONFIG.design.motion.defaults),
     parts: { arms: null, legs: null },
+    appearance: structuredClone(APP_CONFIG.appearance.defaults),
+    expression: structuredClone(APP_CONFIG.design.expression.defaults),
   };
 }
 
@@ -19,7 +29,7 @@ function fail(message) {
   throw new Error(message);
 }
 
-function record(value, keys, label) {
+function record(value, keys, label, optionalKeys = []) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) fail(`${label}必须是对象。`);
   const prototype = Object.getPrototypeOf(value);
   if (prototype !== Object.prototype && prototype !== null) fail(`${label}包含不支持的对象类型。`);
@@ -29,7 +39,7 @@ function record(value, keys, label) {
     if (!descriptor || !('value' in descriptor)) fail(`${label}不能包含动态属性。`);
   }
   for (const key of keys) {
-    if (!Object.hasOwn(value, key)) fail(`${label}缺少字段：${key}。`);
+    if (!optionalKeys.includes(key) && !Object.hasOwn(value, key)) fail(`${label}缺少字段：${key}。`);
   }
 }
 
@@ -170,38 +180,143 @@ function validatePart(part) {
   return { part: { name: part.name, format: part.format, data: part.data }, bytes };
 }
 
+function color(value, label) {
+  if (typeof value !== 'string' || !/^#[0-9a-fA-F]{6}$/.test(value)) fail(`${label}必须是 #RRGGBB 颜色。`);
+  return value.toUpperCase();
+}
+
+/** 同步外观校验；图像真解码和渲染资源准备由视口在提交前完成。 */
+export function validateAppearance(value) {
+  const defaults = APP_CONFIG.appearance.defaults;
+  record(value, Object.keys(defaults), '外观');
+  record(value.materials, Object.keys(defaults.materials), '部件材质');
+  const materials = {};
+  for (const [slot, settings] of Object.entries(defaults.materials)) {
+    const material = value.materials[slot];
+    record(material, Object.keys(settings), `材质 ${slot}`);
+    if (typeof material.enabled !== 'boolean') fail(`材质 ${slot} 的启用状态必须是布尔值。`);
+    materials[slot] = {
+      enabled: material.enabled,
+      color: color(material.color, `材质 ${slot} 颜色`),
+      roughness: numberInRange(material.roughness, APP_CONFIG.appearance.limits.roughness, `材质 ${slot} 粗糙度`),
+      image: material.image === null ? null : validateImage(material.image),
+    };
+  }
+  record(value.background, Object.keys(defaults.background), '背景');
+  if (!APP_CONFIG.appearance.backgroundFits.includes(value.background.fit)) fail('背景图片适配方式不受支持。');
+  const background = {
+    color: color(value.background.color, '背景颜色'),
+    image: value.background.image === null ? null : validateImage(value.background.image),
+    fit: value.background.fit,
+  };
+  record(value.lighting, Object.keys(defaults.lighting), '外观光照');
+  if (typeof value.lighting.enabled !== 'boolean') fail('定向光启用状态必须是布尔值。');
+  const lighting = { enabled: value.lighting.enabled };
+  for (const key of ['azimuth', 'elevation', 'intensity', 'exposure']) {
+    lighting[key] = numberInRange(value.lighting[key], APP_CONFIG.viewer.lighting.limits[key], `光照 ${key}`);
+  }
+  return { materials, background, lighting };
+}
+
+function validateExpression(value) {
+  record(value, ['preset', 'intensity'], '表情');
+  if (typeof value.preset !== 'string' || !Object.hasOwn(APP_CONFIG.design.expression.presets, value.preset)) fail('表情预设不受支持。');
+  return {
+    preset: value.preset,
+    intensity: numberInRange(value.intensity, APP_CONFIG.design.expression.intensity, '表情强度'),
+  };
+}
+
+function checkProjectSize(project) {
+  const limit = APP_CONFIG.appearance.images.maximumProjectBytes;
+  let base64Bytes = 0;
+  // Base64 is ASCII. Count it without duplicating every large embedded resource.
+  const structure = JSON.stringify(project, (key, value) => {
+    if (key === 'data') {
+      base64Bytes += value.length;
+      if (base64Bytes > limit) fail('项目文件超过允许的总大小。');
+      return '';
+    }
+    return value;
+  }, 2);
+  if (base64Bytes + new TextEncoder().encode(structure).byteLength > limit) fail('项目文件超过允许的总大小。');
+}
+
 /** 严格校验并返回与输入无共享可变引用的项目；恢复后动作一律暂停。 */
 export function validateProject(value) {
-  record(value, ['schema', 'revision', 'design', 'motion', 'parts'], '项目');
+  record(value, ['schema', 'revision', 'design', 'motion', 'parts', 'appearance', 'expression'], '项目', ['appearance', 'expression']);
   if (value.schema !== APP_CONFIG.project.schema) fail('项目 schema 不受支持。');
-  if (value.revision !== APP_CONFIG.project.revision) fail('项目 revision 不受支持。');
-  const output = createDefaultProject();
-  record(value.design, Object.keys(APP_CONFIG.design.defaults), '设计参数');
-  for (const [group, defaults] of Object.entries(APP_CONFIG.design.defaults)) {
-    record(value.design[group], Object.keys(defaults), `设计参数 ${group}`);
-    for (const key of Object.keys(defaults)) {
-      output.design[group][key] = numberInRange(value.design[group][key], APP_CONFIG.design.limits[group][key], `${group}.${key}`);
+  if (![1, 2, 3, APP_CONFIG.project.revision].includes(value.revision)) fail('项目 revision 不受支持。');
+  if (value.revision < 3 && Object.hasOwn(value, 'appearance')) fail('旧版项目包含不允许的 appearance 字段。');
+  if (value.revision >= 3 && !Object.hasOwn(value, 'appearance')) fail('项目缺少字段：appearance。');
+  if (value.revision < 4 && Object.hasOwn(value, 'expression')) fail('旧版项目包含不允许的 expression 字段。');
+  if (value.revision >= 4 && !Object.hasOwn(value, 'expression')) fail('项目缺少字段：expression。');
+  const legacy = value.revision === 1;
+  const designKeys = legacy ? LEGACY_DESIGN_KEYS : Object.fromEntries(
+    Object.entries(APP_CONFIG.design.defaults).map(([group, defaults]) => [group, Object.keys(defaults)]),
+  );
+  const design = {};
+  record(value.design, Object.keys(designKeys), '设计参数');
+  for (const [group, keys] of Object.entries(designKeys)) {
+    record(value.design[group], keys, `设计参数 ${group}`);
+    design[group] = {};
+    for (const key of keys) {
+      design[group][key] = numberInRange(value.design[group][key], APP_CONFIG.design.limits[group][key], `${group}.${key}`);
     }
   }
-  record(value.motion, Object.keys(APP_CONFIG.design.motion.defaults), '动作参数');
+  record(value.motion, legacy ? LEGACY_MOTION_KEYS : Object.keys(APP_CONFIG.design.motion.defaults), '动作参数');
   if (!APP_CONFIG.design.motion.presets.includes(value.motion.preset)) fail('动作预设不受支持。');
   if (typeof value.motion.playing !== 'boolean') fail('动作播放状态必须是布尔值。');
-  output.motion = {
+  const motion = {
     preset: value.motion.preset,
     playing: false,
     speed: numberInRange(value.motion.speed, APP_CONFIG.design.motion.speed, '动作速度'),
     amplitude: numberInRange(value.motion.amplitude, APP_CONFIG.design.motion.amplitude, '动作幅度'),
-    progress: numberInRange(value.motion.progress, { min: 0, max: 1 }, '动作进度'),
+    progress: numberInRange(value.motion.progress, APP_CONFIG.design.motion.timeline, '动作进度'),
   };
-  record(value.parts, ['arms', 'legs'], '候选部件列表（已批准的头部和身体不可替换）');
-  for (const key of ['arms', 'legs']) {
-    output.parts[key] = value.parts[key] === null ? null : validatePart(value.parts[key]).part;
+  if (!legacy) {
+    if (!APP_CONFIG.design.motion.eyesPresets.includes(value.motion.eyesPreset)) fail('眼睛动作预设不受支持。');
+    if (!APP_CONFIG.design.motion.nosePresets.includes(value.motion.nosePreset)) fail('鼻子动作预设不受支持。');
+    motion.eyesPreset = value.motion.eyesPreset;
+    motion.nosePreset = value.motion.nosePreset;
+    motion.eyeAmplitude = numberInRange(value.motion.eyeAmplitude, APP_CONFIG.design.motion.eyeAmplitude, '眼睛动作幅度');
+    motion.noseAmplitude = numberInRange(value.motion.noseAmplitude, APP_CONFIG.design.motion.noseAmplitude, '鼻子动作幅度');
   }
+  record(value.parts, ['arms', 'legs'], '候选部件列表（已批准的头部和身体不可替换）');
+  const parts = {};
+  for (const key of ['arms', 'legs']) {
+    parts[key] = value.parts[key] === null ? null : validatePart(value.parts[key]).part;
+  }
+  const appearance = value.revision < 3 ? structuredClone(APP_CONFIG.appearance.defaults) : validateAppearance(value.appearance);
+  const expression = value.revision < 4 ? structuredClone(APP_CONFIG.design.expression.defaults) : validateExpression(value.expression);
+  // 旧版完整通过校验后才补入中立眼鼻、外观和表情；原设计逐项保留。
+  const defaults = createDefaultProject();
+  const output = {
+    ...defaults,
+    design: { ...defaults.design, ...design },
+    motion: { ...defaults.motion, ...motion },
+    parts,
+    appearance,
+    expression,
+  };
+  checkProjectSize(output);
   return output;
 }
 
 export function parseProject(text) {
   if (typeof text !== 'string') fail('项目内容必须是 JSON 文本。');
+  const maximumBytes = APP_CONFIG.appearance.images.maximumProjectBytes;
+  if (text.length > maximumBytes) fail('项目文件超过允许的总大小。');
+  const encoder = new TextEncoder();
+  let bytes = 0;
+  for (let offset = 0; offset < text.length;) {
+    let end = Math.min(offset + 8192, text.length);
+    // Keep a surrogate pair together when measuring UTF-8 in bounded chunks.
+    if (end < text.length && text.charCodeAt(end - 1) >= 0xd800 && text.charCodeAt(end - 1) <= 0xdbff) end -= 1;
+    bytes += encoder.encode(text.slice(offset, end)).byteLength;
+    if (bytes > maximumBytes) fail('项目文件超过允许的总大小。');
+    offset = end;
+  }
   let value;
   try {
     value = JSON.parse(text);

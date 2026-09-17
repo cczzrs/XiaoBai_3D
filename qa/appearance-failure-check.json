@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-09-17T02:30:57.740Z",
+  "status": "passed",
+  "scope": "Controlled application integration check; existing changeAppearance, restoreProject and saveLocal functions executed unmodified from src/app.js. No browser or full regression run.",
+  "source": {
+    "path": "src/app.js",
+    "sha256": "87915c5fd2ec0fa3a99ff08aad37b5030a653dc906f431350a39b13fecd5aabc"
+  },
+  "realDependencies": [
+    "src/config.js",
+    "createDefaultProject and serializeProject from src/project-state.js"
+  ],
+  "controlledDependencies": [
+    "studio.setAppearance rejects once with controlled image decode failure",
+    "remaining studio methods complete successfully",
+    "localStorage.setItem records full serialized projects",
+    "DOM rendering and toast are no-ops; showError records errors"
+  ],
+  "steps": [
+    "Start with createDefaultProject(), busy=false and appearanceTask=Promise.resolve(true).",
+    "Run changeAppearance to set background.color=#123456; inject setAppearance rejection and await the operation.",
+    "Confirm operation returned false, background rolled back to #000000, then call saveLocal and inspect stored JSON.",
+    "Restore a fresh valid project with background.color=#654321 using restoreProject.",
+    "Call saveLocal again and inspect the second stored JSON."
+  ],
+  "previousResult": {
+    "savesAfterFailure": 0,
+    "savesAfterSuccessfulRestore": 0
+  },
+  "result": {
+    "operationResult": false,
+    "rolledBack": "#000000",
+    "savesAfterFailure": 1,
+    "savedColorAfterFailure": "#000000",
+    "restoredColor": "#654321",
+    "savesAfterSuccessfulRestore": 2,
+    "savedColorAfterRestore": "#654321",
+    "errors": [
+      "controlled image decode failure"
+    ]
+  },
+  "assertionsPassed": 8
+}

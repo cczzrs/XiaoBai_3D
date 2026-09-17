@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from '../vendor/addons/controls/OrbitControls.js';
 import { clonePart, describeObject, disposeObjects, exportModel, importCandidate, loadApproved } from './model-io.js';
+import { createFaceRig } from './face-rig.js';
+import { createAppearanceController, createStudioLighting } from './appearance.js';
 
 const PART_KEYS = ['head', 'body', 'arms', 'legs'];
 const toRadians = THREE.MathUtils.degToRad;
@@ -10,12 +12,12 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
   const settings = config.viewer;
   const cameraSettings = settings.camera;
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(settings.renderer.background);
+  scene.background = new THREE.Color(config.appearance.defaults.background.color);
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, settings.renderer.pixelRatioLimit));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = settings.renderer.exposure;
+  renderer.toneMappingExposure = config.appearance.defaults.lighting.exposure;
 
   const orthographic = new THREE.OrthographicCamera(-1, 1, 1, -1, cameraSettings.near, cameraSettings.far);
   const perspective = new THREE.PerspectiveCamera(cameraSettings.fov, 1, cameraSettings.near, cameraSettings.far);
@@ -29,8 +31,11 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
   let wireframe = settings.defaults.wireframe;
   let skeletonVisible = settings.defaults.skeleton;
   let design = structuredClone(config.design.defaults);
+  let faceRig = null;
   let motion = structuredClone(config.design.motion.defaults);
-  let lightState = { ...settings.lighting.directional };
+  let expression = structuredClone(config.design.expression.defaults);
+  let lightState = { ...config.appearance.defaults.lighting };
+  let appearanceGeneration = 0;
   const visibility = { ...settings.defaults.visibility };
   const parts = Object.fromEntries(PART_KEYS.map((key) => [key, null]));
   const importGeneration = { arms: 0, legs: 0 };
@@ -72,11 +77,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
   const grid = new THREE.GridHelper(settings.grid.size, settings.grid.divisions, settings.grid.centerColor, settings.grid.color);
   grid.visible = settings.defaults.grid;
   scene.add(grid);
-  const uniformLight = new THREE.AmbientLight(settings.lighting.uniform.color, settings.lighting.uniform.intensity);
-  const ambientLight = new THREE.HemisphereLight(settings.lighting.ambient.sky, settings.lighting.ambient.ground, settings.lighting.ambient.intensity);
-  const directionalLight = new THREE.DirectionalLight(lightState.color, lightState.intensity);
-  directionalLight.target.position.fromArray(cameraSettings.target);
-  scene.add(uniformLight, ambientLight, directionalLight, directionalLight.target);
+  const lighting = createStudioLighting(scene, renderer, config);
 
   const controls = new OrbitControls(camera, canvas);
   controls.enableDamping = false;
@@ -106,6 +107,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     orthographic.updateProjectionMatrix();
     perspective.aspect = width / height;
     perspective.updateProjectionMatrix();
+    appearanceController.resize();
     handleCameraChange();
   }
 
@@ -130,18 +132,39 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
 
   function setLight(update) {
     lightState = { ...lightState, ...update };
+    lighting.setState(lightState);
     updateLightPosition();
-    directionalLight.visible = Boolean(lightState.enabled);
-    directionalLight.intensity = lightState.intensity;
     needsRender = true;
   }
 
   function updateLightPosition() {
-    const yaw = toRadians(lightState.azimuth);
-    const elevation = toRadians(lightState.elevation);
-    directionalLight.position.set(Math.sin(yaw) * Math.cos(elevation), Math.sin(elevation), Math.cos(yaw) * Math.cos(elevation));
-    if (settings.lighting.space === 'camera') directionalLight.position.applyQuaternion(camera.quaternion);
-    directionalLight.position.multiplyScalar(lightState.distance).add(directionalLight.target.position);
+    lighting.update(camera, controls.target);
+  }
+
+  const appearanceController = createAppearanceController({
+    scene, renderer, config,
+    viewport: () => ({ width, height }),
+    onLighting: setLight,
+    onChange: () => { needsRender = true; },
+  });
+
+  async function prepareAppearance(next) {
+    return appearanceController.prepare(next);
+  }
+
+  function commitAppearance(prepared) {
+    appearanceGeneration += 1;
+    appearanceController.commit(prepared);
+  }
+
+  async function setAppearance(next) {
+    const generation = ++appearanceGeneration;
+    const prepared = await prepareAppearance(next);
+    if (disposed || generation !== appearanceGeneration) {
+      prepared.dispose();
+      throw new Error('外观更新已被更新的操作替代。');
+    }
+    appearanceController.commit(prepared);
   }
 
   function applyWireframe(root) {
@@ -167,6 +190,8 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     wrapper.visible = visibility[slot];
     applyWireframe(build);
     applyWireframe(copy);
+    if (slot === 'head') faceRig = createFaceRig(copy, config);
+    appearanceController.register(copy, source, slot, metadata.format);
     const part = { source, build, draft: copy, wrapper, offset, metadata };
     if (attach) attachPart(part, slot);
     return part;
@@ -183,6 +208,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     if (!part) return;
     part.build.removeFromParent();
     part.wrapper.removeFromParent();
+    appearanceController.unregister(part.draft);
     disposeObjects([part.source, part.build, part.draft]);
   }
 
@@ -209,6 +235,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
       if (slot === 'head') part.wrapper.scale.setScalar(shape.headScale);
       else if (slot === 'body') part.wrapper.scale.set(shape.bodyWidth * breathe, shape.bodyHeight, shape.bodyDepth * breathe);
     }
+    faceRig?.apply(design.eyes, design.nose, motion, motion.progress, expression);
     draft.updateMatrixWorld(true);
     skeleton.updateMatrixWorld(true);
     const positions = jointGeometry.attributes.position;
@@ -244,15 +271,26 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     applyDesign();
   }
 
+  function setExpression(update) {
+    const next = { ...expression, ...update };
+    const { presets, intensity } = config.design.expression;
+    if (!Object.hasOwn(presets, next.preset)) throw new Error('未知的表情。');
+    if (!Number.isFinite(next.intensity) || next.intensity < intensity.min || next.intensity > intensity.max) throw new Error('表情强度超出有效范围。');
+    expression = next;
+    applyDesign();
+  }
+
   function setMotion(update) {
     const next = { ...motion, ...update };
-    if (!config.design.motion.presets.includes(next.preset)) throw new Error('未知的动作草稿。');
-    for (const key of ['speed', 'amplitude']) {
+    for (const [key, choices] of [['preset', config.design.motion.presets], ['eyesPreset', config.design.motion.eyesPresets], ['nosePreset', config.design.motion.nosePresets]]) {
+      if (!choices.includes(next[key])) throw new Error('未知的动作草稿。');
+    }
+    for (const key of ['speed', 'amplitude', 'eyeAmplitude', 'noseAmplitude']) {
       const range = config.design.motion[key];
       if (!Number.isFinite(next[key]) || next[key] < range.min || next[key] > range.max) throw new Error('动作参数超出有效范围。');
     }
     if (!Number.isFinite(next.progress) || next.progress < 0 || next.progress > 1) throw new Error('时间轴参数超出有效范围。');
-    next.playing = Boolean(next.playing) && next.preset !== 'none';
+    next.playing = Boolean(next.playing) && [next.preset, next.eyesPreset, next.nosePreset].some((preset) => preset !== 'none');
     motion = next;
     applyDesign();
   }
@@ -328,6 +366,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
         } else replacements[slot] = null;
       });
     } catch (error) {
+      for (const part of Object.values(replacements).filter(Boolean)) appearanceController.unregister(part.draft);
       disposeObjects([...loaded.map((part) => part.root), ...Object.values(replacements).filter(Boolean).flatMap((part) => [part.build, part.draft])]);
       throw error;
     }
@@ -358,7 +397,6 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
 
   let animationFrame;
   let previousTime = performance.now();
-  let lastMotionNotice = 0;
   function frame(time) {
     if (disposed) return;
     const elapsed = Math.min((time - previousTime) / 1000, 0.1);
@@ -366,10 +404,8 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     if (mode === 'design' && motion.playing && !document.hidden) {
       motion.progress = (motion.progress + elapsed * motion.speed / config.design.motion.durationSeconds) % 1;
       applyDesign();
-      if (time - lastMotionNotice > 100) {
-        lastMotionNotice = time;
-        onStatus({ type: 'motion', progress: motion.progress });
-      }
+      // Keep saved state and pause/parameter edits at the pose rendered this frame.
+      onStatus({ type: 'motion', progress: motion.progress });
     }
     if (needsRender) render();
     animationFrame = requestAnimationFrame(frame);
@@ -383,6 +419,8 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     controls.removeEventListener('change', handleCameraChange);
     controls.dispose();
     const objects = Object.values(parts).filter(Boolean).flatMap((part) => [part.source, part.build, part.draft]);
+    appearanceController.dispose();
+    lighting.dispose();
     disposeObjects([...objects, grid, skeleton, joints]);
     renderer.dispose();
   }
@@ -402,6 +440,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     }));
     const failed = results.find((result) => result.status === 'rejected');
     if (failed) throw failed.reason;
+    await setAppearance(config.appearance.defaults);
     setMode(mode);
     render();
     animationFrame = requestAnimationFrame(frame);
@@ -412,7 +451,8 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
   }
 
   return {
-    setMode, setView, setLight, setDesign, setMotion, setTimeline, importPart, replaceCandidates, removePart, getStats, dispose,
+    setMode, setView, setLight, setDesign, setExpression, setMotion, setTimeline, importPart, replaceCandidates, removePart, getStats, dispose,
+    prepareAppearance, commitAppearance, setAppearance,
     setVisibility(slot, visible) {
       if (!PART_KEYS.includes(slot)) throw new Error('未知模型部件。');
       visibility[slot] = Boolean(visible);
@@ -432,6 +472,16 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
       needsRender = true;
     },
     resetCamera() { setView(settings.defaults.view); },
+    focusFace() {
+      setView('front');
+      controls.target.fromArray(cameraSettings.faceFocus.target);
+      camera.position.copy(controls.target).add(new THREE.Vector3(0, 0, cameraSettings.distance));
+      camera.zoom = cameraSettings.span / cameraSettings.faceFocus.span;
+      camera.lookAt(controls.target);
+      camera.updateProjectionMatrix();
+      controls.update();
+      handleCameraChange();
+    },
     getCameraState() {
       return {
         position: camera.position.toArray(), target: controls.target.toArray(),
@@ -446,6 +496,11 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
       return { x: (projected.x + 1) * width / 2, y: (1 - projected.y) * height / 2, depth: projected.z };
     },
     async exportGLB() {
+      const appearance = appearanceController.getState();
+      // Textures are embedded by GLTFExporter. Extras keep descriptions, not duplicate base64.
+      for (const setting of [...Object.values(appearance.materials), appearance.background]) {
+        if (setting.image) { const { data, ...description } = setting.image; setting.image = description; }
+      }
       const source = mode === 'design' ? draft : assembly;
       const copy = source.clone(true);
       copy.visible = true;
@@ -453,7 +508,10 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
         ...copy.userData, project: config.project.name, schema: config.project.schema,
         mode, approvedSources: { head: config.assets.head.version, body: config.assets.body.version },
         designParameters: mode === 'design' ? structuredClone(design) : null,
-        motion: mode === 'design' ? { preset: motion.preset, progress: motion.progress, bakedPoseOnly: true } : null,
+        expression: mode === 'design' ? { ...expression } : null,
+        eyeMotion: mode === 'design' ? { mode: 'interior-aperture', outerSilhouetteLocked: true } : null,
+        motion: mode === 'design' ? { ...motion, playing: false, bakedPoseOnly: true } : null,
+        appearance: mode === 'design' ? appearance : null,
       };
       return exportModel(copy);
     },

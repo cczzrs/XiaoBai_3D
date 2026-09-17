@@ -1,0 +1,59 @@
+{
+  "feature": "模型色彩、皮肤图片、背景与参考柔光",
+  "date": "2026-09-17",
+  "environment": "Local · external Chrome · http://127.0.0.1:8790/",
+  "scope": "本次外观改动相关功能检查，没有执行全流程回归",
+  "checks": [
+    "色彩皮肤页可切换头部、身体、眼睛、鼻子、手臂、腿脚设置",
+    "Chrome 实际观察头部蓝色、身体绿色与鼻子粉色独立变化，调整粗糙度显示高光",
+    "真实 PNG、JPEG、WebP 图片通过文件输入 change 处理、解码并显示为模型皮肤",
+    "无 UV 批准头部能显示格纹皮肤，贴图后眨眼动作仍正常",
+    "背景纯色、图片 cover/contain、透明图与所选底色叠加正常",
+    "刷新与构建/设计模块切换后背景按当前视口重新分配纹理，修复留白横纹且保持比例",
+    "移除背景图片、恢复部位原材质与恢复默认背景正常",
+    "定向柔光显示明显明暗，方位、高度、主光强度与曝光均可调",
+    "revision 3 草稿保存及刷新恢复保留材质图片、背景图片、背景适配、光照和五官参数",
+    "导出 GLB 内嵌皮肤图像，具有 UV 和材质 baseColorTexture，颜色与粗糙度正确",
+    "残缺 PNG 被拒绝，原皮肤及背景保留",
+    "结构合法但 IDAT 像素损坏的 PNG 项目被拒绝，原皮肤与背景保留，失败后仍能保存"
+  ],
+  "lightingReference": {
+    "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/head-v1/",
+    "inspected": [
+      "index.html",
+      "head-review.js",
+      "head-review-config.js"
+    ],
+    "implementation": "均匀环境光与定向组互斥；9 束柔光主光加半球环境光、补光、轮廓光；方向随相机。",
+    "boundary": "依据本地源码和配置复刻。直接打开原参考页时其归档缺少 OrbitControls 等资源，未声称完成原页截图像素对比。"
+  },
+  "artifacts": [
+    "appearance-lighting.png",
+    "appearance-texture.png",
+    "appearance-export-check.json",
+    "appearance-failure-check.json"
+  ],
+  "approvedAssetHashes": {
+    "head-v1": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351",
+    "body-v7": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4"
+  },
+  "boundaries": [
+    "测试图片来自 qa/appearance-fixtures，通过 Chrome DevTools 将同源图片交给真实文件输入处理器；未自动验证系统文件选择对话框。",
+    "GLB 包含模型材质贴图和当前姿态；完整背景及灯光设置随项目 JSON 保存。",
+    "没有 UV 的模型采用正面 XY 投影，侧面存在压缩，背面复用投影；不是完整手工 UV 展开。",
+    "材质仅应用设计副本，批准源文件的 SHA-256 未变。"
+  ],
+  "tests": {
+    "command": "node --test tests/appearance.test.mjs tests/image-io.test.mjs tests/project-state.test.mjs",
+    "passed": 53,
+    "failed": 0
+  },
+  "pngFailurePreservation": {
+    "backgroundColor": "#25354C",
+    "backgroundImage": "background-landscape.png",
+    "headImage": "skin-grid.webp",
+    "saved": "草稿已保存在此浏览器"
+  },
+  "finalProjectConsoleErrors": [],
+  "originalDraftRestored": true
+}

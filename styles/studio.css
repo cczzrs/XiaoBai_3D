@@ -5,3 +5,37 @@
 @media(max-width:1100px){.workspace{grid-template-columns:210px minmax(300px,1fr) 260px}.topbar{padding:0 18px;gap:12px}.brand-caption,.module-note,.key-hint{display:none}.module-nav{gap:12px;padding:0 15px}.panel-heading,.inspector-section,.sidebar-section{padding-left:15px;padding-right:15px}.view-buttons button,.display-buttons button{padding:4px 6px}.viewport-toolbar{padding:0 8px}.construction-footer .muted{display:none}.part-card{gap:7px}.part-symbol{width:22px}.part-copy small{max-width:70px}}
 @media(max-width:800px){.workspace{height:auto;min-height:0;grid-template-columns:180px minmax(0,1fr)}.inspector{grid-column:1/-1;border-left:0;border-top:1px solid var(--line);display:block}.inspector-content{display:grid;grid-template-columns:1fr 1fr}.inspector-content[data-mode-section=design]{display:block}.inspector-section{border-right:1px solid var(--line)}.viewport-area{min-height:560px}.module-nav{height:64px;gap:5px;padding:0 9px}.module-button{font-size:11px;padding:0 6px;gap:6px}.module-connector{display:none}.topbar{height:62px;padding:0 12px;gap:10px}.brand{font-size:17px;gap:8px}.project-status,.brand-divider{display:none}.header-actions{gap:3px}.quiet-button{font-size:11px;padding:6px}.primary-button{padding:6px 10px;gap:10px}.view-buttons button,.display-buttons button{font-size:9px;padding:4px}.viewport-toolbar{gap:2px}.display-buttons{gap:0}.coordinate-label{display:none}.viewport-label{left:15px}.viewport-bottom{left:14px;right:14px;flex-direction:column}.library-footer{padding:12px}.progress-summary{padding:18px 12px}.part-list{padding:0 8px}.part-card{padding:12px 7px}.approved-badge{font-size:8px;padding:2px 3px}.part-symbol{display:none}.part-copy small{font-size:9px}.statusbar>span:last-child{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* 五官设计：结构在 HTML 中，参数值与范围由 APP_CONFIG 管理。 */
+.face-tabs{display:flex;gap:5px;padding:4px;background:#111711;border:1px solid var(--line);border-radius:6px}
+.face-tabs button{flex:1;font-size:11px;padding:5px;color:var(--muted)}
+.face-tabs button[aria-selected=true]{background:#353140;color:var(--purple)}
+.face-parameter-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:13px}
+.face-parameter-grid .parameter{margin:10px 0}
+.face-parameter-grid .range-label{font-size:10px;align-items:flex-start;flex-direction:column;gap:3px}
+.face-section .subsection-title{margin-top:15px;padding-top:13px;margin-bottom:4px}
+.face-section>.description{font-size:10px}
+.face-section .stacked-label{display:block;margin-top:18px}
+.design-tabs button{white-space:nowrap}
+.face-focus{margin-bottom:12px;color:var(--purple)}
+.expression-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:14px}
+.expression-grid button{padding:10px 5px;border:1px solid var(--line);background:#20251f;font-size:11px;color:#b1bea9}
+.expression-grid button[aria-pressed=true]{background:#373143;border-color:#8d7aae;color:var(--purple)}
+.expression-description{min-height:3.6em;font-size:11px;line-height:1.8;color:var(--muted);margin:14px 0}
+
+/* 外观面板：颜色、图片和灯光控件均保留静态 HTML 结构。 */
+.appearance-fields{border:0;margin:0;min-width:0;padding:0}
+.lighting-content.appearance-fields{padding:0 20px 20px}
+.appearance-fields:disabled{opacity:.55}
+.appearance-fields .stacked-label{display:block;margin:14px 0 7px}
+.color-control{display:grid;grid-template-columns:1fr 38px;align-items:center;gap:4px 10px;font-size:11px;color:#b1bea9;margin:16px 0}
+.color-control input[type=color]{width:38px;height:31px;padding:2px;border:1px solid var(--line);border-radius:5px;background:var(--raised);cursor:pointer;grid-row:span 2}
+.color-control output{font:10px monospace;color:var(--muted);grid-column:1}
+.image-preview{height:120px;background:repeating-conic-gradient(#252d27 0% 25%,#1a201c 0% 50%) 50% / 16px 16px;border:1px solid var(--line);border-radius:7px;overflow:hidden;margin-top:16px}
+.image-preview img{display:block;width:100%;height:100%;object-fit:contain}
+.image-actions{display:flex;gap:7px;margin-bottom:14px}
+.image-actions button{flex:1;white-space:nowrap}
+.image-name{font-size:10px;overflow-wrap:anywhere;color:var(--muted);margin:12px 0 8px}
+.material-section .toggle-row{margin-top:18px}
+.design-tabs{gap:3px;padding-left:10px;padding-right:10px}
+.design-tabs button{font-size:10px}

@@ -2,6 +2,7 @@ import { APP_CONFIG as config } from './config.js';
 import { createStudio } from './scene.js';
 import { createReferences } from './references.js';
 import { createDefaultProject, parseProject, serializeProject, encodePart, decodePart } from './project-state.js';
+import { encodeImage } from './image-io.js';
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -10,7 +11,14 @@ let studio;
 let references;
 let mode = config.ui.defaults.mode;
 let selectedPart = config.ui.defaults.selectedPart;
-let light = { ...config.viewer.lighting.directional };
+let selectedPanel = config.ui.defaults.panel;
+let selectedFacePanel = config.ui.defaults.facePanel;
+let materialTarget = config.ui.defaults.materialTarget;
+let skinImportTarget = materialTarget;
+let appliedAppearance = structuredClone(project.appearance);
+let appearanceTask = Promise.resolve(true);
+let appearanceRequest = 0;
+const previewSources = new Map();
 let busy = false;
 let toastTimer;
 let pendingCameraFrame;
@@ -29,6 +37,7 @@ function setBusy(value) {
   $('#load-project').disabled = value;
   $('#remove-part').disabled = value;
   $('#save-project').disabled = value;
+  $$('[data-appearance-fields]').forEach((fieldset) => { fieldset.disabled = value || !studio; });
 }
 function updateStats() {
   if (!studio) return;
@@ -39,6 +48,7 @@ function updateStats() {
     $(`#${slot}-file`).textContent = part?.name ?? '等待导入模型';
     $(`#${slot}-badge`).textContent = part ? '候选' : '待构建';
   }
+  updateAppearanceControls();
 }
 function renderTimeline() {
   $('#timeline').value = project.motion.progress;
@@ -50,16 +60,30 @@ function updateDesignControls() {
   $$('[data-design]').forEach((input) => {
     const [group, key] = input.dataset.design.split('.');
     input.value = project.design[group][key];
-    const suffix = group === 'shape' ? '×' : group === 'pose' ? '°' : '';
-    const digits = group === 'shape' ? 2 : group === 'rig' ? 1 : 0;
-    $(`[data-output="${input.dataset.design}"]`).textContent = project.design[group][key].toFixed(digits) + suffix;
+    const format = config.ui.parameterFormats.fields[input.dataset.design] ?? config.ui.parameterFormats[group];
+    $(`[data-output="${input.dataset.design}"]`).textContent = (project.design[group][key] * (format.multiplier ?? 1)).toFixed(format.digits) + format.suffix;
   });
   $('#motion-preset').value = project.motion.preset;
   $('#motion-speed').value = project.motion.speed;
   $('#motion-amplitude').value = project.motion.amplitude;
   $('#speed-value').textContent = project.motion.speed.toFixed(2) + '×';
   $('#amplitude-value').textContent = project.motion.amplitude.toFixed(1);
-  $('#motion-label').textContent = $('#motion-preset').selectedOptions[0].textContent;
+  $('#eyes-preset').value = project.motion.eyesPreset;
+  $('#nose-preset').value = project.motion.nosePreset;
+  $$('[data-expression]').forEach((button) => button.setAttribute('aria-pressed', button.dataset.expression === project.expression.preset));
+  $('#expression-intensity').value = project.expression.intensity;
+  $('#expression-intensity-value').textContent = Math.round(project.expression.intensity * 100) + '%';
+  $('#expression-description').textContent = config.design.expression.presets[project.expression.preset].description;
+  $('#face-motion-speed').value = project.motion.speed;
+  $('#face-speed-value').textContent = project.motion.speed.toFixed(2) + '×';
+  for (const part of ['eye', 'nose']) {
+    $(`#${part}-amplitude`).value = project.motion[`${part}Amplitude`];
+    $(`#${part}-amplitude-value`).textContent = Math.round(project.motion[`${part}Amplitude`] * 100) + '%';
+  }
+  const motionLabels = [['preset', '#motion-preset'], ['eyesPreset', '#eyes-preset'], ['nosePreset', '#nose-preset']]
+    .filter(([key]) => project.motion[key] !== 'none')
+    .map(([, selector]) => $(selector).selectedOptions[0].textContent);
+  $('#motion-label').textContent = motionLabels.join(' + ') || $('#motion-preset').selectedOptions[0].textContent;
   renderTimeline();
 }
 function selectPart(part) {
@@ -95,18 +119,75 @@ function setView(value) {
   references?.refresh().catch(showError);
 }
 function setPanel(panel) {
+  selectedPanel = panel;
   $$('[data-panel]').forEach((item) => item.setAttribute('aria-selected', item.dataset.panel === panel));
   $$('[data-design-panel]').forEach((section) => { section.hidden = section.dataset.designPanel !== panel; });
 }
+function setFacePanel(panel) {
+  selectedFacePanel = panel;
+  $$('[data-face-panel]').forEach((item) => item.setAttribute('aria-selected', item.dataset.facePanel === panel));
+  $$('[data-face-section]').forEach((section) => { section.hidden = section.dataset.faceSection !== panel; });
+}
+function hasMotion() { return [project.motion.preset, project.motion.eyesPreset, project.motion.nosePreset].some((preset) => preset !== 'none'); }
 function applyMotion() { studio?.setMotion(project.motion); updateDesignControls(); dirty(); }
 function applyDesign() { studio?.setDesign(project.design); updateDesignControls(); dirty(); }
-function applyLight() {
-  for (const key of ['azimuth', 'elevation', 'intensity']) {
+function applyExpression() { studio?.setExpression(project.expression); updateDesignControls(); dirty(); }
+function updateImagePreview(kind, record) {
+  const img = $(`#${kind}-image-preview`);
+  $(`#${kind}-preview`).hidden = !record;
+  $(`#${kind}-image-name`).textContent = record ? `${record.name} · ${record.width} × ${record.height}` : kind === 'material' ? '尚未导入皮肤图片' : '尚未导入背景图片';
+  if (previewSources.get(kind) !== record?.data) {
+    if (record) img.src = `data:${record.mime};base64,${record.data}`;
+    else img.removeAttribute('src');
+    previewSources.set(kind, record?.data);
+  }
+}
+function updateAppearanceControls() {
+  const { materials, background, lighting: light } = project.appearance;
+  const material = materials[materialTarget];
+  $('#material-target').value = materialTarget;
+  $('#material-enabled').checked = material.enabled;
+  $('#material-color').value = material.color;
+  $('#material-color-value').textContent = material.color.toUpperCase();
+  $('#material-roughness').value = material.roughness;
+  $('#material-roughness-value').textContent = material.roughness.toFixed(2);
+  $('#material-presence').textContent = ['arms', 'legs'].includes(materialTarget) && !project.parts[materialTarget] ? '此部件尚未导入。可先保存外观设置，导入后自动应用。' : '修改颜色或图片后自动启用自定义材质。';
+  updateImagePreview('material', material.image);
+  $('#remove-skin').disabled = !material.image;
+  $('#background-color').value = background.color;
+  $('#background-color-value').textContent = background.color.toUpperCase();
+  $('#background-fit').value = background.fit;
+  $('#background-fit').disabled = !background.image;
+  $('#remove-background').disabled = !background.image;
+  updateImagePreview('background', background.image);
+  for (const key of ['azimuth', 'elevation', 'intensity', 'exposure']) {
     $(`#light-${key}`).value = light[key];
-    $(`#light-${key}-value`).textContent = light[key] + (key === 'intensity' ? '' : '°');
+    $(`#light-${key}-value`).textContent = light[key] + (['azimuth', 'elevation'].includes(key) ? '°' : '');
+    $(`#light-${key}`).disabled = key !== 'exposure' && !light.enabled;
   }
   $('#light-enabled').checked = light.enabled;
-  studio?.setLight(light);
+  $('#light-mode').textContent = light.enabled ? '定向柔光 · 补光 · 轮廓光' : '均匀环境光';
+}
+function changeAppearance(update) {
+  const next = structuredClone(project.appearance);
+  update(next);
+  project.appearance = next;
+  updateAppearanceControls(); dirty();
+  const request = ++appearanceRequest;
+  const operation = studio.setAppearance(next).then(() => {
+    if (request === appearanceRequest) appliedAppearance = next;
+    return true;
+  }).catch((error) => {
+    if (request === appearanceRequest) {
+      project.appearance = structuredClone(appliedAppearance);
+      updateAppearanceControls(); showError(error);
+    }
+    return false;
+  });
+  // Failure restores the last valid state; that state can still be saved or exported.
+  // Keep the import's success result separate from the shared stability barrier.
+  appearanceTask = operation.then(() => true);
+  return operation;
 }
 function download(data, name, type) {
   const blob = data instanceof Blob ? data : new Blob([data], { type });
@@ -118,17 +199,29 @@ function download(data, name, type) {
   setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 async function restoreProject(next) {
-  // Both files must parse and pass mesh validation before either current candidate is replaced.
-  await studio.replaceCandidates({ arms: next.parts.arms ? decodePart(next.parts.arms) : null, legs: next.parts.legs ? decodePart(next.parts.legs) : null });
+  await appearanceTask;
+  // Decode all images first; no current model, image or parameter is replaced on failure.
+  const prepared = await studio.prepareAppearance(next.appearance);
+  let committed = false;
+  try {
+    await studio.replaceCandidates({ arms: next.parts.arms ? decodePart(next.parts.arms) : null, legs: next.parts.legs ? decodePart(next.parts.legs) : null });
+    studio.commitAppearance(prepared);
+    committed = true;
+  } finally { if (!committed) prepared.dispose(); }
   project = next;
+  appliedAppearance = structuredClone(next.appearance);
+  appearanceTask = Promise.resolve(true);
   studio.setDesign(project.design);
+  studio.setExpression(project.expression);
   studio.setMotion(project.motion);
   updateDesignControls();
+  updateAppearanceControls();
   updateStats();
   selectPart(selectedPart);
 }
-function saveLocal() {
+async function saveLocal() {
   if (busy) return;
+  if (!await appearanceTask) return;
   try {
     localStorage.setItem(config.project.storageKey, serializeProject(project));
     $('#save-state').textContent = '草稿已保存在此浏览器';
@@ -146,10 +239,15 @@ $$('[data-design]').forEach((input) => {
 });
 Object.assign($('#motion-speed'), config.design.motion.speed);
 Object.assign($('#motion-amplitude'), config.design.motion.amplitude);
+Object.assign($('#face-motion-speed'), config.design.motion.speed);
+Object.assign($('#eye-amplitude'), config.design.motion.eyeAmplitude);
+Object.assign($('#nose-amplitude'), config.design.motion.noseAmplitude);
+Object.assign($('#expression-intensity'), config.design.expression.intensity);
 Object.assign($('#overlay-opacity'), config.ui.overlay, { value: config.ui.defaults.overlay });
 $('#overlay-value').textContent = config.ui.defaults.overlay + '%';
 Object.assign($('#timeline'), config.design.motion.timeline);
-for (const key of ['azimuth', 'elevation', 'intensity']) Object.assign($(`#light-${key}`), config.viewer.lighting.limits[key]);
+for (const key of ['azimuth', 'elevation', 'intensity', 'exposure']) Object.assign($(`#light-${key}`), config.viewer.lighting.limits[key]);
+Object.assign($('#material-roughness'), config.appearance.limits.roughness);
 $$('[data-visible]').forEach((input) => {
   input.checked = config.viewer.defaults.visibility[input.dataset.visible];
   input.addEventListener('change', () => { studio?.setVisibility(input.dataset.visible, input.checked); updateStats(); });
@@ -161,12 +259,16 @@ $$('[data-view]').forEach((button) => button.addEventListener('click', () => set
 $$('[data-panel]').forEach((button) => button.addEventListener('click', () => {
   setPanel(button.dataset.panel);
 }));
+$$('[data-face-panel]').forEach((button) => button.addEventListener('click', () => setFacePanel(button.dataset.facePanel)));
 for (const [id, method, initial] of [['toggle-grid', 'setGrid', config.viewer.defaults.grid], ['toggle-wireframe', 'setWireframe', config.viewer.defaults.wireframe]]) {
   const button = $(`#${id}`);
   button.setAttribute('aria-pressed', initial);
   button.addEventListener('click', () => { const enabled = button.getAttribute('aria-pressed') !== 'true'; button.setAttribute('aria-pressed', enabled); studio?.[method](enabled); });
 }
 $('#reset-camera').addEventListener('click', () => setView(config.viewer.defaults.view));
+$('#focus-face').addEventListener('click', () => {
+  setView('front'); studio?.focusFace(); $('#camera-label').textContent = 'FACE / 面部特写';
+});
 $('#show-all').addEventListener('click', () => {
   $$('[data-visible]').forEach((input) => { input.checked = true; studio.setVisibility(input.dataset.visible, true); }); updateStats();
 });
@@ -210,29 +312,99 @@ $('#overlay-opacity').addEventListener('input', (event) => {
 $('#show-skeleton').checked = config.viewer.defaults.skeleton;
 $('#show-skeleton').addEventListener('change', (event) => studio?.setSkeleton(event.target.checked));
 for (const group of ['shape', 'rig']) $(`#reset-${group}`).addEventListener('click', () => { project.design[group] = structuredClone(config.design.defaults[group]); applyDesign(); });
+for (const group of ['eyes', 'nose']) $(`#reset-${group}`).addEventListener('click', () => {
+  project.design[group] = structuredClone(config.design.defaults[group]);
+  if (group === 'eyes') {
+    project.expression = structuredClone(config.design.expression.defaults);
+    studio?.setExpression(project.expression);
+  }
+  const amplitudeKey = group === 'eyes' ? 'eyeAmplitude' : 'noseAmplitude';
+  project.motion[`${group}Preset`] = config.design.motion.defaults[`${group}Preset`];
+  project.motion[amplitudeKey] = config.design.motion.defaults[amplitudeKey];
+  if (!hasMotion()) project.motion.playing = false;
+  studio?.setMotion(project.motion); applyDesign();
+});
 $('#reset-pose').addEventListener('click', () => {
   project.design.pose = structuredClone(config.design.defaults.pose);
+  for (const [group, keys] of Object.entries(config.design.face.expressionKeys)) {
+    for (const key of keys) project.design[group][key] = config.design.defaults[group][key];
+  }
   project.motion = structuredClone(config.design.motion.defaults);
+  project.expression = structuredClone(config.design.expression.defaults);
+  studio?.setExpression(project.expression);
   studio?.setMotion(project.motion); applyDesign();
+});
+$$('[data-expression]').forEach((button) => button.addEventListener('click', () => {
+  project.expression.preset = button.dataset.expression;
+  applyExpression();
+}));
+$('#expression-intensity').addEventListener('input', (event) => {
+  project.expression.intensity = Number(event.target.value); applyExpression();
+});
+$('#reset-expression').addEventListener('click', () => {
+  project.expression = structuredClone(config.design.expression.defaults); applyExpression();
 });
 $('#motion-preset').addEventListener('change', (event) => {
   project.motion.preset = event.target.value; project.motion.progress = 0;
-  if (project.motion.preset === 'none') project.motion.playing = false;
+  if (!hasMotion()) project.motion.playing = false;
   applyMotion();
 });
 $('#motion-speed').addEventListener('input', (event) => { project.motion.speed = Number(event.target.value); applyMotion(); });
 $('#motion-amplitude').addEventListener('input', (event) => { project.motion.amplitude = Number(event.target.value); applyMotion(); });
+$('#face-motion-speed').addEventListener('input', (event) => { project.motion.speed = Number(event.target.value); applyMotion(); });
+for (const group of ['eyes', 'nose']) $(`#${group}-preset`).addEventListener('change', (event) => {
+  project.motion[`${group}Preset`] = event.target.value;
+  project.motion.progress = 0;
+  if (!hasMotion()) project.motion.playing = false;
+  applyMotion();
+});
+for (const group of ['eye', 'nose']) $(`#${group}-amplitude`).addEventListener('input', (event) => {
+  project.motion[`${group}Amplitude`] = Number(event.target.value); applyMotion();
+});
 $('#play-motion').addEventListener('click', () => {
-  if (project.motion.preset === 'none') { project.motion.preset = 'nod'; }
+  if (!hasMotion()) {
+    if (selectedPanel === 'face') {
+      const channel = selectedFacePanel === 'expression' ? 'eyes' : selectedFacePanel;
+      project.motion[`${channel}Preset`] = config.design.motion.quickPlay[channel];
+    }
+    else project.motion.preset = config.design.motion.quickPlay.body;
+  }
   project.motion.playing = !project.motion.playing; applyMotion();
 });
 $('#timeline').addEventListener('input', (event) => {
   project.motion.playing = false; project.motion.progress = Number(event.target.value);
   studio?.setMotion(project.motion); studio?.setTimeline(project.motion.progress); renderTimeline(); dirty();
 });
-$('#light-enabled').addEventListener('change', (event) => { light.enabled = event.target.checked; applyLight(); });
-for (const key of ['azimuth', 'elevation', 'intensity']) $(`#light-${key}`).addEventListener('input', (event) => { light[key] = Number(event.target.value); applyLight(); });
-$('#reset-light').addEventListener('click', () => { light = { ...config.viewer.lighting.directional }; applyLight(); });
+$('#material-target').addEventListener('change', (event) => { materialTarget = event.target.value; updateAppearanceControls(); });
+$('#material-enabled').addEventListener('change', (event) => { changeAppearance((next) => { next.materials[materialTarget].enabled = event.target.checked; }); });
+$('#material-color').addEventListener('input', (event) => { changeAppearance((next) => { Object.assign(next.materials[materialTarget], { color: event.target.value, enabled: true }); }); });
+$('#material-roughness').addEventListener('input', (event) => { changeAppearance((next) => { Object.assign(next.materials[materialTarget], { roughness: Number(event.target.value), enabled: true }); }); });
+$('#reset-material').addEventListener('click', () => { changeAppearance((next) => { next.materials[materialTarget] = structuredClone(config.appearance.defaults.materials[materialTarget]); }); });
+$('#remove-skin').addEventListener('click', () => { changeAppearance((next) => { next.materials[materialTarget].image = null; }); });
+$('#import-skin').addEventListener('click', () => { skinImportTarget = materialTarget; $('#skin-file').click(); });
+$('#import-background').addEventListener('click', () => $('#background-file').click());
+for (const kind of ['skin', 'background']) $(`#${kind}-file`).addEventListener('change', async (event) => {
+  const file = event.target.files[0]; event.target.value = '';
+  if (!file || busy || !studio) return;
+  const target = skinImportTarget;
+  setBusy(true);
+  try {
+    const image = await encodeImage(file);
+    const applied = await changeAppearance((next) => {
+      if (kind === 'skin') Object.assign(next.materials[target], { image, enabled: true, color: config.appearance.images.textureTint });
+      else next.background.image = image;
+    });
+    if (applied) toast(kind === 'skin' ? '皮肤图片已应用到设计副本，可继续调整颜色。' : '背景图片已导入，可切换铺满或完整显示。');
+  } catch (error) { showError(error); }
+  finally { setBusy(false); }
+});
+$('#background-color').addEventListener('input', (event) => { changeAppearance((next) => { next.background.color = event.target.value; }); });
+$('#background-fit').addEventListener('change', (event) => { changeAppearance((next) => { next.background.fit = event.target.value; }); });
+$('#remove-background').addEventListener('click', () => { changeAppearance((next) => { next.background.image = null; }); });
+$('#reset-background').addEventListener('click', () => { changeAppearance((next) => { next.background = structuredClone(config.appearance.defaults.background); }); });
+$('#light-enabled').addEventListener('change', (event) => { changeAppearance((next) => { next.lighting.enabled = event.target.checked; }); });
+for (const key of ['azimuth', 'elevation', 'intensity', 'exposure']) $(`#light-${key}`).addEventListener('input', (event) => { changeAppearance((next) => { next.lighting[key] = Number(event.target.value); }); });
+$('#reset-light').addEventListener('click', () => { changeAppearance((next) => { next.lighting = structuredClone(config.appearance.defaults.lighting); }); });
 $('#save-project').addEventListener('click', saveLocal);
 document.addEventListener('keydown', (event) => { if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 's') { event.preventDefault(); saveLocal(); } });
 $('#load-project').addEventListener('click', () => $('#project-file').click());
@@ -241,30 +413,31 @@ $('#project-file').addEventListener('change', async (event) => {
   if (!file || busy || !studio) return;
   setBusy(true);
   try {
-    if (file.size > Math.ceil(config.assets.import.maximumBytes * 8 / 3) + 65536) throw new Error('项目文件超过允许大小。');
+    if (file.size > config.appearance.images.maximumProjectBytes) throw new Error('项目文件超过允许大小。');
     const next = parseProject(await file.text());
     await restoreProject(next); dirty(); setMode('design'); toast('项目已恢复，批准基线保持锁定。');
   } catch (error) { showError(error); }
   finally { setBusy(false); }
 });
-$('#export-project').addEventListener('click', () => {
+$('#export-project').addEventListener('click', async () => {
   if (busy) return;
+  if (!await appearanceTask) return;
   try { download(serializeProject(project), `${config.project.downloadName}.json`, 'application/json'); toast('项目 JSON 已导出，包含设计参数和候选部件。'); } catch (error) { showError(error); }
   $('.export-menu').open = false;
 });
 $('#export-model').addEventListener('click', async () => {
   if (busy || !studio) return;
   $('.export-menu').open = false; setBusy(true);
-  try { const bytes = await studio.exportGLB(); download(bytes, `${config.project.downloadName}-${mode}.glb`, 'model/gltf-binary'); toast('已导出当前可见模型和姿态；动作参数请保存到项目 JSON。'); } catch (error) { showError(error); }
+  try { if (!await appearanceTask) return; const bytes = await studio.exportGLB(); download(bytes, `${config.project.downloadName}-${mode}.glb`, 'model/gltf-binary'); toast('已导出当前模型、材质和姿态；背景与动作参数请保存到项目 JSON。'); } catch (error) { showError(error); }
   finally { setBusy(false); }
 });
-$('#export-image').addEventListener('click', () => {
-  if (!studio) return;
+$('#export-image').addEventListener('click', async () => {
+  if (!studio || busy || !await appearanceTask) return;
   const link = $('#download-link'); link.href = studio.capture(); link.download = 'xiaobai-viewport.png'; link.click();
   $('.export-menu').open = false; toast('3D 视口截图已导出。');
 });
 
-updateDesignControls(); applyLight(); selectPart(selectedPart); setPanel(config.ui.defaults.panel); setMode(mode); setBusy(true);
+updateDesignControls(); updateAppearanceControls(); selectPart(selectedPart); setPanel(config.ui.defaults.panel); setFacePanel(config.ui.defaults.facePanel); setMode(mode); setBusy(true);
 try {
   studio = await createStudio({
     canvas: $('#model-canvas'), config,
@@ -278,7 +451,7 @@ try {
     },
   });
   $('#loading-state').hidden = true;
-  studio.setMode(mode); studio.setDesign(project.design); studio.setMotion(project.motion);
+  studio.setMode(mode); studio.setDesign(project.design); studio.setExpression(project.expression); studio.setMotion(project.motion);
   setView(config.viewer.defaults.view);
   updateStats();
   try {

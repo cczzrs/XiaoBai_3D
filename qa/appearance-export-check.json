@@ -1,0 +1,139 @@
+{
+  "appearance": {
+    "background": {
+      "color": "#25354C",
+      "fit": "contain",
+      "image": {
+        "height": 160,
+        "mime": "image/png",
+        "name": "background-landscape.png",
+        "width": 320
+      }
+    },
+    "lighting": {
+      "azimuth": 41,
+      "elevation": 58,
+      "enabled": true,
+      "exposure": 2.05,
+      "intensity": 5
+    },
+    "materials": {
+      "arms": {
+        "color": "#FFF1D9",
+        "enabled": false,
+        "image": null,
+        "roughness": 0.7
+      },
+      "body": {
+        "color": "#80D3A4",
+        "enabled": true,
+        "image": null,
+        "roughness": 0.7
+      },
+      "eyes": {
+        "color": "#26231F",
+        "enabled": false,
+        "image": null,
+        "roughness": 0.62
+      },
+      "head": {
+        "color": "#FFFFFF",
+        "enabled": true,
+        "image": {
+          "height": 128,
+          "mime": "image/webp",
+          "name": "skin-grid.webp",
+          "width": 256
+        },
+        "roughness": 0.7
+      },
+      "legs": {
+        "color": "#FFF1D9",
+        "enabled": false,
+        "image": null,
+        "roughness": 0.7
+      },
+      "nose": {
+        "color": "#26231F",
+        "enabled": false,
+        "image": null,
+        "roughness": 0.62
+      }
+    }
+  },
+  "bytes": 6592200,
+  "images": [
+    {
+      "bufferView": 20,
+      "mimeType": "image/png"
+    }
+  ],
+  "materials": [
+    {
+      "name": "Head_Cream_Reference_Fit_DesignAppearance",
+      "pbr": {
+        "baseColorTexture": {
+          "index": 0,
+          "texCoord": 0
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.7
+      }
+    },
+    {
+      "name": "Head_Ink_Reference_Fit",
+      "pbr": {
+        "baseColorFactor": [
+          0.01938236095247307,
+          0.01680737574872402,
+          0.013702083043526807,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.62
+      }
+    },
+    {
+      "name": "Head_Ink_Reference_Fit",
+      "pbr": {
+        "baseColorFactor": [
+          0.01938236095247307,
+          0.01680737574872402,
+          0.013702083043526807,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.62
+      }
+    },
+    {
+      "name": "Head_Ink_Reference_Fit",
+      "pbr": {
+        "baseColorFactor": [
+          0.01938236095247307,
+          0.01680737574872402,
+          0.013702083043526807,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.62
+      }
+    },
+    {
+      "name": "Torso_Cream_Candidate_DesignAppearance",
+      "pbr": {
+        "baseColorFactor": [
+          0.21586050010324415,
+          0.6514056374127929,
+          0.3712376804636741,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.7
+      }
+    }
+  ],
+  "name": "xiaobai-design-design.glb",
+  "textureCount": 1,
+  "uvPresent": true
+}

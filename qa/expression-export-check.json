@@ -1,0 +1,147 @@
+{
+  "json": {
+    "revision": 4,
+    "expression": {
+      "intensity": 0.73,
+      "preset": "thinking"
+    },
+    "motion": {
+      "amplitude": 10,
+      "eyeAmplitude": 1,
+      "eyesPreset": "blink",
+      "noseAmplitude": 1,
+      "nosePreset": "twitch",
+      "playing": false,
+      "preset": "nod",
+      "progress": 0.25,
+      "speed": 1
+    }
+  },
+  "glb": {
+    "animations": 0,
+    "bytes": 6590584,
+    "magic": 1179937895,
+    "meshes": 5,
+    "metadata": [
+      {
+        "appearance": {
+          "background": {
+            "color": "#000000",
+            "fit": "cover",
+            "image": null
+          },
+          "lighting": {
+            "azimuth": 41,
+            "elevation": 58,
+            "enabled": false,
+            "exposure": 2.05,
+            "intensity": 5
+          },
+          "materials": {
+            "arms": {
+              "color": "#FFF1D9",
+              "enabled": false,
+              "image": null,
+              "roughness": 0.7
+            },
+            "body": {
+              "color": "#FFF1D9",
+              "enabled": false,
+              "image": null,
+              "roughness": 0.7
+            },
+            "eyes": {
+              "color": "#26231F",
+              "enabled": false,
+              "image": null,
+              "roughness": 0.62
+            },
+            "head": {
+              "color": "#FFF1D9",
+              "enabled": false,
+              "image": null,
+              "roughness": 0.7
+            },
+            "legs": {
+              "color": "#FFF1D9",
+              "enabled": false,
+              "image": null,
+              "roughness": 0.7
+            },
+            "nose": {
+              "color": "#26231F",
+              "enabled": false,
+              "image": null,
+              "roughness": 0.62
+            }
+          }
+        },
+        "approvedSources": {
+          "body": "body-v7",
+          "head": "head-v1"
+        },
+        "description": "Rigid head and body pose draft; no vertex skinning or limb rig.",
+        "designParameters": {
+          "eyes": {
+            "gazeX": 0,
+            "gazeY": 0,
+            "height": 1,
+            "leftOpen": 1,
+            "offsetY": 0,
+            "rightOpen": 1,
+            "spacing": 1,
+            "width": 1
+          },
+          "nose": {
+            "height": 1,
+            "offsetY": 0,
+            "protrusion": 0,
+            "tilt": 0,
+            "width": 1
+          },
+          "pose": {
+            "bodyLean": 0,
+            "headPitch": 0,
+            "headRoll": 0,
+            "headYaw": 0
+          },
+          "rig": {
+            "neckY": 52,
+            "rootY": 16.5
+          },
+          "shape": {
+            "bodyDepth": 1,
+            "bodyHeight": 1,
+            "bodyWidth": 1,
+            "headScale": 1
+          }
+        },
+        "expression": {
+          "intensity": 0.73,
+          "preset": "thinking"
+        },
+        "eyeMotion": {
+          "mode": "interior-aperture",
+          "outerSilhouetteLocked": true
+        },
+        "mode": "design",
+        "motion": {
+          "amplitude": 10,
+          "bakedPoseOnly": true,
+          "eyeAmplitude": 1,
+          "eyesPreset": "blink",
+          "noseAmplitude": 1,
+          "nosePreset": "twitch",
+          "playing": false,
+          "preset": "nod",
+          "progress": 0.25,
+          "speed": 1
+        },
+        "project": "小白 3D",
+        "rigType": "rigid-bone-hierarchy",
+        "schema": "xiaobai.studio.v1",
+        "skinning": false
+      }
+    ]
+  }
+}

@@ -88,7 +88,23 @@
         </section>
       </div>
       <div class="inspector-content" data-mode-section="design" hidden>
-        <nav class="design-tabs" aria-label="设计参数"><button data-panel="shape" aria-selected="true">形体</button><button data-panel="rig" aria-selected="false">骨骼</button><button data-panel="motion" aria-selected="false">姿态动作</button></nav>
+        <nav class="design-tabs" aria-label="设计参数"><button data-panel="shape" aria-selected="true">形体</button><button data-panel="rig" aria-selected="false">骨骼</button><button data-panel="face" aria-selected="false">五官</button><button data-panel="material" aria-selected="false">色彩皮肤</button><button data-panel="motion" aria-selected="false">姿态动作</button></nav>
+        <section class="inspector-section material-section" data-design-panel="material" hidden>
+          <div class="section-title">模型色彩与皮肤<span class="draft-badge">设计副本</span></div>
+          <p class="description">按部件设置颜色和皮肤图片，可随时恢复原材质。</p>
+          <fieldset class="appearance-fields" data-appearance-fields>
+            <label class="stacked-label" for="material-target">材质部位</label><select id="material-target"><option value="head">头部皮肤</option><option value="body">身体皮肤</option><option value="eyes">眼睛</option><option value="nose">鼻子</option><option value="arms">手臂皮肤</option><option value="legs">腿脚皮肤</option></select>
+            <p class="help-text" id="material-presence"></p>
+            <label class="toggle-row"><span>使用自定义材质</span><input id="material-enabled" type="checkbox"></label>
+            <div class="color-control"><label for="material-color">模型颜色 / 贴图调色</label><input id="material-color" type="color"><output id="material-color-value"></output></div>
+            <div class="parameter"><div class="range-label"><label for="material-roughness">表面粗糙度</label><output id="material-roughness-value"></output></div><input id="material-roughness" type="range"><p class="help-text">越低越光滑，定向光下更容易观察高光。</p></div>
+            <div class="image-preview" id="material-preview" hidden><img id="material-image-preview" alt="当前皮肤图片预览"></div>
+            <p class="image-name" id="material-image-name">尚未导入皮肤图片</p>
+            <div class="image-actions"><button id="import-skin" class="wide-secondary">导入皮肤图片</button><button id="remove-skin" class="wide-secondary">移除图片</button></div>
+            <p class="help-text">PNG / JPG / WebP · 最大 8 MB、4096 × 4096。导入时显示图片原色，可用上方颜色继续调色。无纹理坐标的模型采用正面投影。</p>
+            <button id="reset-material" class="wide-secondary">恢复此部位原材质</button>
+          </fieldset>
+        </section>
         <section class="inspector-section" data-design-panel="shape">
           <div class="section-title">形体比例<span class="draft-badge">设计副本</span></div>
           <p class="description">基于已批准模型调整整体比例，原始几何与材质保留。</p>
@@ -107,25 +123,100 @@
           <button id="reset-rig" class="wide-secondary">恢复关节位置</button>
           <div class="inline-note">这是关节设计草稿，尚未进行连续表面蒙皮。候选手臂与腿脚当前随身体移动。</div>
         </section>
+        <section class="inspector-section face-section" data-design-panel="face" hidden>
+          <div class="section-title">五官参数与动作<span class="draft-badge">设计副本</span></div>
+          <p class="description">开合、目光与表情改变眼睛内部亮区，保持眼睛外轮廓。左右眼按正面画面区分。</p>
+          <button id="focus-face" class="wide-secondary face-focus" data-needs-model disabled>面部特写</button>
+          <nav class="face-tabs" aria-label="五官部件"><button data-face-panel="eyes" aria-selected="true">眼睛</button><button data-face-panel="nose" aria-selected="false">鼻子</button><button data-face-panel="expression" aria-selected="false">表情</button></nav>
+          <div data-face-section="eyes">
+            <div class="subsection-title">眼睛形体 · 外轮廓参数</div>
+            <div class="face-parameter-grid">
+              <div class="parameter"><div class="range-label"><label for="eye-width">眼睛宽度</label><output data-output="eyes.width"></output></div><input id="eye-width" type="range" data-design="eyes.width"></div>
+              <div class="parameter"><div class="range-label"><label for="eye-height">眼睛高度</label><output data-output="eyes.height"></output></div><input id="eye-height" type="range" data-design="eyes.height"></div>
+              <div class="parameter"><div class="range-label"><label for="eye-spacing">双眼间距</label><output data-output="eyes.spacing"></output></div><input id="eye-spacing" type="range" data-design="eyes.spacing"></div>
+              <div class="parameter"><div class="range-label"><label for="eye-offset">眼睛高度偏移</label><output data-output="eyes.offsetY"></output></div><input id="eye-offset" type="range" data-design="eyes.offsetY"></div>
+            </div>
+            <div class="subsection-title">眼睛内部 · 眼神与开合</div>
+            <div class="face-parameter-grid">
+              <div class="parameter"><div class="range-label"><label for="eye-left-open">左眼开合</label><output data-output="eyes.leftOpen"></output></div><input id="eye-left-open" type="range" data-design="eyes.leftOpen"></div>
+              <div class="parameter"><div class="range-label"><label for="eye-right-open">右眼开合</label><output data-output="eyes.rightOpen"></output></div><input id="eye-right-open" type="range" data-design="eyes.rightOpen"></div>
+              <div class="parameter"><div class="range-label"><label for="eye-gaze-x">目光左右</label><output data-output="eyes.gazeX"></output></div><input id="eye-gaze-x" type="range" data-design="eyes.gazeX"></div>
+              <div class="parameter"><div class="range-label"><label for="eye-gaze-y">目光上下</label><output data-output="eyes.gazeY"></output></div><input id="eye-gaze-y" type="range" data-design="eyes.gazeY"></div>
+            </div>
+            <label class="stacked-label" for="eyes-preset">眼睛动作</label><select id="eyes-preset"><option value="none">静态眼神</option><option value="blink">双眼眨眼</option><option value="winkLeft">左眼眨动</option><option value="winkRight">右眼眨动</option><option value="lookAround">环顾</option></select>
+            <div class="parameter"><div class="range-label"><label for="eye-amplitude">眼睛动作幅度</label><output id="eye-amplitude-value"></output></div><input id="eye-amplitude" type="range"></div>
+            <button id="reset-eyes" class="wide-secondary">恢复眼睛默认</button>
+          </div>
+          <div data-face-section="nose" hidden>
+            <div class="subsection-title">鼻子形体与姿态</div>
+            <div class="face-parameter-grid">
+              <div class="parameter"><div class="range-label"><label for="nose-width">鼻子宽度</label><output data-output="nose.width"></output></div><input id="nose-width" type="range" data-design="nose.width"></div>
+              <div class="parameter"><div class="range-label"><label for="nose-height">鼻子高度</label><output data-output="nose.height"></output></div><input id="nose-height" type="range" data-design="nose.height"></div>
+              <div class="parameter"><div class="range-label"><label for="nose-offset">鼻子高度偏移</label><output data-output="nose.offsetY"></output></div><input id="nose-offset" type="range" data-design="nose.offsetY"></div>
+              <div class="parameter"><div class="range-label"><label for="nose-protrusion">鼻尖突出</label><output data-output="nose.protrusion"></output></div><input id="nose-protrusion" type="range" data-design="nose.protrusion"></div>
+            </div>
+            <div class="parameter"><div class="range-label"><label for="nose-tilt">鼻子倾斜</label><output data-output="nose.tilt"></output></div><input id="nose-tilt" type="range" data-design="nose.tilt"></div>
+            <label class="stacked-label" for="nose-preset">鼻子动作</label><select id="nose-preset"><option value="none">静态鼻子</option><option value="twitch">鼻子轻摆</option><option value="stretch">鼻子伸缩</option></select>
+            <div class="parameter"><div class="range-label"><label for="nose-amplitude">鼻子动作幅度</label><output id="nose-amplitude-value"></output></div><input id="nose-amplitude" type="range"></div>
+            <button id="reset-nose" class="wide-secondary">恢复鼻子默认</button>
+          </div>
+          <div data-face-section="expression" hidden>
+            <div class="subsection-title">选择表情</div>
+            <div class="expression-grid" role="group" aria-label="表情预设">
+              <button data-expression="neutral" aria-pressed="true">自然</button>
+              <button data-expression="cute" aria-pressed="false">可爱</button>
+              <button data-expression="happy" aria-pressed="false">开心</button>
+              <button data-expression="angry" aria-pressed="false">愤怒</button>
+              <button data-expression="thinking" aria-pressed="false">思考</button>
+              <button data-expression="surprised" aria-pressed="false">惊讶</button>
+              <button data-expression="sleepy" aria-pressed="false">困倦</button>
+            </div>
+            <p id="expression-description" class="expression-description" aria-live="polite"></p>
+            <div class="parameter"><div class="range-label"><label for="expression-intensity">表情强度</label><output id="expression-intensity-value"></output></div><input id="expression-intensity" type="range"></div>
+            <button id="reset-expression" class="wide-secondary">恢复自然表情</button>
+            <p class="help-text">表情与眼睛基础参数叠加；强度为 0 时保留基础眼神。可在眼睛页选择眨眼或环顾，再一起播放。</p>
+          </div>
+          <div class="parameter"><div class="range-label"><label for="face-motion-speed">共用播放速度</label><output id="face-speed-value"></output></div><input id="face-motion-speed" type="range"></div>
+          <p class="help-text">可与身体动作一起播放。点击视口下方播放按钮，或拖动时间轴检查表情；幅度为 0 时保持静态。</p>
+        </section>
         <section class="inspector-section" data-design-panel="motion" hidden>
           <div class="section-title">静态姿态<span class="tiny-label">POSE</span></div>
           <div class="parameter"><div class="range-label"><label for="head-yaw">头部左右转向</label><output data-output="pose.headYaw"></output></div><input id="head-yaw" type="range" data-design="pose.headYaw"></div>
           <div class="parameter"><div class="range-label"><label for="head-pitch">抬头 / 低头</label><output data-output="pose.headPitch"></output></div><input id="head-pitch" type="range" data-design="pose.headPitch"></div>
           <div class="parameter"><div class="range-label"><label for="head-roll">头部侧倾</label><output data-output="pose.headRoll"></output></div><input id="head-roll" type="range" data-design="pose.headRoll"></div>
           <div class="parameter"><div class="range-label"><label for="body-lean">身体侧倾</label><output data-output="pose.bodyLean"></output></div><input id="body-lean" type="range" data-design="pose.bodyLean"></div>
-          <div class="subsection-title">动作预设</div>
-          <label class="sr-only" for="motion-preset">动作预设</label><select id="motion-preset"><option value="none">静态姿态</option><option value="nod">轻轻点头</option><option value="sway">左右摇摆</option><option value="breathe">呼吸起伏</option></select>
+          <div class="subsection-title">身体动作</div>
+          <label class="sr-only" for="motion-preset">身体动作预设</label><select id="motion-preset"><option value="none">静态姿态</option><option value="nod">轻轻点头</option><option value="sway">左右摇摆</option><option value="breathe">呼吸起伏</option></select>
           <div class="parameter"><div class="range-label"><label for="motion-speed">播放速度</label><output id="speed-value"></output></div><input id="motion-speed" type="range"></div>
-          <div class="parameter"><div class="range-label"><label for="motion-amplitude">动作幅度</label><output id="amplitude-value"></output></div><input id="motion-amplitude" type="range"></div>
+          <div class="parameter"><div class="range-label"><label for="motion-amplitude">身体动作幅度</label><output id="amplitude-value"></output></div><input id="motion-amplitude" type="range"></div>
         </section>
       </div>
-      <details class="lighting-panel"><summary>视口光照 <span>无定向光为默认</span></summary><div class="lighting-content"><label class="toggle-row"><span>启用定向光</span><input type="checkbox" id="light-enabled"></label><label class="range-label" for="light-azimuth">方位角<output id="light-azimuth-value"></output></label><input type="range" id="light-azimuth" aria-label="方位角"><label class="range-label" for="light-elevation">高度角<output id="light-elevation-value"></output></label><input type="range" id="light-elevation" aria-label="高度角"><label class="range-label" for="light-intensity">强度<output id="light-intensity-value"></output></label><input type="range" id="light-intensity" aria-label="强度"><button id="reset-light" class="wide-secondary">恢复默认光照</button></div></details>
+      <details class="lighting-panel" id="background-panel"><summary>背景设置 <span>颜色与图片</span></summary><fieldset class="lighting-content appearance-fields" data-appearance-fields>
+        <div class="color-control"><label for="background-color">背景颜色</label><input id="background-color" type="color"><output id="background-color-value"></output></div>
+        <div class="image-preview" id="background-preview" hidden><img id="background-image-preview" alt="当前背景图片预览"></div>
+        <p class="image-name" id="background-image-name">尚未导入背景图片</p>
+        <div class="image-actions"><button id="import-background" class="wide-secondary">导入背景图片</button><button id="remove-background" class="wide-secondary">移除图片</button></div>
+        <label class="stacked-label" for="background-fit">图片显示</label><select id="background-fit"><option value="cover">铺满视口 · 等比裁切</option><option value="contain">完整显示 · 保留底色</option></select>
+        <p class="help-text">PNG / JPG / WebP · 最大 8 MB。透明图片与留白区域使用背景颜色；背景随项目保存。</p>
+        <button id="reset-background" class="wide-secondary">恢复默认背景</button>
+      </fieldset></details>
+      <details class="lighting-panel" id="lighting-panel"><summary>视口光照 <span id="light-mode">均匀环境光</span></summary><fieldset class="lighting-content appearance-fields" data-appearance-fields>
+        <label class="toggle-row"><span>启用定向柔光</span><input type="checkbox" id="light-enabled"></label>
+        <p class="help-text">参考批准头部的柔光主光、补光与轮廓光。光照方向相对当前画面。</p>
+        <label class="range-label" for="light-azimuth">方位角<output id="light-azimuth-value"></output></label><input type="range" id="light-azimuth" aria-label="方位角">
+        <label class="range-label" for="light-elevation">高度角<output id="light-elevation-value"></output></label><input type="range" id="light-elevation" aria-label="高度角">
+        <label class="range-label" for="light-intensity">主光强度<output id="light-intensity-value"></output></label><input type="range" id="light-intensity" aria-label="主光强度">
+        <label class="range-label" for="light-exposure">曝光<output id="light-exposure-value"></output></label><input type="range" id="light-exposure" aria-label="曝光">
+        <button id="reset-light" class="wide-secondary">恢复默认光照</button>
+      </fieldset></details>
     </aside>
   </main>
   <footer class="statusbar"><span><i class="status-dot"></i><span id="app-status">初始化中</span></span><span id="mode-status">构建模式 · 批准原件</span><span>LOCAL WORKSPACE <b>·</b> XIAOBAI 3D</span></footer>
   <div id="toast" role="status" aria-live="polite" hidden></div>
   <input type="file" id="model-file" accept=".glb,.obj" hidden>
   <input type="file" id="project-file" accept=".json,application/json" hidden>
+  <input type="file" id="skin-file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" hidden>
+  <input type="file" id="background-file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" hidden>
   <a id="download-link" hidden></a>
 </body>
 </html>

@@ -1,0 +1,48 @@
+{
+  "feature": "眼睛内部开合、内部目光与七种表情",
+  "date": "2026-09-17",
+  "environment": "Local · external Chrome · http://127.0.0.1:8790/",
+  "scope": "仅本次眼睛内部变化、表情及其保存和材质集成功能；没有执行全流程回归",
+  "checks": [
+    "自然、可爱、开心、愤怒、思考、惊讶、困倦均可切换，描述与选中状态同步",
+    "开心内部亮区上弯、愤怒内斜、思考左右不对称；外侧黑色椭圆轮廓保持固定",
+    "左眼开合 0 保留外侧完整眼圈，内部亮区收成细弧线；右眼保持默认",
+    "愤怒表情强度 0 的视口 PNG 数据与自然表情逐字节一致",
+    "思考 73% 可与眨眼、鼻子轻摆和点头在同一时间轴叠加、播放和暂停",
+    "草稿保存后刷新恢复 revision 4、思考 73%、三个动作通道及时间轴 0.25，恢复后暂停",
+    "表情页在无动作时播放会选择眼睛眨眼，不选择身体或鼻子动作",
+    "开心叠加眨眼在时间轴 0.5 时双眼内部收成细弧线，外侧眼圈保留",
+    "恢复眼睛默认清除眼睛动作与表情；重置姿态恢复自然表情及全部动作",
+    "项目 JSON 导出保留表情和强度；静态 GLB 包含实际表情几何及表情、内部开合语义元数据",
+    "Chrome 当前页面日志仅观察到浏览器扩展警告，没有项目来源的警告或错误",
+    "检查结束后原浏览器草稿逐字节恢复，原有用户标签页未重新加载"
+  ],
+  "tests": {
+    "face-rig": { "command": "node --test tests/face-rig.test.mjs", "passed": 9, "failed": 0 },
+    "project-state": { "command": "node --test tests/project-state.test.mjs", "passed": 23, "failed": 0 },
+    "appearance": { "command": "node --test tests/appearance.test.mjs", "passed": 9, "failed": 0 },
+    "additionalGeometryChecks": [
+      "原眼圈 128 方向支持点固定，变形顶点不越原外轮廓",
+      "全部七种表情保持现有 geometry、index、UV 与贴图引用",
+      "重置后眼鼻 positions 与 normals 逐项等于批准源",
+      "开心与单眼眨动的静态 GLB 往返后 positions、normals、UV 逐项一致"
+    ]
+  },
+  "approvedAssetHashes": {
+    "head-v1": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351",
+    "body-v7": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4"
+  },
+  "artifacts": [
+    "expression-neutral.png", "expression-cute.png", "expression-happy.png",
+    "expression-angry.png", "expression-thinking.png", "expression-surprised.png",
+    "expression-sleepy.png", "eye-interior-closed.png", "expression-blink.png",
+    "expression-export-check.json"
+  ],
+  "boundaries": [
+    "开合、目光与表情固定外轮廓；显式宽高、间距和位置仍可调整外形",
+    "内部亮区来自眼孔露出的头部表面，未新增瞳孔或眼皮网格",
+    "旧草稿保留开合和目光数值，使用新的内部变化语义",
+    "GLB 导出当前静态姿态，无动画关键帧；可编辑表情和动作随 JSON 保存",
+    "没有 Git 提交、部署或覆盖批准源文件"
+  ]
+}
