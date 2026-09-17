@@ -1,0 +1,347 @@
+{
+  "schema": "xiaobai.assets.v1",
+  "sourceTask": {
+    "hostId": "local",
+    "threadId": "01a0a7ff-ce82-70e2-8bf4-07b424928450"
+  },
+  "sourceRoot": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs",
+  "verifiedAt": "2026-09-17T00:18:17.472204+00:00",
+  "verification": "SHA-256 compared with preserved APPROVAL.json; binary POSITION bounds recomputed; source and copied bytes match. No model geometry regenerated.",
+  "coordinateSystem": {
+    "up": "+Y",
+    "front": "+Z",
+    "unit": "Original common H100 reference units; not meters",
+    "headAnchor": [
+      0,
+      70.1,
+      0
+    ],
+    "originalTransform": "Identity; keep common world coordinates when assembling"
+  },
+  "approved": {
+    "head": {
+      "id": "head-v1",
+      "path": "assets/approved/head-v1/xiaobai-head.glb",
+      "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/head-v1/xiaobai-head.glb",
+      "sha256": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351",
+      "bytes": 4227680,
+      "status": "approved",
+      "approvedAt": "2026-09-16T00:04:51.852114+00:00",
+      "userApproval": "批准！已批准的内容只有再次批准修改时才能修改！",
+      "approvalFile": "assets/approved/head-v1/APPROVAL.json",
+      "approvalSha256": "ab29e766d9bb084108a6412c52e40e1197e7ff0070c086de909a845f4f001722",
+      "scope": [
+        "Head/Eye_L/Eye_R/Nose geometry, proportions, transforms and materials",
+        "Black preview background",
+        "No directional light by default; adjustable azimuth, elevation and intensity"
+      ],
+      "generator": "THREE.GLTFExporter r186",
+      "skinned": false,
+      "animationCount": 0,
+      "meshCount": 4,
+      "meshes": [
+        {
+          "node": "Head",
+          "vertices": 73442,
+          "triangles": 146880,
+          "bounds": {
+            "min": [
+              -40.79999923706055,
+              41.79999923706055,
+              -35.0
+            ],
+            "max": [
+              40.79999923706055,
+              98.4000015258789,
+              35.0
+            ]
+          },
+          "boundsVerifiedFromBinaryPositions": true
+        },
+        {
+          "node": "Eye_L",
+          "vertices": 8256,
+          "triangles": 16512,
+          "bounds": {
+            "min": [
+              -27.75,
+              54.54999923706055,
+              26.32302474975586
+            ],
+            "max": [
+              -11.649999618530273,
+              77.05000305175781,
+              34.372493743896484
+            ]
+          },
+          "boundsVerifiedFromBinaryPositions": true
+        },
+        {
+          "node": "Eye_R",
+          "vertices": 8256,
+          "triangles": 16512,
+          "bounds": {
+            "min": [
+              11.649999618530273,
+              54.54999923706055,
+              26.32302474975586
+            ],
+            "max": [
+              27.75,
+              77.05000305175781,
+              34.372493743896484
+            ]
+          },
+          "boundsVerifiedFromBinaryPositions": true
+        },
+        {
+          "node": "Nose",
+          "vertices": 2882,
+          "triangles": 5760,
+          "bounds": {
+            "min": [
+              -6.949999809265137,
+              62.20000076293945,
+              34.46306610107422
+            ],
+            "max": [
+              6.949999809265137,
+              66.80000305175781,
+              37.48116683959961
+            ]
+          },
+          "boundsVerifiedFromBinaryPositions": true
+        }
+      ],
+      "bounds": {
+        "min": [
+          -40.79999923706055,
+          41.79999923706055,
+          -35.0
+        ],
+        "max": [
+          40.79999923706055,
+          98.4000015258789,
+          37.48116683959961
+        ]
+      }
+    },
+    "body": {
+      "id": "body-v7",
+      "path": "assets/approved/body-v7/xiaobai-torso.glb",
+      "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/xiaobai-torso.glb",
+      "sha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4",
+      "bytes": 1322824,
+      "status": "approved",
+      "approvedAt": "2026-09-16T03:10:11.778080+00:00",
+      "userApproval": "批准！参考这个图像内容画手臂，以图中最后一个动作的图像为主！左右手对称！",
+      "approvalFile": "assets/approved/body-v7/APPROVAL.json",
+      "approvalSha256": "7c1f4146bcaaa2ea411527bd4a3d8745eedd298f16f8e7d9405e5ba6934aea30",
+      "scope": [
+        "Body geometry, normals, dimensions, position, material",
+        "Left/right and front/back symmetry"
+      ],
+      "generator": "THREE.GLTFExporter r186",
+      "skinned": false,
+      "animationCount": 0,
+      "meshCount": 1,
+      "meshes": [
+        {
+          "node": "Body",
+          "vertices": 36674,
+          "triangles": 73344,
+          "bounds": {
+            "min": [
+              -19.878122329711914,
+              16.449926376342773,
+              -17.99734115600586
+            ],
+            "max": [
+              19.878122329711914,
+              56.0,
+              17.99734115600586
+            ]
+          },
+          "boundsVerifiedFromBinaryPositions": true
+        }
+      ],
+      "bounds": {
+        "min": [
+          -19.878122329711914,
+          16.449926376342773,
+          -17.99734115600586
+        ],
+        "max": [
+          19.878122329711914,
+          56.0,
+          17.99734115600586
+        ]
+      }
+    }
+  },
+  "pending": {
+    "arms": {
+      "status": "not-approved",
+      "asset": null
+    },
+    "legs": {
+      "status": "not-approved",
+      "asset": null
+    }
+  },
+  "boundaries": {
+    "preserveApprovedBytes": true,
+    "approvalAuthority": "Original APPROVAL.json, not stale candidate/pending text embedded in GLB extras, material names or source configs.",
+    "modifyApprovedBaseline": "Requires explicit subsequent user approval.",
+    "designWorkspace": "Shape, rig and motion experiments act on a separate working copy and must not overwrite approved files.",
+    "generation": "This asset migration generates no new mesh; future arm and leg assets remain imports for review."
+  },
+  "references": [
+    {
+      "path": "assets/references/01-standard-views.png",
+      "sha256": "2867b70937b65963f7e2849b92c5b96894088f2a257b84db629dff5c058877ae",
+      "bytes": 1493201,
+      "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-body-review/reference/01-standard-views.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "pixelsModified": false,
+      "alsoIdenticalTo": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-head-review/reference/01-standard-views.png"
+    },
+    {
+      "path": "assets/references/01-turnaround.png",
+      "sha256": "346a8e0e469883e5dac0c5c84ce6629f480170e09dea0a0737c0b5bf918c8556",
+      "bytes": 1514739,
+      "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-body-review/reference/01-turnaround.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "pixelsModified": false,
+      "alsoIdenticalTo": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-head-review/reference/01-turnaround.png"
+    },
+    {
+      "path": "assets/references/body-view-registration.json",
+      "sha256": "7fb9e660b9e18acfd1bb228c30a1bf69c3bfd9c10e06faf48b779f3b1af34d05",
+      "bytes": 6965,
+      "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/analysis/body-view-registration.json",
+      "status": "Original analysis artifact; historical pending fields do not override approval"
+    },
+    {
+      "path": "assets/references/head-fit.json",
+      "sha256": "27eb43b63be837fa55347c2b64e30bae29e44b49417b6b8453e21a1b156ae22a",
+      "bytes": 52980,
+      "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/head-v1/analysis/head-fit.json",
+      "status": "Original analysis artifact; historical pending fields do not override approval"
+    },
+    {
+      "path": "assets/references/spritesheet-extended.png",
+      "sha256": "2992f5cc51850e523d821ce3109249e63be6321acfa5e9d9c9a434cca2279d19",
+      "bytes": 551023,
+      "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-body-review/reference/spritesheet-extended.png",
+      "dimensions": [
+        1536,
+        415
+      ],
+      "pixelsModified": false,
+      "alsoIdenticalTo": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-head-review/reference/spritesheet-extended.png"
+    },
+    {
+      "path": "assets/references/registration.json",
+      "sha256": "dff4cfb093ae0797739f327d4e3771d285b65c4914b0ca7885cfcc73192a920b",
+      "bytes": 22021,
+      "source": "Derived index from preserved head-v1/head-review-config.js and body-v7/analysis/body-view-registration.json; historical xiaobai-arms-review/analysis/arms-fit.json",
+      "pixelsModified": false,
+      "status": "Coordinate index only; original PNG pixels and approval files unchanged"
+    },
+    {
+      "path": "assets/references/03-playful-actions.png",
+      "source": "/Users/cong/Desktop/VSCode/CODEX/03-playful-actions.png",
+      "sha256": "bea63a83eb3e22effeddac46ebf1ec8687940fc332feb8daf7c0172685a547bc",
+      "bytes": 1545662,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "pixelsModified": false,
+      "role": "Arms visual reference only; last action, not an approved mesh",
+      "registrationSource": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-arms-review/analysis/arms-fit.json",
+      "registrationSourceSha256": "1f522c59f412754acd216c3d6111fdcd3ed404bfa3852f5894ab62bf439c9a77",
+      "sourceHashMatchesHistoricalFit": true
+    }
+  ],
+  "vendor": {
+    "package": "three",
+    "version": "0.186.0",
+    "license": "vendor/LICENSE",
+    "files": [
+      {
+        "path": "vendor/.DS_Store",
+        "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/vendor/.DS_Store",
+        "sha256": "2a307633458d8d085acf98083705e7526e7d1d96811f81658e6baca49310b3af",
+        "bytes": 6148
+      },
+      {
+        "path": "vendor/LICENSE",
+        "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/vendor/LICENSE",
+        "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+        "bytes": 1081
+      },
+      {
+        "path": "vendor/addons/controls/OrbitControls.js",
+        "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/vendor/addons/controls/OrbitControls.js",
+        "sha256": "3d79d07ecb686b4e5d93232eedab255331c1beef711e13164eaa1f68655a5f2b",
+        "bytes": 40755
+      },
+      {
+        "path": "vendor/addons/exporters/GLTFExporter.js",
+        "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/vendor/addons/exporters/GLTFExporter.js",
+        "sha256": "d766b04f233fa8bc72bfaebacaac5ecb832c30ca3695ce8d84bbb7dccccdc842",
+        "bytes": 93570
+      },
+      {
+        "path": "vendor/addons/loaders/GLTFLoader.js",
+        "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/vendor/addons/loaders/GLTFLoader.js",
+        "sha256": "131c0f78c01d19368ae495caa65b3adaa10487810a36a05bb5901b769a35ac16",
+        "bytes": 117570
+      },
+      {
+        "path": "vendor/addons/loaders/OBJLoader.js",
+        "source": "https://raw.githubusercontent.com/mrdoob/three.js/r186/examples/jsm/loaders/OBJLoader.js",
+        "sha256": "86c8384e269b75a21d502d438e3f0dc2e09dc61b6e6da6b81947f5b119112bf8",
+        "bytes": 22916
+      },
+      {
+        "path": "vendor/addons/utils/BufferGeometryUtils.js",
+        "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/vendor/addons/utils/BufferGeometryUtils.js",
+        "sha256": "9fb63427ce6641fa14fd0baff9cc4d1b5f9c3d85fd084bf2e90e803c44ec1797",
+        "bytes": 37712
+      },
+      {
+        "path": "vendor/addons/utils/SkeletonUtils.js",
+        "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/vendor/addons/utils/SkeletonUtils.js",
+        "sha256": "b1632a703206c3d830de9fcbe515696770d04b71a15ee6b50afa6d2c3298c86f",
+        "bytes": 11535
+      },
+      {
+        "path": "vendor/package/package.json",
+        "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/vendor/package/package.json",
+        "sha256": "ab4ff6950aab522dfe6980f19914a5eb2cadb689a36c6c44f4d3869c5e46dc89",
+        "bytes": 3672
+      },
+      {
+        "path": "vendor/three.core.js",
+        "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/vendor/three.core.js",
+        "sha256": "9edde002b066a9a05676a6127f67735b62baf399bdea529f2f7e31657da769e6",
+        "bytes": 1458113
+      },
+      {
+        "path": "vendor/three.module.js",
+        "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-approved/body-v7/vendor/three.module.js",
+        "sha256": "9052042d676cb0fdc1ddfefe193053f34b7ac0513a616fdac4535d49987812ea",
+        "bytes": 662772
+      }
+    ]
+  }
+}

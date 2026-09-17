@@ -1,0 +1,280 @@
+{
+  "tiff_body:0": {
+    "center": [
+      94.5,
+      74.35784313725489
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 171.61864406779662,
+    "landmark": "primary original floor"
+  },
+  "tiff_body:1": {
+    "center": [
+      286.5,
+      74.47161939775907
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 171.778125,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:2": {
+    "center": [
+      478.5,
+      74.47435859528994
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 171.78086419753086,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:3": {
+    "center": [
+      670.5,
+      74.53231018723275
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 171.83881578947367,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:4": {
+    "center": [
+      862.5,
+      74.48053143479612
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 171.78703703703704,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:5": {
+    "center": [
+      1054.5,
+      74.53231018723275
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 171.83881578947367,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:6": {
+    "center": [
+      1246.5,
+      74.63099439775908
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 171.9375,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:7": {
+    "center": [
+      1438.5,
+      74.24686518427595
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 171.55337078651687,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:8": {
+    "center": [
+      94.5,
+      282.51607504292036
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 379.8225806451613,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:9": {
+    "center": [
+      286.5,
+      282.88776191368265
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 380.19426751592357,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:10": {
+    "center": [
+      478.5,
+      282.8825969618616
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 380.18910256410254,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:11": {
+    "center": [
+      670.5,
+      282.418346468765
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 379.7248520710059,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:12": {
+    "center": [
+      862.5,
+      282.4591193977591
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 379.765625,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:13": {
+    "center": [
+      1054.5,
+      282.9808078305949
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 380.28731343283584,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:14": {
+    "center": [
+      1246.5,
+      282.6974006477591
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 380.00390625,
+    "landmark": "measured central body bottom"
+  },
+  "tiff_body:15": {
+    "center": [
+      1438.5,
+      282.06376466802936
+    ],
+    "scale": 0.5513513513513513,
+    "bodyBottomPixel": 379.3702702702703,
+    "landmark": "measured central body bottom"
+  },
+  "standard_t:front": {
+    "center": [
+      261.5,
+      194.55335822166703
+    ],
+    "scale": 0.23050847457627116,
+    "bodyBottomPixel": 427.3,
+    "landmark": "shared measured T-pose underbelly baseline"
+  },
+  "standard_t:right": {
+    "center": [
+      767.5,
+      194.55335822166703
+    ],
+    "scale": 0.23050847457627116,
+    "bodyBottomPixel": 427.3,
+    "landmark": "shared measured T-pose underbelly baseline"
+  },
+  "standard_t:back": {
+    "center": [
+      1273.5,
+      194.55335822166703
+    ],
+    "scale": 0.23050847457627116,
+    "bodyBottomPixel": 427.3,
+    "landmark": "shared measured T-pose underbelly baseline"
+  },
+  "standard_rest:front": {
+    "center": [
+      261.5,
+      666.8527558120285
+    ],
+    "scale": 0.23050847457627116,
+    "bodyBottomPixel": 899.5993975903615,
+    "landmark": "measured central body bottom"
+  },
+  "standard_rest:right": {
+    "center": [
+      767.5,
+      666.853358221667
+    ],
+    "scale": 0.23050847457627116,
+    "bodyBottomPixel": 899.6,
+    "landmark": "paired front baseline; side bottom occluded"
+  },
+  "standard_rest:back": {
+    "center": [
+      1273.5,
+      666.8966509045938
+    ],
+    "scale": 0.23050847457627116,
+    "bodyBottomPixel": 899.6432926829268,
+    "landmark": "measured central body bottom"
+  },
+  "turnaround:front": {
+    "center": [
+      195.5,
+      198.79756101143155
+    ],
+    "scale": 0.2582278481012658,
+    "bodyBottomPixel": 406.5601,
+    "landmark": "measured central body bottom",
+    "angleCalibration": "reference camera unspecified; existing nominal yaw retained"
+  },
+  "turnaround:right_quarter": {
+    "center": [
+      596.5,
+      197.72666101143156
+    ],
+    "scale": 0.2582278481012658,
+    "bodyBottomPixel": 405.4892,
+    "landmark": "measured central body bottom",
+    "angleCalibration": "reference camera unspecified; existing nominal yaw retained"
+  },
+  "turnaround:right": {
+    "center": [
+      969.5,
+      198.79756101143155
+    ],
+    "scale": 0.2582278481012658,
+    "bodyBottomPixel": 406.5601,
+    "landmark": "paired row baseline; body bottom occluded",
+    "angleCalibration": "reference camera unspecified; existing nominal yaw retained"
+  },
+  "turnaround:right_back": {
+    "center": [
+      1352,
+      198.79756101143155
+    ],
+    "scale": 0.2582278481012658,
+    "bodyBottomPixel": 406.5601,
+    "landmark": "paired row baseline; body bottom occluded",
+    "angleCalibration": "reference camera unspecified; existing nominal yaw retained"
+  },
+  "turnaround:back": {
+    "center": [
+      195,
+      699.5950610114317
+    ],
+    "scale": 0.2582278481012658,
+    "bodyBottomPixel": 907.3576,
+    "landmark": "measured central body bottom",
+    "angleCalibration": "reference camera unspecified; existing nominal yaw retained"
+  },
+  "turnaround:left_back": {
+    "center": [
+      585.5,
+      699.5950610114317
+    ],
+    "scale": 0.2582278481012658,
+    "bodyBottomPixel": 907.3576,
+    "landmark": "paired row baseline; body bottom occluded",
+    "angleCalibration": "reference camera unspecified; existing nominal yaw retained"
+  },
+  "turnaround:left": {
+    "center": [
+      967.5,
+      699.5950610114317
+    ],
+    "scale": 0.2582278481012658,
+    "bodyBottomPixel": 907.3576,
+    "landmark": "paired row baseline; body bottom occluded",
+    "angleCalibration": "reference camera unspecified; existing nominal yaw retained"
+  },
+  "turnaround:left_quarter": {
+    "center": [
+      1340.5,
+      699.4194610114316
+    ],
+    "scale": 0.2582278481012658,
+    "bodyBottomPixel": 907.182,
+    "landmark": "measured central body bottom",
+    "angleCalibration": "reference camera unspecified; existing nominal yaw retained"
+  }
+}

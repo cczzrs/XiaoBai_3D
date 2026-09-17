@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#151817">
+  <title>小白 3D · 角色工作台</title>
+  <link rel="stylesheet" href="./styles/studio.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script>
+  <script type="module" src="./src/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="小白 3D 首页"><span class="brand-icon" aria-hidden="true"><i></i><i></i></span><span>小白 <strong>3D</strong></span><span class="brand-divider"></span><span class="brand-caption">角色工作台</span></a>
+    <div class="project-status"><span class="status-dot"></span><span id="save-state">本地项目</span></div>
+    <div class="header-actions">
+      <button id="load-project" class="quiet-button">打开项目</button>
+      <button id="save-project" class="quiet-button">保存草稿 <span class="key-hint">⌘ S</span></button>
+      <details class="export-menu"><summary class="primary-button">导出 <span aria-hidden="true">↗</span></summary><div class="dropdown"><button id="export-project">项目 JSON（含导入部件）</button><button id="export-model" data-needs-model disabled>当前模型 GLB</button><button id="export-image" data-needs-model disabled>视口截图 PNG</button></div></details>
+    </div>
+  </header>
+
+  <nav class="module-nav" aria-label="工作模块">
+    <button class="module-button" id="build-tab" data-mode="build" aria-selected="true"><span class="module-number">01</span><span>3D 模型构建</span><span class="module-note">部件 · 装配 · 对比</span></button>
+    <span class="module-connector" aria-hidden="true">→</span>
+    <button class="module-button" id="design-tab" data-mode="design" aria-selected="false"><span class="module-number">02</span><span>形体、骨骼和姿态动作设计</span><span class="module-note">基于构建模型的设计副本</span></button>
+  </nav>
+
+  <main class="workspace">
+    <aside class="library sidebar">
+      <div class="panel-heading"><span id="library-title">模型部件</span><span class="tiny-label">COMPONENTS</span></div>
+      <div class="progress-summary"><div><strong>02<span> / 04</span></strong><span>已批准部件</span></div><div class="progress-track"><i></i><i></i><i></i><i></i></div></div>
+      <div class="part-list" aria-label="部件列表">
+        <button class="part-card" data-part="head" aria-pressed="true"><span class="part-symbol head-symbol" aria-hidden="true">◉</span><span class="part-copy"><strong>头部</strong><small>head-v1</small></span><span class="approved-badge">已批准</span></button>
+        <button class="part-card" data-part="body" aria-pressed="false"><span class="part-symbol" aria-hidden="true">◒</span><span class="part-copy"><strong>身体</strong><small>body-v7</small></span><span class="approved-badge">已批准</span></button>
+        <div class="part-divider"><span>后续构建</span></div>
+        <button class="part-card pending" data-part="arms" aria-pressed="false"><span class="part-symbol" aria-hidden="true">⌁</span><span class="part-copy"><strong>手臂</strong><small id="arms-file">等待导入模型</small></span><span id="arms-badge" class="pending-badge">待构建</span></button>
+        <button class="part-card pending" data-part="legs" aria-pressed="false"><span class="part-symbol" aria-hidden="true">⋀</span><span class="part-copy"><strong>腿脚</strong><small id="legs-file">等待导入模型</small></span><span id="legs-badge" class="pending-badge">待构建</span></button>
+      </div>
+      <section class="sidebar-section" data-mode-section="build">
+        <div class="section-title"><span>导入新部件</span><span aria-hidden="true">＋</span></div>
+        <label class="stacked-label" for="import-slot">目标部件<select id="import-slot"><option value="arms">手臂 · 候选模型</option><option value="legs">腿脚 · 候选模型</option></select></label>
+        <button id="import-model" class="import-button" data-needs-model disabled><span aria-hidden="true">↥</span> 选择模型文件</button>
+        <p class="help-text">GLB / OBJ · 最大 50 MB<br>导入后可装配检查，保留候选状态。</p>
+      </section>
+      <section class="sidebar-section" data-mode-section="design" hidden>
+        <div class="section-title">关节层级<span class="draft-badge">草稿</span></div>
+        <ol class="bone-tree"><li><span class="joint-dot"></span> Root <small>根节点</small></li><li><span class="joint-dot"></span> Body <small>身体</small></li><li><span class="joint-dot"></span> Neck <small>颈部</small></li><li><span class="joint-dot"></span> Head <small>头部</small></li></ol>
+        <p class="help-text">当前为部件刚性关节。手臂与腿脚完成后，可继续扩展关节和蒙皮。</p>
+      </section>
+      <div class="library-footer"><span class="lock-icon" aria-hidden="true">▣</span><div><strong>批准基线已锁定</strong><p>头部与身体保留原始模型<br>参数设计保存为独立草稿</p></div></div>
+    </aside>
+
+    <section class="viewport-area" aria-label="3D 工作视口">
+      <div class="viewport-toolbar">
+        <div class="view-buttons" aria-label="相机视角"><button data-view="front" aria-pressed="true">正面</button><button data-view="right" aria-pressed="false">右侧</button><button data-view="back" aria-pressed="false">背面</button><button data-view="left" aria-pressed="false">左侧</button><button data-view="perspective" aria-pressed="false">透视</button></div>
+        <div class="display-buttons"><button id="toggle-grid" aria-pressed="false" title="显示网格">网格</button><button id="toggle-wireframe" aria-pressed="false" title="显示线框">线框</button><button id="reset-camera" title="重置相机" aria-label="重置相机">⌖</button></div>
+      </div>
+      <div class="canvas-wrap" id="canvas-wrap">
+        <canvas id="model-canvas" aria-label="小白三维模型，可拖动旋转、滚轮缩放"></canvas>
+        <canvas id="reference-overlay" aria-hidden="true"></canvas>
+        <div class="viewport-label"><span class="status-dot"></span><span id="viewport-title">批准模型 · 装配预览</span></div>
+        <span class="coordinate-label" id="camera-label">FRONT / 正交</span>
+        <div id="loading-state" class="loading-state" role="status"><span class="loading-orbit"></span><strong>正在载入小白</strong><span>读取已批准的头部与身体</span></div>
+        <div class="axis-indicator" aria-hidden="true"><span class="axis-y">Y</span><span class="axis-x">X</span><span class="axis-z">Z</span><i></i></div>
+        <div class="viewport-bottom"><span id="geometry-stats">准备模型…</span><span>拖动旋转 · 滚轮缩放 · 右键平移</span></div>
+      </div>
+      <div class="construction-footer" data-mode-section="build"><span class="approved-dot"></span><span>头部 + 身体</span><span class="muted">装配沿用原始坐标</span><button id="enter-design">进入形体与动作设计 <span aria-hidden="true">→</span></button></div>
+      <section class="timeline-panel" data-mode-section="design" hidden aria-label="动作预览时间轴"><div class="timeline-top"><button id="play-motion" aria-label="播放动作" data-needs-model disabled>▶</button><div><strong id="motion-label">静态姿态</strong><span id="timeline-time">0.00 / 4.00 秒</span></div><span class="draft-note">动作预览 · 可调参数</span><button id="reset-pose">重置姿态</button></div><label class="sr-only" for="timeline">动作时间轴</label><input type="range" id="timeline"><div class="timeline-ticks"><span>0 s</span><span>1 s</span><span>2 s</span><span>3 s</span><span>4 s</span></div></section>
+    </section>
+
+    <aside class="inspector sidebar">
+      <div class="panel-heading"><span id="inspector-title">构建检查</span><span class="tiny-label">INSPECTOR</span></div>
+      <div class="inspector-content" data-mode-section="build">
+        <section class="inspector-section">
+          <div class="section-title"><span id="selected-name">头部</span><span id="selected-status" class="approved-badge">已批准 · 锁定</span></div>
+          <p id="selected-description" class="description">保留已批准的头部、眼睛与鼻子，以及原始材质和比例。</p>
+          <div class="metadata-row"><span>版本</span><code id="selected-version">head-v1</code></div>
+          <div class="part-actions"><button id="isolate-part" data-needs-model disabled>单独查看</button><button id="show-all" data-needs-model disabled>显示全部</button><button id="remove-part" hidden>移除候选</button></div>
+          <div class="visibility-row"><label><input type="checkbox" data-visible="head">头部</label><label><input type="checkbox" data-visible="body">身体</label><label><input type="checkbox" data-visible="arms">手臂</label><label><input type="checkbox" data-visible="legs">腿脚</label></div>
+        </section>
+        <section class="inspector-section reference-section">
+          <div class="section-title">参考图对比<span class="tiny-label">REFERENCE</span></div>
+          <label class="sr-only" for="reference-select">参考图</label><select id="reference-select"><option value="body">身体 · TIFF 第 1 帧</option><option value="head">头部 · 正面参考</option><option value="arms">手臂 · 动作参考</option></select>
+          <div class="reference-preview"><canvas id="reference-preview" aria-label="当前参考图"></canvas><span id="reference-caption">身体主要参考</span></div>
+          <div class="range-label"><label for="overlay-opacity">叠图透明度</label><output for="overlay-opacity" id="overlay-value">0%</output></div><input type="range" id="overlay-opacity">
+          <p class="help-text" id="overlay-help">开启叠图时自动切到对应正交视图；自由旋转后暂停叠图。</p>
+        </section>
+      </div>
+      <div class="inspector-content" data-mode-section="design" hidden>
+        <nav class="design-tabs" aria-label="设计参数"><button data-panel="shape" aria-selected="true">形体</button><button data-panel="rig" aria-selected="false">骨骼</button><button data-panel="motion" aria-selected="false">姿态动作</button></nav>
+        <section class="inspector-section" data-design-panel="shape">
+          <div class="section-title">形体比例<span class="draft-badge">设计副本</span></div>
+          <p class="description">基于已批准模型调整整体比例，原始几何与材质保留。</p>
+          <div class="parameter"><div class="range-label"><label for="head-scale">头部大小</label><output data-output="shape.headScale"></output></div><input id="head-scale" type="range" data-design="shape.headScale"></div>
+          <div class="parameter"><div class="range-label"><label for="body-width">身体宽度</label><output data-output="shape.bodyWidth"></output></div><input id="body-width" type="range" data-design="shape.bodyWidth"></div>
+          <div class="parameter"><div class="range-label"><label for="body-height">身体高度</label><output data-output="shape.bodyHeight"></output></div><input id="body-height" type="range" data-design="shape.bodyHeight"></div>
+          <div class="parameter"><div class="range-label"><label for="body-depth">身体厚度</label><output data-output="shape.bodyDepth"></output></div><input id="body-depth" type="range" data-design="shape.bodyDepth"></div>
+          <button id="reset-shape" class="wide-secondary">恢复批准比例</button>
+        </section>
+        <section class="inspector-section" data-design-panel="rig" hidden>
+          <div class="section-title">关节位置<span class="draft-badge">刚性绑定</span></div>
+          <p class="description">根关节带动身体，颈关节控制头部。位置采用原始模型坐标。</p>
+          <label class="toggle-row"><span>显示骨骼</span><input id="show-skeleton" type="checkbox"></label>
+          <div class="parameter"><div class="range-label"><label for="root-y">根关节高度</label><output data-output="rig.rootY"></output></div><input id="root-y" type="range" data-design="rig.rootY"></div>
+          <div class="parameter"><div class="range-label"><label for="neck-y">颈关节高度</label><output data-output="rig.neckY"></output></div><input id="neck-y" type="range" data-design="rig.neckY"></div>
+          <button id="reset-rig" class="wide-secondary">恢复关节位置</button>
+          <div class="inline-note">这是关节设计草稿，尚未进行连续表面蒙皮。候选手臂与腿脚当前随身体移动。</div>
+        </section>
+        <section class="inspector-section" data-design-panel="motion" hidden>
+          <div class="section-title">静态姿态<span class="tiny-label">POSE</span></div>
+          <div class="parameter"><div class="range-label"><label for="head-yaw">头部左右转向</label><output data-output="pose.headYaw"></output></div><input id="head-yaw" type="range" data-design="pose.headYaw"></div>
+          <div class="parameter"><div class="range-label"><label for="head-pitch">抬头 / 低头</label><output data-output="pose.headPitch"></output></div><input id="head-pitch" type="range" data-design="pose.headPitch"></div>
+          <div class="parameter"><div class="range-label"><label for="head-roll">头部侧倾</label><output data-output="pose.headRoll"></output></div><input id="head-roll" type="range" data-design="pose.headRoll"></div>
+          <div class="parameter"><div class="range-label"><label for="body-lean">身体侧倾</label><output data-output="pose.bodyLean"></output></div><input id="body-lean" type="range" data-design="pose.bodyLean"></div>
+          <div class="subsection-title">动作预设</div>
+          <label class="sr-only" for="motion-preset">动作预设</label><select id="motion-preset"><option value="none">静态姿态</option><option value="nod">轻轻点头</option><option value="sway">左右摇摆</option><option value="breathe">呼吸起伏</option></select>
+          <div class="parameter"><div class="range-label"><label for="motion-speed">播放速度</label><output id="speed-value"></output></div><input id="motion-speed" type="range"></div>
+          <div class="parameter"><div class="range-label"><label for="motion-amplitude">动作幅度</label><output id="amplitude-value"></output></div><input id="motion-amplitude" type="range"></div>
+        </section>
+      </div>
+      <details class="lighting-panel"><summary>视口光照 <span>无定向光为默认</span></summary><div class="lighting-content"><label class="toggle-row"><span>启用定向光</span><input type="checkbox" id="light-enabled"></label><label class="range-label" for="light-azimuth">方位角<output id="light-azimuth-value"></output></label><input type="range" id="light-azimuth" aria-label="方位角"><label class="range-label" for="light-elevation">高度角<output id="light-elevation-value"></output></label><input type="range" id="light-elevation" aria-label="高度角"><label class="range-label" for="light-intensity">强度<output id="light-intensity-value"></output></label><input type="range" id="light-intensity" aria-label="强度"><button id="reset-light" class="wide-secondary">恢复默认光照</button></div></details>
+    </aside>
+  </main>
+  <footer class="statusbar"><span><i class="status-dot"></i><span id="app-status">初始化中</span></span><span id="mode-status">构建模式 · 批准原件</span><span>LOCAL WORKSPACE <b>·</b> XIAOBAI 3D</span></footer>
+  <div id="toast" role="status" aria-live="polite" hidden></div>
+  <input type="file" id="model-file" accept=".glb,.obj" hidden>
+  <input type="file" id="project-file" accept=".json,application/json" hidden>
+  <a id="download-link" hidden></a>
+</body>
+</html>

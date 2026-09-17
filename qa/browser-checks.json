@@ -1,0 +1,134 @@
+{
+  "checkedAt": "2026-09-17T01:25:43.259210+00:00",
+  "browser": "External Google Chrome",
+  "url": "http://127.0.0.1:8790/",
+  "execution": "Local; copied approved assets; no source project modifications; no Git commit",
+  "approvedSources": {
+    "head": "head-v1",
+    "body": "body-v7",
+    "originalGlbHashesMatchApproval": true
+  },
+  "browserChecks": [
+    {
+      "feature": "Initial approved assembly",
+      "result": "pass",
+      "evidence": "5 meshes, 259008 triangles, visible head/eyes/nose/body on black background"
+    },
+    {
+      "feature": "Front, right and perspective cameras",
+      "result": "pass"
+    },
+    {
+      "feature": "Build/design separation",
+      "result": "pass",
+      "evidence": "Design head 0.9 and body width 1.1; build retains approved proportions"
+    },
+    {
+      "feature": "Rig and pose parameters",
+      "result": "pass",
+      "evidence": "Skeleton displayed; neckY=54; headYaw=25; visual pose changed"
+    },
+    {
+      "feature": "Nod motion and timeline",
+      "result": "pass",
+      "evidence": "Playback progress advanced; paused and scrubbed to progress=0.25 (1.00/4.00 seconds)"
+    },
+    {
+      "feature": "Local draft save and reload",
+      "result": "pass",
+      "evidence": "Restored headScale=0.9, bodyWidth=1.1 and paused progress=0.25"
+    },
+    {
+      "feature": "Malformed project rejection",
+      "result": "pass",
+      "evidence": "Rejected missing design field; existing design remained"
+    },
+    {
+      "feature": "GLB candidate import and invalid OBJ rejection",
+      "result": "pass",
+      "evidence": "Imported existing body GLB as temporary QA candidate: 6 meshes, 332352 triangles. Invalid OBJ rejected without replacing candidate. QA candidate later removed."
+    },
+    {
+      "feature": "Project JSON with embedded candidate round trip",
+      "result": "pass",
+      "evidence": "Exported JSON, removed candidate, opened exported JSON through file input change handler; candidate and parameters restored"
+    },
+    {
+      "feature": "GLB export while wireframe enabled",
+      "result": "pass",
+      "evidence": {
+        "bytes": 5552360,
+        "version": 2,
+        "meshes": 5,
+        "primitiveModes": [
+          4,
+          4,
+          4,
+          4,
+          4
+        ],
+        "rigNodes": [
+          "XiaoBai_RigRoot",
+          "XiaoBai_RigBody",
+          "XiaoBai_RigNeck",
+          "XiaoBai_RigHead"
+        ],
+        "scope": "Current static pose, no skin weights or animation clips"
+      }
+    },
+    {
+      "feature": "Reference overlay and isolation",
+      "result": "pass",
+      "evidence": "Body-only view with TIFF frame1 at 50%; head and last-action arm reference selection; free rotation pauses overlay; front view restores alignment"
+    },
+    {
+      "feature": "Directional lighting reset",
+      "result": "pass",
+      "evidence": "Temporarily enabled, changed azimuth to60, restored disabled/41deg/58deg/intensity5"
+    },
+    {
+      "feature": "PNG export",
+      "result": "pass",
+      "evidence": "Data URL image/png, filename xiaobai-viewport.png, canvas1492x760"
+    },
+    {
+      "feature": "Console",
+      "result": "pass",
+      "evidence": "No app-origin errors or warnings in final inspected log; unrelated extension warnings excluded"
+    }
+  ],
+  "testFiles": {
+    "assets.test.mjs": 2,
+    "model-io.test.mjs": 5,
+    "project-state.test.mjs": 9,
+    "references.test.mjs": 4
+  },
+  "relatedNodeTests": {
+    "passed": 20,
+    "failed": 0
+  },
+  "boundaries": [
+    "Chrome extension fileChooser.setFiles was blocked by file URL permission. Import handler checks used local HTTP fixture bytes injected as File objects through the existing file input change event; native operating-system picker was not verified.",
+    "Only current feature checks were run; no full legacy project regression.",
+    "No new arm/leg mesh generation, limb rig, vertex skinning or animation keyframe export was performed.",
+    "Overlay alignment is inherited reference registration, not a new 3D silhouette or hidden-surface accuracy proof."
+  ],
+  "finalState": {
+    "mode": "build",
+    "view": "front",
+    "visibleParts": [
+      "head",
+      "body"
+    ],
+    "candidateSlotsEmpty": true,
+    "wireframe": false,
+    "overlay": 0,
+    "directionalLightEnabled": false,
+    "draft": "neutral defaults saved; playback paused"
+  },
+  "screenshots": [
+    "studio-build.png",
+    "design-preview.png",
+    "body-overlay.png"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "xiaobai.approval.v1",
+  "id": "head-v1",
+  "status": "approved",
+  "approvedAt": "2026-09-16T00:04:51.852114+00:00",
+  "userApproval": "批准！已批准的内容只有再次批准修改时才能修改！",
+  "scope": [
+    "Head/Eye_L/Eye_R/Nose geometry, proportions, transforms and materials",
+    "Black preview background",
+    "No directional light by default; adjustable azimuth, elevation and intensity"
+  ],
+  "changePolicy": "Explicit subsequent user approval required before any modification to approved content. No inferred approval from later body, arm or leg work.",
+  "nextStage": "body",
+  "files": {
+    "xiaobai-head.glb": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351",
+    "xiaobai-head-candidate.glb": "4486f84ff296bdea59cbb664da1fb0a8ff6c20a717850f44f27188a3959faa6d",
+    "sculpt.js": "cd1e758132867244411a27b86be3aadedc9c9d4276699061b905104e410d8cec",
+    "shape-config.js": "2d37904a07bed3a88503c28df21bdc6280b1e1d015150171c17f2472d757ea15",
+    "head-review-config.js": "5dd811504cc1a2789bf6bdf363cf37cb654c63b9b3aba9a0b472c3ad43bdb954",
+    "head-review.js": "5ea308bc3a6c05646ecba87445b0b45fa4c63cae72b6e8b469a4e312ac838cb5",
+    "head-review.css": "d3e4d1545b61236d85004212fded7cf93693fd5447be258df79ca802924dea31",
+    "index.html": "3ef20a61988a70172211eb1421742915c24e082202cf839bda35813b2d13f3c5",
+    "analysis/head-fit.js": "1621fc11abe4a64e6ef846db422b00720bdc6edae7eb8db5bc3fec46eceada07",
+    "analysis/head-fit.json": "27eb43b63be837fa55347c2b64e30bae29e44b49417b6b8453e21a1b156ae22a",
+    "reference-data.js": "bcef81bbaa2b77cc61a152e0c175fdf470b4691bac78babc2a034c80a21d29a4",
+    "hand-geometry.js": "fbada32da01c7bbeae5f93fb9cae1ea48f87f01c39651a6f0c6dceb4b609a8f5",
+    "analysis/leg-fit.js": "5208ba7132d421ed04ae4874eaba8d8c280abbd3a59ff0fc1054ff32f70e13f8",
+    "analysis/torso-fit.js": "c977204994fe3a26000b6218e784f49e8ea3e4ccf0f550ff35b518ec6abfc4d0",
+    "vendor/three.module.js": "9052042d676cb0fdc1ddfefe193053f34b7ac0513a616fdac4535d49987812ea",
+    "qa/head-validation.json": "08ab15e19d961f5be1aec0eccc071570a7f3bc2d248b7c5ead58c0542eea4dc7"
+  }
+}

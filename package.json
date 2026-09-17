@@ -1,0 +1,11 @@
+{
+  "name": "xiaobai-3d-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "小白 3D · 部件构建与形体骨骼动作设计工作台",
+  "scripts": {
+    "dev": "python3 scripts/serve.py",
+    "test": "node --test tests/*.test.mjs"
+  }
+}

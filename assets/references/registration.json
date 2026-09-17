@@ -1,0 +1,867 @@
+{
+  "schema": "xiaobai.reference-registration.v1",
+  "coordinateSystem": {
+    "worldAnchor": [
+      0,
+      70.1,
+      0
+    ],
+    "unitsPerPixel": "scale",
+    "mapping": "xWorld=(imageX-centerX)*scale; yWorld=(floorY-imageY)*scale. Image coordinates are in the full original image, before crop.",
+    "yawConvention": "camera position = target + distance * [sin(yaw),0,cos(yaw)]",
+    "limitation": "Separate historical head and body registrations differ; choose the matching component registration. Views are nominal; uncalibrated image cameras are not a metric ground truth."
+  },
+  "head": {
+    "front": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        0,
+        60,
+        384,
+        237
+      ],
+      "label": "正面",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        195.5,
+        186.06
+      ],
+      "centerX": 195.5,
+      "floorY": 457.5256862745098,
+      "scale": 0.2582278481012658,
+      "source": "head-v1/head-review-config.js"
+    },
+    "right_quarter": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        384,
+        60,
+        384,
+        238
+      ],
+      "label": "右转角",
+      "yaw": -32,
+      "elevation": 0,
+      "center": [
+        596.5,
+        187.5
+      ],
+      "centerX": 596.5,
+      "floorY": 458.9656862745098,
+      "scale": 0.2582278481012658,
+      "source": "head-v1/head-review-config.js"
+    },
+    "right": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        768,
+        60,
+        384,
+        237
+      ],
+      "label": "右侧",
+      "yaw": -90,
+      "elevation": 0,
+      "center": [
+        969.5,
+        186.05
+      ],
+      "centerX": 969.5,
+      "floorY": 457.5156862745098,
+      "scale": 0.2582278481012658,
+      "source": "head-v1/head-review-config.js"
+    },
+    "right_back": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        1152,
+        60,
+        384,
+        239
+      ],
+      "label": "右后",
+      "yaw": -125,
+      "elevation": 0,
+      "center": [
+        1352,
+        188.5
+      ],
+      "centerX": 1352,
+      "floorY": 459.9656862745098,
+      "scale": 0.2582278481012658,
+      "source": "head-v1/head-review-config.js"
+    },
+    "back": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        0,
+        560,
+        384,
+        239
+      ],
+      "label": "背面",
+      "yaw": 180,
+      "elevation": 0,
+      "center": [
+        195,
+        686
+      ],
+      "centerX": 195,
+      "floorY": 957.4656862745098,
+      "scale": 0.2582278481012658,
+      "source": "head-v1/head-review-config.js"
+    },
+    "left_back": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        384,
+        560,
+        384,
+        241
+      ],
+      "label": "左后",
+      "yaw": 125,
+      "elevation": 0,
+      "center": [
+        585.5,
+        688
+      ],
+      "centerX": 585.5,
+      "floorY": 959.4656862745098,
+      "scale": 0.2582278481012658,
+      "source": "head-v1/head-review-config.js"
+    },
+    "left": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        768,
+        560,
+        384,
+        239
+      ],
+      "label": "左侧",
+      "yaw": 90,
+      "elevation": 0,
+      "center": [
+        967.5,
+        687.25
+      ],
+      "centerX": 967.5,
+      "floorY": 958.7156862745098,
+      "scale": 0.2582278481012658,
+      "source": "head-v1/head-review-config.js"
+    },
+    "left_quarter": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        1152,
+        560,
+        384,
+        242
+      ],
+      "label": "左转角",
+      "yaw": 32,
+      "elevation": 0,
+      "center": [
+        1340.5,
+        688.5
+      ],
+      "centerX": 1340.5,
+      "floorY": 959.9656862745098,
+      "scale": 0.2582278481012658,
+      "source": "head-v1/head-review-config.js"
+    }
+  },
+  "body": {
+    "turnaround_front": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        0,
+        0,
+        384,
+        512
+      ],
+      "label": "正面",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        195.5,
+        198.79756101143155
+      ],
+      "scale": 0.2582278481012658,
+      "bodyBottomPixel": 406.5601,
+      "landmark": "measured central body bottom",
+      "angleCalibration": "reference camera unspecified; existing nominal yaw retained",
+      "centerX": 195.5,
+      "floorY": 470.26324728594136,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "turnaround_right_quarter": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        384,
+        0,
+        384,
+        512
+      ],
+      "label": "右转角",
+      "yaw": -32,
+      "elevation": 0,
+      "center": [
+        596.5,
+        197.72666101143156
+      ],
+      "scale": 0.2582278481012658,
+      "bodyBottomPixel": 405.4892,
+      "landmark": "measured central body bottom",
+      "angleCalibration": "reference camera unspecified; existing nominal yaw retained",
+      "centerX": 596.5,
+      "floorY": 469.1923472859413,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "turnaround_right": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        768,
+        0,
+        384,
+        512
+      ],
+      "label": "右侧",
+      "yaw": -90,
+      "elevation": 0,
+      "center": [
+        969.5,
+        198.79756101143155
+      ],
+      "scale": 0.2582278481012658,
+      "bodyBottomPixel": 406.5601,
+      "landmark": "paired row baseline; body bottom occluded",
+      "angleCalibration": "reference camera unspecified; existing nominal yaw retained",
+      "centerX": 969.5,
+      "floorY": 470.26324728594136,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "turnaround_right_back": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        1152,
+        0,
+        384,
+        512
+      ],
+      "label": "右后",
+      "yaw": -125,
+      "elevation": 0,
+      "center": [
+        1352,
+        198.79756101143155
+      ],
+      "scale": 0.2582278481012658,
+      "bodyBottomPixel": 406.5601,
+      "landmark": "paired row baseline; body bottom occluded",
+      "angleCalibration": "reference camera unspecified; existing nominal yaw retained",
+      "centerX": 1352,
+      "floorY": 470.26324728594136,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "turnaround_back": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        0,
+        512,
+        384,
+        512
+      ],
+      "label": "背面",
+      "yaw": 180,
+      "elevation": 0,
+      "center": [
+        195,
+        699.5950610114317
+      ],
+      "scale": 0.2582278481012658,
+      "bodyBottomPixel": 907.3576,
+      "landmark": "measured central body bottom",
+      "angleCalibration": "reference camera unspecified; existing nominal yaw retained",
+      "centerX": 195,
+      "floorY": 971.0607472859415,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "turnaround_left_back": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        384,
+        512,
+        384,
+        512
+      ],
+      "label": "左后",
+      "yaw": 125,
+      "elevation": 0,
+      "center": [
+        585.5,
+        699.5950610114317
+      ],
+      "scale": 0.2582278481012658,
+      "bodyBottomPixel": 907.3576,
+      "landmark": "paired row baseline; body bottom occluded",
+      "angleCalibration": "reference camera unspecified; existing nominal yaw retained",
+      "centerX": 585.5,
+      "floorY": 971.0607472859415,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "turnaround_left": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        768,
+        512,
+        384,
+        512
+      ],
+      "label": "左侧",
+      "yaw": 90,
+      "elevation": 0,
+      "center": [
+        967.5,
+        699.5950610114317
+      ],
+      "scale": 0.2582278481012658,
+      "bodyBottomPixel": 907.3576,
+      "landmark": "paired row baseline; body bottom occluded",
+      "angleCalibration": "reference camera unspecified; existing nominal yaw retained",
+      "centerX": 967.5,
+      "floorY": 971.0607472859415,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "turnaround_left_quarter": {
+      "image": "assets/references/01-turnaround.png",
+      "crop": [
+        1152,
+        512,
+        384,
+        512
+      ],
+      "label": "左转角",
+      "yaw": 32,
+      "elevation": 0,
+      "center": [
+        1340.5,
+        699.4194610114316
+      ],
+      "scale": 0.2582278481012658,
+      "bodyBottomPixel": 907.182,
+      "landmark": "measured central body bottom",
+      "angleCalibration": "reference camera unspecified; existing nominal yaw retained",
+      "centerX": 1340.5,
+      "floorY": 970.8851472859415,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_0": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        0,
+        0,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 1",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        94.5,
+        74.35784313725489
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 171.61864406779662,
+      "landmark": "primary original floor",
+      "centerX": 94.5,
+      "floorY": 201.5,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_1": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        192,
+        0,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 2",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        286.5,
+        74.47161939775907
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 171.778125,
+      "landmark": "measured central body bottom",
+      "centerX": 286.5,
+      "floorY": 201.61377626050418,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_2": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        384,
+        0,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 3",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        478.5,
+        74.47435859528994
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 171.78086419753086,
+      "landmark": "measured central body bottom",
+      "centerX": 478.5,
+      "floorY": 201.61651545803505,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_3": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        576,
+        0,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 4",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        670.5,
+        74.53231018723275
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 171.83881578947367,
+      "landmark": "measured central body bottom",
+      "centerX": 670.5,
+      "floorY": 201.67446704997786,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_4": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        768,
+        0,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 5",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        862.5,
+        74.48053143479612
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 171.78703703703704,
+      "landmark": "measured central body bottom",
+      "centerX": 862.5,
+      "floorY": 201.62268829754123,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_5": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        960,
+        0,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 6",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        1054.5,
+        74.53231018723275
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 171.83881578947367,
+      "landmark": "measured central body bottom",
+      "centerX": 1054.5,
+      "floorY": 201.67446704997786,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_6": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        1152,
+        0,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 7",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        1246.5,
+        74.63099439775908
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 171.9375,
+      "landmark": "measured central body bottom",
+      "centerX": 1246.5,
+      "floorY": 201.7731512605042,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_7": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        1344,
+        0,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 8",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        1438.5,
+        74.24686518427595
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 171.55337078651687,
+      "landmark": "measured central body bottom",
+      "centerX": 1438.5,
+      "floorY": 201.38902204702106,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_8": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        0,
+        208,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 9",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        94.5,
+        282.51607504292036
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 379.8225806451613,
+      "landmark": "measured central body bottom",
+      "centerX": 94.5,
+      "floorY": 409.6582319056655,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_9": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        192,
+        208,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 10",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        286.5,
+        282.88776191368265
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 380.19426751592357,
+      "landmark": "measured central body bottom",
+      "centerX": 286.5,
+      "floorY": 410.02991877642773,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_10": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        384,
+        208,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 11",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        478.5,
+        282.8825969618616
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 380.18910256410254,
+      "landmark": "measured central body bottom",
+      "centerX": 478.5,
+      "floorY": 410.0247538246067,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_11": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        576,
+        208,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 12",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        670.5,
+        282.418346468765
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 379.7248520710059,
+      "landmark": "measured central body bottom",
+      "centerX": 670.5,
+      "floorY": 409.56050333151006,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_12": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        768,
+        208,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 13",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        862.5,
+        282.4591193977591
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 379.765625,
+      "landmark": "measured central body bottom",
+      "centerX": 862.5,
+      "floorY": 409.60127626050416,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_13": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        960,
+        208,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 14",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        1054.5,
+        282.9808078305949
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 380.28731343283584,
+      "landmark": "measured central body bottom",
+      "centerX": 1054.5,
+      "floorY": 410.12296469334,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_14": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        1152,
+        208,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 15",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        1246.5,
+        282.6974006477591
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 380.00390625,
+      "landmark": "measured central body bottom",
+      "centerX": 1246.5,
+      "floorY": 409.83955751050416,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "frame_15": {
+      "image": "assets/references/spritesheet-extended.png",
+      "crop": [
+        1344,
+        208,
+        192,
+        207
+      ],
+      "label": "身体原图 · 帧 16",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        1438.5,
+        282.06376466802936
+      ],
+      "scale": 0.5513513513513513,
+      "bodyBottomPixel": 379.3702702702703,
+      "landmark": "measured central body bottom",
+      "centerX": 1438.5,
+      "floorY": 409.2059215307745,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "standard_t_front": {
+      "image": "assets/references/01-standard-views.png",
+      "crop": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "label": "standard_t front",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        261.5,
+        194.55335822166703
+      ],
+      "scale": 0.23050847457627116,
+      "bodyBottomPixel": 427.3,
+      "landmark": "shared measured T-pose underbelly baseline",
+      "centerX": 261.5,
+      "floorY": 498.6636523393141,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "standard_t_right": {
+      "image": "assets/references/01-standard-views.png",
+      "crop": [
+        512,
+        0,
+        512,
+        512
+      ],
+      "label": "standard_t right",
+      "yaw": -90,
+      "elevation": 0,
+      "center": [
+        767.5,
+        194.55335822166703
+      ],
+      "scale": 0.23050847457627116,
+      "bodyBottomPixel": 427.3,
+      "landmark": "shared measured T-pose underbelly baseline",
+      "centerX": 767.5,
+      "floorY": 498.6636523393141,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "standard_t_back": {
+      "image": "assets/references/01-standard-views.png",
+      "crop": [
+        1024,
+        0,
+        512,
+        512
+      ],
+      "label": "standard_t back",
+      "yaw": 180,
+      "elevation": 0,
+      "center": [
+        1273.5,
+        194.55335822166703
+      ],
+      "scale": 0.23050847457627116,
+      "bodyBottomPixel": 427.3,
+      "landmark": "shared measured T-pose underbelly baseline",
+      "centerX": 1273.5,
+      "floorY": 498.6636523393141,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "standard_rest_front": {
+      "image": "assets/references/01-standard-views.png",
+      "crop": [
+        0,
+        512,
+        512,
+        512
+      ],
+      "label": "standard_rest front",
+      "yaw": 0,
+      "elevation": 0,
+      "center": [
+        261.5,
+        666.8527558120285
+      ],
+      "scale": 0.23050847457627116,
+      "bodyBottomPixel": 899.5993975903615,
+      "landmark": "measured central body bottom",
+      "centerX": 261.5,
+      "floorY": 970.9630499296755,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "standard_rest_right": {
+      "image": "assets/references/01-standard-views.png",
+      "crop": [
+        512,
+        512,
+        512,
+        512
+      ],
+      "label": "standard_rest right",
+      "yaw": -90,
+      "elevation": 0,
+      "center": [
+        767.5,
+        666.853358221667
+      ],
+      "scale": 0.23050847457627116,
+      "bodyBottomPixel": 899.6,
+      "landmark": "paired front baseline; side bottom occluded",
+      "centerX": 767.5,
+      "floorY": 970.9636523393141,
+      "source": "body-v7/analysis/body-view-registration.json"
+    },
+    "standard_rest_back": {
+      "image": "assets/references/01-standard-views.png",
+      "crop": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "label": "standard_rest back",
+      "yaw": 180,
+      "elevation": 0,
+      "center": [
+        1273.5,
+        666.8966509045938
+      ],
+      "scale": 0.23050847457627116,
+      "bodyBottomPixel": 899.6432926829268,
+      "landmark": "measured central body bottom",
+      "centerX": 1273.5,
+      "floorY": 971.0069450222409,
+      "source": "body-v7/analysis/body-view-registration.json"
+    }
+  },
+  "arms": {
+    "last_action": {
+      "image": "assets/references/03-playful-actions.png",
+      "crop": [
+        1024,
+        512,
+        512,
+        512
+      ],
+      "label": "手臂 · 最后一个动作",
+      "yaw": 0,
+      "elevation": 0,
+      "centerX": 1278.5,
+      "floorY": 975.2156862745098,
+      "scale": 0.23720930232558138,
+      "source": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-arms-review/analysis/arms-fit.json",
+      "status": "Historical candidate registration; arms are not approved. Use as reference preview, not metric evidence.",
+      "pixelAnchorY": 799.0,
+      "worldAnchorY": 41.8
+    }
+  }
+}
