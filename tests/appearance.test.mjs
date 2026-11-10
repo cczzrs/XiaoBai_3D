@@ -2,15 +2,15 @@ import assert from 'node:assert/strict';
 import { registerHooks } from 'node:module';
 import { readFile } from 'node:fs/promises';
 import test, { after } from 'node:test';
-import { APP_CONFIG } from '../src/config.js';
+import { APP_CONFIG } from '../web/src/config.js';
 
 const resolver = registerHooks({
   resolve(specifier, context, nextResolve) {
-    return nextResolve(specifier === 'three' ? new URL('../vendor/three.module.js', import.meta.url).href : specifier, context);
+    return nextResolve(specifier === 'three' ? new URL('../web/vendor/three.module.js', import.meta.url).href : specifier, context);
   },
 });
 const THREE = await import('three');
-const { createProjectedUV, backgroundImageRect, createAppearanceController, createStudioLighting } = await import('../src/appearance.js');
+const { createProjectedUV, backgroundImageRect, createAppearanceController, createStudioLighting } = await import('../web/src/appearance.js');
 after(() => resolver.deregister());
 
 function fixture(decode = async (record) => ({ naturalWidth: record.width, naturalHeight: record.height }), viewport = () => ({ width: 640, height: 480 })) {
@@ -164,8 +164,8 @@ test('柔光模式与均匀光互斥，9 束主光总强度正确，灯架跟随
 
 
 test('批准头部的眼鼻添加皮肤 UV 后，眨眼仍写入当前几何，批准源保持原样', async () => {
-  const { importCandidate, clonePart, disposeObjects } = await import('../src/model-io.js');
-  const { createFaceRig } = await import('../src/face-rig.js');
+  const { importCandidate, clonePart, disposeObjects } = await import('../web/src/model-io.js');
+  const { createFaceRig } = await import('../web/src/face-rig.js');
   const limits = APP_CONFIG.assets.import;
   const loaded = await importCandidate(new File([await readFile(new URL('../assets/approved/head-v1/xiaobai-head.glb', import.meta.url))], 'head.glb'), {
     maxBytes: limits.maximumBytes, maxVertices: limits.maximumVertices, maxMeshes: limits.maximumMeshes, maxExtent: limits.maximumExtent,

@@ -1,0 +1,166 @@
+{
+  "sourceDownload": "/Users/cong/Downloads/xiaobai-design-design (6).glb",
+  "sha256": "b1ab1d371e6a28a5e57942b8b29cf095e7a83483c415bf0c9fbd8626581d96cd",
+  "bytes": 16664692,
+  "meshes": 9,
+  "triangles": 641024,
+  "method": "Independently parsed the actual Chrome export and original source GLBs; compared indexed vertices and inverse-transpose world normals, material properties and mirrored transforms. No generator or cached test fixture was used for the comparison.",
+  "tolerances": {
+    "worldPosition": 0.000001,
+    "worldNormal": 2e-7
+  },
+  "sources": {
+    "head": {
+      "path": "assets/approved/head-v1/xiaobai-head.glb",
+      "sha256": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351"
+    },
+    "body": {
+      "path": "assets/approved/body-v7/xiaobai-torso.glb",
+      "sha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4"
+    },
+    "arm": {
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "sha256": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee"
+    },
+    "legs": {
+      "path": "assets/design/legs-v2/legs.glb",
+      "sha256": "3269336fc38594119e69769fd7ae86d6414442191edca6b66d149858e04261f4"
+    },
+    "previousLegs": {
+      "path": "assets/design/legs-v1/legs.glb",
+      "sha256": "5cb41ba4291cb37e2bdd874ee0ae99be505f8341746194b3915b30e042242cb6"
+    }
+  },
+  "approvedMeshChecks": [
+    {
+      "name": "Head",
+      "exportedName": "Head",
+      "mirrorSign": 1,
+      "vertices": 73442,
+      "triangles": 146880,
+      "maximumWorldPositionError": 0,
+      "maximumWorldNormalError": 0,
+      "indicesMatch": true,
+      "materialMatches": true,
+      "source": "assets/approved/head-v1/xiaobai-head.glb"
+    },
+    {
+      "name": "Eye_L",
+      "exportedName": "Eye_L",
+      "mirrorSign": 1,
+      "vertices": 8256,
+      "triangles": 16512,
+      "maximumWorldPositionError": 0,
+      "maximumWorldNormalError": 0,
+      "indicesMatch": true,
+      "materialMatches": true,
+      "source": "assets/approved/head-v1/xiaobai-head.glb"
+    },
+    {
+      "name": "Eye_R",
+      "exportedName": "Eye_R",
+      "mirrorSign": 1,
+      "vertices": 8256,
+      "triangles": 16512,
+      "maximumWorldPositionError": 0,
+      "maximumWorldNormalError": 0,
+      "indicesMatch": true,
+      "materialMatches": true,
+      "source": "assets/approved/head-v1/xiaobai-head.glb"
+    },
+    {
+      "name": "Nose",
+      "exportedName": "Nose",
+      "mirrorSign": 1,
+      "vertices": 2882,
+      "triangles": 5760,
+      "maximumWorldPositionError": 0,
+      "maximumWorldNormalError": 0,
+      "indicesMatch": true,
+      "materialMatches": true,
+      "source": "assets/approved/head-v1/xiaobai-head.glb"
+    },
+    {
+      "name": "Body",
+      "exportedName": "Body",
+      "mirrorSign": 1,
+      "vertices": 36674,
+      "triangles": 73344,
+      "maximumWorldPositionError": 0,
+      "maximumWorldNormalError": 0,
+      "indicesMatch": true,
+      "materialMatches": true,
+      "source": "assets/approved/body-v7/xiaobai-torso.glb"
+    },
+    {
+      "name": "Arm_L",
+      "exportedName": "Arm_L",
+      "mirrorSign": 1,
+      "vertices": 69266,
+      "triangles": 138528,
+      "maximumWorldPositionError": 0,
+      "maximumWorldNormalError": 0,
+      "indicesMatch": true,
+      "materialMatches": true,
+      "source": "assets/design/arms-v59/left-arm.glb"
+    },
+    {
+      "name": "Arm_L",
+      "exportedName": "Arm_L_1",
+      "mirrorSign": -1,
+      "vertices": 69266,
+      "triangles": 138528,
+      "maximumWorldPositionError": 0,
+      "maximumWorldNormalError": 0,
+      "indicesMatch": true,
+      "materialMatches": true,
+      "source": "assets/design/arms-v59/left-arm.glb"
+    }
+  ],
+  "legMeshChecks": [
+    {
+      "name": "Leg_R",
+      "exportedName": "Leg_R",
+      "mirrorSign": 1,
+      "vertices": 26242,
+      "triangles": 52480,
+      "maximumWorldPositionError": 0,
+      "maximumWorldNormalError": 0,
+      "indicesMatch": true,
+      "materialMatches": true,
+      "source": "assets/design/legs-v2/legs.glb"
+    },
+    {
+      "name": "Leg_L",
+      "exportedName": "Leg_L",
+      "mirrorSign": 1,
+      "vertices": 26242,
+      "triangles": 52480,
+      "maximumWorldPositionError": 0,
+      "maximumWorldNormalError": 0,
+      "indicesMatch": true,
+      "materialMatches": true,
+      "source": "assets/design/legs-v2/legs.glb"
+    }
+  ],
+  "legVersion": "legs-v2",
+  "displayGuidesExcluded": true,
+  "allPrimitivesAreTriangles": true,
+  "lowerV1GeometryPreserved": {
+    "startY": 13.447979714854908,
+    "vertexSelectionTolerance": 0.000001,
+    "checks": [
+      {
+        "name": "Leg_R",
+        "vertices": 14561,
+        "maximumPositionError": 0
+      },
+      {
+        "name": "Leg_L",
+        "vertices": 14561,
+        "maximumPositionError": 0
+      }
+    ]
+  },
+  "passed": true
+}

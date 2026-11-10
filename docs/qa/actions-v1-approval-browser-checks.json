@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "date": "2026-11-09",
+  "browser": "external Chrome",
+  "url": "http://127.0.0.1:8791/",
+  "checks": [
+    {
+      "check": "changed parameter state",
+      "result": "当前动作参数已调整，保存为独立设计副本。"
+    },
+    {
+      "check": "reset defaults",
+      "result": "当前动作参数与已批准默认值一致。"
+    },
+    {
+      "check": "changed wave side",
+      "result": "当前动作参数已调整，保存为独立设计副本。"
+    },
+    {
+      "check": "final defaults",
+      "result": "当前动作参数与已批准默认值一致。"
+    }
+  ],
+  "localPageErrors": [],
+  "exportedModifiedCopy": "/Users/cong/Downloads/xiaobai-actions-v1 (4).glb",
+  "exportedApprovedDefaults": "/Users/cong/Downloads/xiaobai-actions-v1 (5).glb",
+  "finalState": {
+    "action": "wave",
+    "phase": 0.25,
+    "playing": false,
+    "waveSide": "L",
+    "defaultParameters": true,
+    "background": "black",
+    "lighting": "nondirectional",
+    "skeleton": false
+  },
+  "screenshot": "qa/actions-v1-approved.png",
+  "verifiedExportMetadata": [
+    {
+      "path": "/Users/cong/Downloads/xiaobai-actions-v1 (4).glb",
+      "motionApproval": "modified-design-copy",
+      "motionBaselineApproval": "approved",
+      "motionApprovalFile": "./docs/approvals/actions-v1-approved.json",
+      "waveSide": "R",
+      "clips": 5
+    },
+    {
+      "path": "/Users/cong/Downloads/xiaobai-actions-v1 (5).glb",
+      "motionApproval": "approved",
+      "motionBaselineApproval": "approved",
+      "motionApprovalFile": "./docs/approvals/actions-v1-approved.json",
+      "waveSide": "L",
+      "clips": 5
+    }
+  ],
+  "approvedDefaultGeometryAndAnimationData": "Byte-identical to approved actions-v1 binary chunk; qa/actions-v1-approval-motion-equality.json"
+}

@@ -6,6 +6,7 @@
   "description": "小白 3D · 部件构建与形体骨骼动作设计工作台",
   "scripts": {
     "dev": "python3 scripts/serve.py",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "test:layout": "node --test tests/project-layout.test.mjs tests/assets.test.mjs tests/action-approval.test.mjs"
   }
 }

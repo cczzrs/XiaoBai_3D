@@ -1,0 +1,83 @@
+{
+  "status": "passed",
+  "date": "2026-11-09",
+  "scope": "Directory organization, path resolution, resource loading and temporary-output routing; no full regression.",
+  "migration": {
+    "mapping": "docs/project-layout.json",
+    "filesComparedImmediatelyAfterMove": 145,
+    "afterFunctionalChecks": {
+      "status": "passed",
+      "preservedNonTemporaryFiles": 135,
+      "all24ApprovedBaselinesPreserved": true,
+      "webSourceFilesPreserved": 18,
+      "historicalApprovalRecordsPreserved": 4,
+      "stagedEntriesUnchanged": true,
+      "temporaryOutputDirectories": [
+        "temp/generated/legs-v1/",
+        "temp/generated/legs-v2/",
+        "temp/qa/"
+      ]
+    }
+  },
+  "targetedTests": {
+    "layoutAndApproval": 8,
+    "animationExport": 1,
+    "totalPassed": 9,
+    "logs": [
+      "temp/qa/project-layout-tests.txt",
+      "temp/qa/project-layout-export-test.txt"
+    ]
+  },
+  "generators": {
+    "legs-v1": "temp/generated/legs-v1/",
+    "legs-v2": "temp/generated/legs-v2/",
+    "bothExecutedSuccessfully": true,
+    "approvedAssetsUnchanged": true
+  },
+  "chrome": {
+    "status": "passed",
+    "browser": "external Chrome",
+    "entries": [
+      {
+        "entry": "/",
+        "status": "模型就绪 · 本地运行",
+        "approvedParts": "04",
+        "geometry": "9 个网格 · 641,024 个三角形"
+      },
+      {
+        "entry": "/web/",
+        "approvedParts": "04",
+        "geometry": "9 个网格 · 641,024 个三角形"
+      }
+    ],
+    "playPause": true,
+    "timeline": true,
+    "actualExport": "/Users/cong/Downloads/xiaobai-actions-v1 (6).glb",
+    "localPageErrors": [],
+    "finalURL": "http://127.0.0.1:8791/web/",
+    "finalState": {
+      "action": "wave",
+      "phase": 0.25,
+      "playing": false,
+      "approvedParameters": true,
+      "blackBackground": true,
+      "nondirectionalLighting": true
+    },
+    "screenshot": "docs/qa/project-layout-preview.png"
+  },
+  "browserExport": {
+    "sha256": "2e9f5104f077b1ad722de98c63f011a240a4a3d082d235dee275b79a6fc80203",
+    "sameAsPreMigrationExport": true,
+    "bytes": 24602708,
+    "clips": 5,
+    "bones": 20,
+    "skins": 4,
+    "lockedFilesUnchanged": 24,
+    "temporaryReport": "temp/qa/actions-v1-approved-export-check.json"
+  },
+  "git": {
+    "stagedEntriesUnchanged": true,
+    "commitPerformed": false
+  },
+  "fullRegressionPerformed": false
+}

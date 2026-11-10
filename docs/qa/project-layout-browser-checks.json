@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "browser": "external Chrome",
+  "entries": [
+    {
+      "entry": "/",
+      "status": "模型就绪 · 本地运行",
+      "approvedParts": "04",
+      "geometry": "9 个网格 · 641,024 个三角形"
+    },
+    {
+      "entry": "/web/",
+      "approvedParts": "04",
+      "geometry": "9 个网格 · 641,024 个三角形"
+    }
+  ],
+  "playPause": true,
+  "timeline": true,
+  "actualExport": "/Users/cong/Downloads/xiaobai-actions-v1 (6).glb",
+  "localPageErrors": [],
+  "finalURL": "http://127.0.0.1:8791/web/",
+  "finalState": {
+    "action": "wave",
+    "phase": 0.25,
+    "playing": false,
+    "approvedParameters": true,
+    "blackBackground": true,
+    "nondirectionalLighting": true
+  },
+  "screenshot": "docs/qa/project-layout-preview.png"
+}

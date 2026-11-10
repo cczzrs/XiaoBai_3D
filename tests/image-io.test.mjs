@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 import { deflateSync } from 'node:zlib';
-import { APP_CONFIG } from '../src/config.js';
-import { validateImage, encodeImage, decodeImage, releaseImage } from '../src/image-io.js';
+import { APP_CONFIG } from '../web/src/config.js';
+import { validateImage, encodeImage, decodeImage, releaseImage } from '../web/src/image-io.js';
 
 // Small real 3 × 2 images encoded with Pillow, not synthetic successful headers.
 const PNG = 'iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAIAAAASFvFNAAAAFElEQVR4nGNcsOUEAxgwQSgGBgYAJgwCIOCXehUAAAAASUVORK5CYII=';
@@ -171,7 +171,7 @@ test('空图、MIME 伪装和超限文件在分配图像之前拒绝', async (t)
 
 test('真实坏压缩 PNG fixture 在宽容的浏览器解码器之前被拒绝', async (t) => {
   const browser = browserDecoder(t, { width: 256, height: 128 });
-  const bytes = fs.readFileSync(new URL('../qa/appearance-fixtures/undecodable.png', import.meta.url));
+  const bytes = fs.readFileSync(new URL('./fixtures/appearance/undecodable.png', import.meta.url));
   const image = record(bytes.toString('base64'), 'image/png', 256, 128);
   assert.deepEqual(validateImage(image), image, 'the complete PNG container intentionally passes synchronous header checks');
   await assert.rejects(decodeImage(image), /PNG 像素数据无效/);

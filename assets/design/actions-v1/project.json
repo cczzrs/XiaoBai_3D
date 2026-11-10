@@ -1,0 +1,326 @@
+{
+  "schema": "xiaobai.studio.v1",
+  "revision": 8,
+  "design": {
+    "shape": {
+      "headScale": 1,
+      "bodyWidth": 1,
+      "bodyHeight": 1,
+      "bodyDepth": 1
+    },
+    "rig": {
+      "rootY": 16.5,
+      "neckY": 52
+    },
+    "pose": {
+      "headYaw": 0,
+      "headPitch": 0,
+      "headRoll": 0,
+      "bodyLean": 0
+    },
+    "eyes": {
+      "width": 1,
+      "height": 1,
+      "spacing": 1,
+      "offsetY": 0,
+      "gazeX": 0,
+      "gazeY": 0,
+      "leftOpen": 1,
+      "rightOpen": 1
+    },
+    "nose": {
+      "width": 1,
+      "height": 1,
+      "offsetY": 0,
+      "protrusion": 0,
+      "tilt": 0
+    }
+  },
+  "motion": {
+    "preset": "wave",
+    "playing": false,
+    "speed": 1,
+    "amplitude": 10,
+    "progress": 0.25,
+    "eyesPreset": "none",
+    "nosePreset": "none",
+    "eyeAmplitude": 1,
+    "noseAmplitude": 1
+  },
+  "parts": {
+    "arms": {
+      "kind": "builtin",
+      "id": "left-arm-v59-mirrored"
+    },
+    "legs": {
+      "kind": "builtin",
+      "id": "legs-smooth-v2-mirrored"
+    }
+  },
+  "appearance": {
+    "materials": {
+      "head": {
+        "enabled": false,
+        "color": "#FFF1D9",
+        "roughness": 0.7,
+        "image": null
+      },
+      "body": {
+        "enabled": false,
+        "color": "#FFF1D9",
+        "roughness": 0.7,
+        "image": null
+      },
+      "arms": {
+        "enabled": false,
+        "color": "#FFF1D9",
+        "roughness": 0.7,
+        "image": null
+      },
+      "legs": {
+        "enabled": false,
+        "color": "#FFF1D9",
+        "roughness": 0.7,
+        "image": null
+      },
+      "eyes": {
+        "enabled": false,
+        "color": "#26231F",
+        "roughness": 0.62,
+        "image": null
+      },
+      "nose": {
+        "enabled": false,
+        "color": "#26231F",
+        "roughness": 0.62,
+        "image": null
+      }
+    },
+    "background": {
+      "color": "#000000",
+      "image": null,
+      "fit": "cover"
+    },
+    "lighting": {
+      "enabled": false,
+      "azimuth": 41,
+      "elevation": 58,
+      "intensity": 5,
+      "exposure": 2.05
+    }
+  },
+  "expression": {
+    "preset": "neutral",
+    "intensity": 1
+  },
+  "binding": {
+    "offsets": {
+      "shoulderL": [
+        0,
+        0,
+        0
+      ],
+      "elbowL": [
+        0,
+        0,
+        0
+      ],
+      "wristL": [
+        0,
+        0,
+        0
+      ],
+      "handTipL": [
+        0,
+        0,
+        0
+      ],
+      "hipL": [
+        0,
+        0,
+        0
+      ],
+      "kneeL": [
+        0,
+        0,
+        0
+      ],
+      "ankleL": [
+        0,
+        0,
+        0
+      ],
+      "toeTipL": [
+        0,
+        0,
+        0
+      ],
+      "shoulderR": [
+        0,
+        0,
+        0
+      ],
+      "elbowR": [
+        0,
+        0,
+        0
+      ],
+      "wristR": [
+        0,
+        0,
+        0
+      ],
+      "handTipR": [
+        0,
+        0,
+        0
+      ],
+      "hipR": [
+        0,
+        0,
+        0
+      ],
+      "kneeR": [
+        0,
+        0,
+        0
+      ],
+      "ankleR": [
+        0,
+        0,
+        0
+      ],
+      "toeTipR": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rotations": {
+      "shoulderL": [
+        0,
+        0,
+        0
+      ],
+      "elbowL": [
+        0,
+        0,
+        0
+      ],
+      "wristL": [
+        0,
+        0,
+        0
+      ],
+      "handTipL": [
+        0,
+        0,
+        0
+      ],
+      "hipL": [
+        0,
+        0,
+        0
+      ],
+      "kneeL": [
+        0,
+        0,
+        0
+      ],
+      "ankleL": [
+        0,
+        0,
+        0
+      ],
+      "toeTipL": [
+        0,
+        0,
+        0
+      ],
+      "shoulderR": [
+        0,
+        0,
+        0
+      ],
+      "elbowR": [
+        0,
+        0,
+        0
+      ],
+      "wristR": [
+        0,
+        0,
+        0
+      ],
+      "handTipR": [
+        0,
+        0,
+        0
+      ],
+      "hipR": [
+        0,
+        0,
+        0
+      ],
+      "kneeR": [
+        0,
+        0,
+        0
+      ],
+      "ankleR": [
+        0,
+        0,
+        0
+      ],
+      "toeTipR": [
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "actions": {
+    "parameters": {
+      "transition": {
+        "duration": 0.3
+      },
+      "walk": {
+        "duration": 1.2,
+        "hipFront": 20,
+        "hipRear": -20,
+        "kneeFront": 15,
+        "kneeRear": 30,
+        "armSwing": 15
+      },
+      "run": {
+        "duration": 0.8,
+        "hipFront": 45,
+        "hipRear": -25,
+        "knee": 70,
+        "forwardLean": 8,
+        "armFront": 45,
+        "armRear": -35,
+        "elbowFront": 95,
+        "elbowRear": 80,
+        "rearTwist": 180
+      },
+      "wave": {
+        "duration": 2,
+        "upperArmElevation": 70,
+        "elbowFlexion": 80,
+        "wristAmplitude": 15
+      },
+      "thinking": {
+        "duration": 4,
+        "minimum": 9,
+        "middle": 13,
+        "maximum": 17
+      },
+      "sit": {
+        "hip": 80,
+        "knee": 60
+      }
+    },
+    "waveSide": "L"
+  }
+}

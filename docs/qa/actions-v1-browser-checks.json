@@ -1,0 +1,185 @@
+{
+  "browser": "External Chrome",
+  "url": "http://127.0.0.1:8791/",
+  "status": "completed-pending-visual-approval",
+  "parameters": [
+    {
+      "parameter": "walk.duration",
+      "adjusted": 1.25,
+      "actual": 1.25,
+      "pass": true
+    },
+    {
+      "parameter": "walk.hipFront",
+      "adjusted": 21,
+      "actual": 21,
+      "pass": true
+    },
+    {
+      "parameter": "walk.hipRear",
+      "adjusted": -19,
+      "actual": -19,
+      "pass": true
+    },
+    {
+      "parameter": "walk.kneeFront",
+      "adjusted": 16,
+      "actual": 16,
+      "pass": true
+    },
+    {
+      "parameter": "walk.kneeRear",
+      "adjusted": 31,
+      "actual": 31,
+      "pass": true
+    },
+    {
+      "parameter": "walk.armSwing",
+      "adjusted": 16,
+      "actual": 16,
+      "pass": true
+    },
+    {
+      "parameter": "run.duration",
+      "adjusted": 0.85,
+      "actual": 0.85,
+      "pass": true
+    },
+    {
+      "parameter": "run.hipFront",
+      "adjusted": 46,
+      "actual": 46,
+      "pass": true
+    },
+    {
+      "parameter": "run.hipRear",
+      "adjusted": -24,
+      "actual": -24,
+      "pass": true
+    },
+    {
+      "parameter": "run.knee",
+      "adjusted": 71,
+      "actual": 71,
+      "pass": true
+    },
+    {
+      "parameter": "run.forwardLean",
+      "adjusted": 9,
+      "actual": 9,
+      "pass": true
+    },
+    {
+      "parameter": "run.armFront",
+      "adjusted": 46,
+      "actual": 46,
+      "pass": true
+    },
+    {
+      "parameter": "run.armRear",
+      "adjusted": -34,
+      "actual": -34,
+      "pass": true
+    },
+    {
+      "parameter": "run.elbowFront",
+      "adjusted": 96,
+      "actual": 96,
+      "pass": true
+    },
+    {
+      "parameter": "run.elbowRear",
+      "adjusted": 81,
+      "actual": 81,
+      "pass": true
+    },
+    {
+      "parameter": "run.rearTwist",
+      "adjusted": 179,
+      "actual": 179,
+      "pass": true
+    },
+    {
+      "parameter": "wave.duration",
+      "adjusted": 2.6,
+      "actual": 2.6,
+      "pass": true
+    },
+    {
+      "parameter": "wave.upperArmElevation",
+      "adjusted": 71,
+      "actual": 71,
+      "pass": true
+    },
+    {
+      "parameter": "wave.elbowFlexion",
+      "adjusted": 81,
+      "actual": 81,
+      "pass": true
+    },
+    {
+      "parameter": "wave.wristAmplitude",
+      "adjusted": 21,
+      "actual": 21,
+      "pass": true
+    },
+    {
+      "parameter": "thinking.duration",
+      "adjusted": 4.1,
+      "actual": 4.1,
+      "pass": true
+    },
+    {
+      "parameter": "thinking.minimum",
+      "adjusted": 9.1,
+      "actual": 9.1,
+      "pass": true
+    },
+    {
+      "parameter": "thinking.middle",
+      "adjusted": 13.1,
+      "actual": 13.1,
+      "pass": true
+    },
+    {
+      "parameter": "thinking.maximum",
+      "adjusted": 16.9,
+      "actual": 16.9,
+      "pass": true
+    },
+    {
+      "parameter": "sit.hip",
+      "adjusted": 81,
+      "actual": 81,
+      "pass": true
+    },
+    {
+      "parameter": "sit.knee",
+      "adjusted": 61,
+      "actual": 61,
+      "pass": true
+    },
+    {
+      "parameter": "transition.duration",
+      "actual": 0.45,
+      "pass": true
+    }
+  ],
+  "checks": {
+    "playPause": true,
+    "timelineDurations": true,
+    "frontAndSideViews": true,
+    "mirroredWaveSide": true,
+    "saveAndReload": true,
+    "restoreDefaults": true,
+    "actualAnimatedGLBDownload": true,
+    "actualProjectJSONDownload": true,
+    "approvedRigKept": true,
+    "finalBackground": "black",
+    "finalLighting": "nondirectional"
+  },
+  "localPageErrors": [],
+  "knownReviewItem": "Running pose at phase 0.125 shows a localized pointed crease at the inner leg/foot in side view; approved weights preserved.",
+  "proof": "qa/actions-v1-review.png",
+  "sideProof": "qa/actions-v1-run-side.png"
+}

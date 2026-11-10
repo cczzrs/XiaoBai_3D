@@ -2,16 +2,16 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { registerHooks } from 'node:module';
 import test, { after, before } from 'node:test';
-import { APP_CONFIG } from '../src/config.js';
+import { APP_CONFIG } from '../web/src/config.js';
 
 const resolver = registerHooks({
   resolve(specifier, context, nextResolve) {
-    return nextResolve(specifier === 'three' ? new URL('../vendor/three.module.js', import.meta.url).href : specifier, context);
+    return nextResolve(specifier === 'three' ? new URL('../web/vendor/three.module.js', import.meta.url).href : specifier, context);
   },
 });
 const THREE = await import('three');
-const { createFaceRig, sampleFaceMotion } = await import('../src/face-rig.js');
-const { importCandidate, clonePart, disposeObjects, exportModel } = await import('../src/model-io.js');
+const { createFaceRig, sampleFaceMotion } = await import('../web/src/face-rig.js');
+const { importCandidate, clonePart, disposeObjects, exportModel } = await import('../web/src/model-io.js');
 const limits = {
   maxBytes: APP_CONFIG.assets.import.maximumBytes,
   maxVertices: APP_CONFIG.assets.import.maximumVertices,

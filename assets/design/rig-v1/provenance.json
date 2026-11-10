@@ -1,0 +1,62 @@
+{
+  "schema": "xiaobai.rig-provenance.v1",
+  "version": "rig-v1",
+  "approval": "pending-user-binding-review",
+  "designOnly": true,
+  "sourceDownload": "/Users/cong/Downloads/xiaobai-design-design (7).glb",
+  "asset": "xiaobai-rig-v1.glb",
+  "sha256": "cc97dd9ef74a48bdeaf0bce3c895d587be5da8e871cd3dc1c7766f0b7a5377f7",
+  "bytes": 21261012,
+  "counts": {
+    "meshes": 9,
+    "vertices": 320526,
+    "triangles": 641024,
+    "skins": 4,
+    "bones": 20,
+    "animationClips": 0
+  },
+  "sourceHashes": {
+    "head": {
+      "path": "assets/approved/head-v1/xiaobai-head.glb",
+      "sha256": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351",
+      "bytes": 4227680
+    },
+    "body": {
+      "path": "assets/approved/body-v7/xiaobai-torso.glb",
+      "sha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4",
+      "bytes": 1322824
+    },
+    "arms": {
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "sha256": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee",
+      "bytes": 3326332
+    },
+    "legs": {
+      "path": "assets/design/legs-v2/legs.glb",
+      "sha256": "3269336fc38594119e69769fd7ae86d6414442191edca6b66d149858e04261f4",
+      "bytes": 1891860
+    }
+  },
+  "shapeApproval": "docs/approvals/legs-v2-approved.json",
+  "bindingApproval": "pending",
+  "animationsCreated": false,
+  "animationClips": 0,
+  "neutralOffsetsAndRotations": true,
+  "audit": "qa/rig-v1-export-check.json",
+  "sourceFilesUnmodified": true,
+  "limitations": [
+    "This is a binding candidate awaiting user approval.",
+    "No animation clips have been created.",
+    "Raw approved geometry, normals, indices and material properties are exact; decoded inverse-bind Float32 precision is reported separately in the export audit."
+  ],
+  "project.json": {
+    "path": "project.json",
+    "sha256": "3f8f57156c0d045856008ef93ba19a037adcdf0981a688a6b9ee328df9ea44af",
+    "bytes": 4114
+  },
+  "parameters.json": {
+    "path": "parameters.json",
+    "sha256": "f164d42f3a37c3ae894d3bc83d20ce590e6c5f3b6e7b7b8a441fb1393e08c690",
+    "bytes": 6405
+  }
+}

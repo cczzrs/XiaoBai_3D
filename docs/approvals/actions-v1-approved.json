@@ -1,0 +1,479 @@
+{
+  "schema": "xiaobai.actions-approval.v1",
+  "version": "actions-v1",
+  "approval": "approved",
+  "approvedDate": "2026-11-09",
+  "approvalSource": "explicit-user-message",
+  "userApprovalText": "全部批准！更新所有相关文档和代码。",
+  "scope": "批准已展示的 actions-v1 五个动作、默认参数、可调控件及切换效果；沿用已批准的头部、身体、v59 双臂、腿脚 v2 和 rig-v1。后续修改保存在独立设计副本，未经再次明确批准不替换本基线。",
+  "priorApproval": "docs/approvals/rig-v1-approved.json",
+  "motionConfiguration": {
+    "version": "actions-v1",
+    "names": [
+      "walk",
+      "run",
+      "wave",
+      "thinking",
+      "sit"
+    ],
+    "defaults": {
+      "transition": {
+        "duration": 0.3
+      },
+      "walk": {
+        "duration": 1.2,
+        "hipFront": 20,
+        "hipRear": -20,
+        "kneeFront": 15,
+        "kneeRear": 30,
+        "armSwing": 15
+      },
+      "run": {
+        "duration": 0.8,
+        "hipFront": 45,
+        "hipRear": -25,
+        "knee": 70,
+        "forwardLean": 8,
+        "armFront": 45,
+        "armRear": -35,
+        "elbowFront": 95,
+        "elbowRear": 80,
+        "rearTwist": 180
+      },
+      "wave": {
+        "duration": 2,
+        "upperArmElevation": 70,
+        "elbowFlexion": 80,
+        "wristAmplitude": 15
+      },
+      "thinking": {
+        "duration": 4,
+        "minimum": 9,
+        "middle": 13,
+        "maximum": 17
+      },
+      "sit": {
+        "hip": 80,
+        "knee": 60
+      }
+    },
+    "parameters": [
+      {
+        "path": "transition.duration",
+        "label": "动作过渡",
+        "min": 0,
+        "max": 2,
+        "step": 0.01,
+        "unit": "秒",
+        "group": "transition"
+      },
+      {
+        "path": "walk.duration",
+        "label": "步行周期",
+        "min": 0.3,
+        "max": 5,
+        "step": 0.05,
+        "unit": "秒",
+        "group": "walk"
+      },
+      {
+        "path": "walk.hipFront",
+        "label": "前髋屈曲",
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "unit": "°",
+        "group": "walk"
+      },
+      {
+        "path": "walk.hipRear",
+        "label": "后髋后摆",
+        "min": -60,
+        "max": 0,
+        "step": 1,
+        "unit": "°",
+        "group": "walk"
+      },
+      {
+        "path": "walk.kneeFront",
+        "label": "前膝屈曲",
+        "min": 0,
+        "max": 90,
+        "step": 1,
+        "unit": "°",
+        "group": "walk"
+      },
+      {
+        "path": "walk.kneeRear",
+        "label": "后膝屈曲",
+        "min": 0,
+        "max": 90,
+        "step": 1,
+        "unit": "°",
+        "group": "walk"
+      },
+      {
+        "path": "walk.armSwing",
+        "label": "对侧臂摆幅",
+        "min": 0,
+        "max": 70,
+        "step": 1,
+        "unit": "°",
+        "group": "walk"
+      },
+      {
+        "path": "run.duration",
+        "label": "小跑周期",
+        "min": 0.2,
+        "max": 4,
+        "step": 0.05,
+        "unit": "秒",
+        "group": "run"
+      },
+      {
+        "path": "run.hipFront",
+        "label": "前髋屈曲",
+        "min": 0,
+        "max": 80,
+        "step": 1,
+        "unit": "°",
+        "group": "run"
+      },
+      {
+        "path": "run.hipRear",
+        "label": "后髋后摆",
+        "min": -60,
+        "max": 0,
+        "step": 1,
+        "unit": "°",
+        "group": "run"
+      },
+      {
+        "path": "run.knee",
+        "label": "膝屈曲峰值",
+        "min": 0,
+        "max": 120,
+        "step": 1,
+        "unit": "°",
+        "group": "run"
+      },
+      {
+        "path": "run.forwardLean",
+        "label": "上身前倾",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "unit": "°",
+        "group": "run"
+      },
+      {
+        "path": "run.armFront",
+        "label": "前肩前摆",
+        "min": 0,
+        "max": 90,
+        "step": 1,
+        "unit": "°",
+        "group": "run"
+      },
+      {
+        "path": "run.armRear",
+        "label": "后肩后摆",
+        "min": -90,
+        "max": 0,
+        "step": 1,
+        "unit": "°",
+        "group": "run"
+      },
+      {
+        "path": "run.elbowFront",
+        "label": "前肘屈曲",
+        "min": 0,
+        "max": 140,
+        "step": 1,
+        "unit": "°",
+        "group": "run"
+      },
+      {
+        "path": "run.elbowRear",
+        "label": "后肘屈曲",
+        "min": 0,
+        "max": 140,
+        "step": 1,
+        "unit": "°",
+        "group": "run"
+      },
+      {
+        "path": "wave.duration",
+        "label": "招手周期",
+        "min": 0.3,
+        "max": 10,
+        "step": 0.1,
+        "unit": "秒",
+        "group": "wave"
+      },
+      {
+        "path": "wave.upperArmElevation",
+        "label": "上臂抬起",
+        "min": 0,
+        "max": 160,
+        "step": 1,
+        "unit": "°",
+        "group": "wave"
+      },
+      {
+        "path": "wave.elbowFlexion",
+        "label": "肘屈曲",
+        "min": 0,
+        "max": 140,
+        "step": 1,
+        "unit": "°",
+        "group": "wave"
+      },
+      {
+        "path": "wave.wristAmplitude",
+        "label": "手腕摆幅",
+        "min": 0,
+        "max": 45,
+        "step": 1,
+        "unit": "°",
+        "group": "wave"
+      },
+      {
+        "path": "thinking.duration",
+        "label": "思考周期",
+        "min": 0.5,
+        "max": 20,
+        "step": 0.1,
+        "unit": "秒",
+        "group": "thinking"
+      },
+      {
+        "path": "thinking.minimum",
+        "label": "鼻宽下限",
+        "min": 9,
+        "max": 17,
+        "step": 0.1,
+        "unit": "H100",
+        "group": "thinking"
+      },
+      {
+        "path": "thinking.middle",
+        "label": "鼻宽中值",
+        "min": 9,
+        "max": 17,
+        "step": 0.1,
+        "unit": "H100",
+        "group": "thinking"
+      },
+      {
+        "path": "thinking.maximum",
+        "label": "鼻宽上限",
+        "min": 9,
+        "max": 17,
+        "step": 0.1,
+        "unit": "H100",
+        "group": "thinking"
+      },
+      {
+        "path": "sit.hip",
+        "label": "坐姿髋屈曲",
+        "min": 0,
+        "max": 110,
+        "step": 1,
+        "unit": "°",
+        "group": "sit"
+      },
+      {
+        "path": "sit.knee",
+        "label": "坐姿膝屈曲",
+        "min": 0,
+        "max": 130,
+        "step": 1,
+        "unit": "°",
+        "group": "sit"
+      },
+      {
+        "path": "run.rearTwist",
+        "label": "后臂弯曲平面",
+        "min": 0,
+        "max": 180,
+        "step": 1,
+        "unit": "°",
+        "group": "run"
+      }
+    ],
+    "waveSide": "L",
+    "export": {
+      "fps": 480,
+      "noseMorphStep": 0.5,
+      "holdSeconds": 1
+    },
+    "ground": {
+      "level": 0
+    },
+    "conventions": {
+      "forward": "+Z",
+      "up": "+Y",
+      "walkForwardSide": "R",
+      "runForwardSide": "L",
+      "arms": "Swing measured from vertical down; mirrored local elbow flexion.",
+      "nose": "Absolute width H100; preserve capsule ends, height, centre and relief."
+    }
+  },
+  "reviewedKnownEffects": [
+    {
+      "effect": "小跑较大屈膝时，腿脚内侧在侧面可见局部收尖。",
+      "status": "accepted-as-reviewed",
+      "evidence": "qa/actions-v1-run-side.png",
+      "note": "已在交付时明确展示，本次全部批准包含该效果；不表示已修复或改变蒙皮。"
+    }
+  ],
+  "lockedFileSnapshot": [
+    {
+      "path": "assets/approved/body-v7/APPROVAL.json",
+      "sizeBytes": 7086,
+      "sha256": "7c1f4146bcaaa2ea411527bd4a3d8745eedd298f16f8e7d9405e5ba6934aea30"
+    },
+    {
+      "path": "assets/approved/body-v7/xiaobai-torso.glb",
+      "sizeBytes": 1322824,
+      "sha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4"
+    },
+    {
+      "path": "assets/approved/head-v1/APPROVAL.json",
+      "sizeBytes": 2140,
+      "sha256": "ab29e766d9bb084108a6412c52e40e1197e7ff0070c086de909a845f4f001722"
+    },
+    {
+      "path": "assets/approved/head-v1/xiaobai-head.glb",
+      "sizeBytes": 4227680,
+      "sha256": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351"
+    },
+    {
+      "path": "assets/design/arms-v59/SOURCE-APPROVAL.md",
+      "sizeBytes": 536,
+      "sha256": "0194a9b6c01fc4be6c92edaf6da7416caaa9385bf8e0f97ba5c5cef909770146"
+    },
+    {
+      "path": "assets/design/arms-v59/display-lines.json",
+      "sizeBytes": 15318752,
+      "sha256": "92bc26b0692742e7c1dacc9baf34e485ca0267c8ee98bce6106b286d5f29717e"
+    },
+    {
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "sizeBytes": 3326332,
+      "sha256": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee"
+    },
+    {
+      "path": "assets/design/arms-v59/provenance.json",
+      "sizeBytes": 1024,
+      "sha256": "0421681cccd824e24c60261a1811db3d6decd8c505595f9c1e7c364b6a9c6eeb"
+    },
+    {
+      "path": "assets/design/legs-v2/contact-audit.json",
+      "sizeBytes": 55728,
+      "sha256": "f324cba11ff28e15fdbf985357f851a36ea33e4d7c8c802a217a7ac8b6be0777"
+    },
+    {
+      "path": "assets/design/legs-v2/legs.glb",
+      "sizeBytes": 1891860,
+      "sha256": "3269336fc38594119e69769fd7ae86d6414442191edca6b66d149858e04261f4"
+    },
+    {
+      "path": "assets/design/legs-v2/parameters.json",
+      "sizeBytes": 2223,
+      "sha256": "2ddb5dcc25c3e8518ae78e6d4710a645211dcb8aeebbbad5b0529515985b7bbe"
+    },
+    {
+      "path": "assets/design/legs-v2/provenance.json",
+      "sizeBytes": 915,
+      "sha256": "96b61222096dfdeb4169f435069d2f3ba1654d81b965696f8a0a67d700933df9"
+    },
+    {
+      "path": "docs/approvals/v59-assembly-approved.json",
+      "sizeBytes": 5264,
+      "sha256": "9f2368b408141127475ac8735ef19f93630843f0a8d973284145c40a1b88a165"
+    },
+    {
+      "path": "docs/approvals/legs-v2-approved.json",
+      "sizeBytes": 7013,
+      "sha256": "e169219eb59369190f4bb375c94a02883523cf12502836de784d46a9b6a520fc"
+    },
+    {
+      "path": "assets/design/rig-v1/xiaobai-rig-v1.glb",
+      "sizeBytes": 21261012,
+      "sha256": "cc97dd9ef74a48bdeaf0bce3c895d587be5da8e871cd3dc1c7766f0b7a5377f7"
+    },
+    {
+      "path": "assets/design/rig-v1/project.json",
+      "sizeBytes": 4114,
+      "sha256": "3f8f57156c0d045856008ef93ba19a037adcdf0981a688a6b9ee328df9ea44af"
+    },
+    {
+      "path": "assets/design/rig-v1/parameters.json",
+      "sizeBytes": 6405,
+      "sha256": "f164d42f3a37c3ae894d3bc83d20ce590e6c5f3b6e7b7b8a441fb1393e08c690"
+    },
+    {
+      "path": "assets/design/rig-v1/provenance.json",
+      "sizeBytes": 2100,
+      "sha256": "e779d342341ca97edb685907f319cda3ff73afeb8c4bb6e685ec431289adb230"
+    },
+    {
+      "path": "src/limb-rig.js",
+      "sizeBytes": 13534,
+      "sha256": "2ada97354808fdf83ea5c9870c264ae9c6626547e800ceb359a13ca2c0d7fef8"
+    },
+    {
+      "path": "docs/approvals/rig-v1-approved.json",
+      "sizeBytes": 4069,
+      "sha256": "1e2b9e252b5879324de42826532b01decb196ba3ad160d39f0d7b2d95554bc04"
+    },
+    {
+      "path": "assets/design/actions-v1/xiaobai-actions-v1.glb",
+      "sizeBytes": 24602536,
+      "sha256": "431b8b5e2dceb2dd003f05ca99e18c5d17324ee5504102cca89791e349c6faad"
+    },
+    {
+      "path": "assets/design/actions-v1/project.json",
+      "sizeBytes": 4993,
+      "sha256": "6841ab071239180c99130193a7430a858672455181a46329739319e43effdf67"
+    },
+    {
+      "path": "assets/design/actions-v1/default-parameters.json",
+      "sizeBytes": 887,
+      "sha256": "02ea2a06bbb8f6b53f81f7c2d207ffe5a865fa9ed77dfec6fbc29585b576cd83"
+    },
+    {
+      "path": "assets/design/actions-v1/provenance.json",
+      "sizeBytes": 1738,
+      "sha256": "dd7910f43f2f70541e34fa1836f11a368b26b562835225473df1b722ef26d515"
+    }
+  ],
+  "implementationSnapshot": [
+    {
+      "path": "src/action-motion.js",
+      "sizeBytes": 6496,
+      "sha256": "55152b7808bdb6238573d412904dc593f66f7e28d6cc3627fa5d412ad2c97000"
+    },
+    {
+      "path": "src/face-rig.js",
+      "sizeBytes": 16606,
+      "sha256": "959b23b5318f8dbf1ff4e289b33cde738a319e4e8616d6b17016f4b48e700923"
+    }
+  ],
+  "reviewedEvidence": [
+    {
+      "path": "qa/actions-v1-review.png",
+      "sizeBytes": 85492,
+      "sha256": "aef66dddf9f774d5c97ca0b47fe83f935c5774562e40f5ed7c7b6f08d53d08b8"
+    },
+    {
+      "path": "qa/actions-v1-run-side.png",
+      "sizeBytes": 87130,
+      "sha256": "68368024eea9a8ffad07e178552f0460cd2430ecbfe4f36bd1806e5f563ede58"
+    }
+  ],
+  "historicalMetadata": "原动作 GLB、project.json、default-parameters.json 和 provenance.json 保持交付字节。其审批前 pending 字段由本记录及 assets/manifest.json 中的当前批准状态取代。",
+  "futureDesigns": "修改动作参数或招手侧的导出标为 modified-design-copy；motionApproval 只描述动作定义及参数，不批准导出副本的其它形体、绑定或材质改动。"
+}

@@ -1,0 +1,31 @@
+{
+  "version": "legs-v2",
+  "approval": "pending",
+  "designOnly": true,
+  "previous": "assets/design/legs-v1/legs.glb",
+  "bodyReference": {
+    "path": "assets/approved/body-v7/xiaobai-torso.glb",
+    "sha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4",
+    "operation": "read-only triangle intersection and interpolated normals"
+  },
+  "method": "Replace leg upper cap with a tangent collar along the actual body surface; keep original lower foot vertices and mirror across X=0.",
+  "geometry": {
+    "meshes": 2,
+    "vertices": 52484,
+    "triangles": 104960,
+    "bounds": {
+      "min": [
+        -27.349071502685547,
+        0,
+        -7.4995012283325195
+      ],
+      "max": [
+        27.349071502685547,
+        25.754236221313477,
+        15.49950122833252
+      ]
+    }
+  },
+  "sha256": "3269336fc38594119e69769fd7ae86d6414442191edca6b66d149858e04261f4",
+  "bytes": 1891860
+}

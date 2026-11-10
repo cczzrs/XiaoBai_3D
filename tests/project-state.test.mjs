@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { APP_CONFIG } from '../src/config.js';
-import { createDefaultProject, validateProject, validateAppearance, parseProject, serializeProject, encodePart, decodePart } from '../src/project-state.js';
+import { APP_CONFIG } from '../web/src/config.js';
+import { createDefaultProject, validateProject, validateAppearance, validateBinding, parseProject, serializeProject, encodePart, decodePart } from '../web/src/project-state.js';
+import { getBuiltinPartAsset } from '../web/src/builtin-parts.js';
 
 const triangle = 'v 0 0 0\nv 1 0 0\nv 0 1 0\nf 1 2 3\n';
 const candidate = (source = triangle) => ({ name: '手臂.obj', format: 'obj', data: Buffer.from(source).toString('base64') });
@@ -48,6 +49,38 @@ function version3Project() {
   return project;
 }
 
+function version4Project() {
+  const project = version3Project();
+  project.revision = 4;
+  project.expression = { preset: 'thinking', intensity: 0.7 };
+  return project;
+}
+
+function version5Project() {
+  const project = version4Project();
+  project.revision = 5;
+  project.parts.arms = { kind: 'builtin', id: 'left-arm-v59-mirrored' };
+  return project;
+}
+
+function version6Project(legId = 'legs-reference-v1-mirrored') {
+  const project = version5Project();
+  project.revision = 6;
+  project.parts.legs = { kind: 'builtin', id: legId };
+  return project;
+}
+
+const BINDING_JOINT_KEYS = [
+  'shoulderL', 'elbowL', 'wristL', 'handTipL', 'hipL', 'kneeL', 'ankleL', 'toeTipL',
+  'shoulderR', 'elbowR', 'wristR', 'handTipR', 'hipR', 'kneeR', 'ankleR', 'toeTipR',
+];
+function neutralBinding() {
+  return {
+    offsets: Object.fromEntries(BINDING_JOINT_KEYS.map((key) => [key, [0, 0, 0]])),
+    rotations: Object.fromEntries(BINDING_JOINT_KEYS.map((key) => [key, [0, 0, 0]])),
+  };
+}
+
 function makeGlb(gltf = { asset: { version: '2.0' } }) {
   const json = Buffer.from(JSON.stringify(gltf));
   const length = Math.ceil(json.length / 4) * 4;
@@ -61,10 +94,10 @@ function makeGlb(gltf = { asset: { version: '2.0' } }) {
   return file;
 }
 
-test('默认项目从配置复制，独立旧版输入补入中立参数并迁移为 revision 4', () => {
+test('默认项目从配置复制，独立旧版输入补入中立参数并迁移为 revision 8', () => {
   const project = legacyProject();
   const normalized = validateProject(project);
-  assert.equal(normalized.revision, 4);
+  assert.equal(normalized.revision, 8);
   assert.equal(normalized.motion.playing, false);
   assert.equal(project.motion.playing, true);
   assert.deepEqual(normalized.design, {
@@ -97,14 +130,14 @@ test('拒绝错误版本、缺字段、未知字段和非对象', () => {
   for (const value of [null, [], 12, {}, { ...createDefaultProject(), schema: 'alien' }, { ...createDefaultProject(), revision: '1' }]) {
     assert.throws(() => validateProject(value), Error);
   }
-  for (const revision of [0, 5, '2', 1.5, NaN, null, true]) {
+  for (const revision of [0, 9, '2', 1.5, NaN, null, true]) {
     assert.throws(() => validateProject({ ...createDefaultProject(), revision }), /revision/);
   }
   for (const mutate of [
     (p) => { delete p.design; }, (p) => { delete p.design.pose.headYaw; },
     (p) => { p.parts.head = candidate(); }, (p) => { p.parts.body = null; },
     (p) => { p.approved = {}; }, (p) => { p.motion.playing = 1; },
-    (p) => { p.motion.preset = 'walk'; }, (p) => { delete p.motion.progress; },
+    (p) => { p.motion.preset = 'unsupported-action'; }, (p) => { delete p.motion.progress; },
   ]) {
     const p = createDefaultProject(); mutate(p);
     assert.throws(() => validateProject(p), Error);
@@ -232,7 +265,7 @@ test('眨眼加鼻子抽动、视线环顾加鼻子伸缩可完整保存恢复�
     const loaded = parseProject(serializeProject(p));
     assert.deepEqual(loaded, { ...p, motion: { ...p.motion, playing: false } });
     assert.equal(p.motion.playing, true);
-    assert.equal(loaded.revision, 4);
+    assert.equal(loaded.revision, 8);
   }
 });
 
@@ -240,7 +273,7 @@ test('revision 1 和 2 严格迁移外观，原设计动作候选完整保留', 
   for (const original of [legacyProject(), version2Project()]) {
     original.parts.arms = candidate();
     const loaded = parseProject(JSON.stringify(original));
-    assert.equal(loaded.revision, 4);
+    assert.equal(loaded.revision, 8);
     assert.deepEqual(loaded.appearance, APP_CONFIG.appearance.defaults);
     assert.deepEqual(loaded.parts, original.parts);
     for (const [group, values] of Object.entries(original.design)) assert.deepEqual(loaded.design[group], values);
@@ -258,7 +291,7 @@ test('revision 3 材质图片、背景图片和光照可完整保存恢复', () 
   project.appearance.background = { color: '#ABCDEF', image: { ...imageRecord(), name: '背景.png' }, fit: 'contain' };
   project.appearance.lighting = { enabled: true, azimuth: -120, elevation: 45, intensity: 6.5, exposure: 1.5 };
   const restored = parseProject(serializeProject(project));
-  assert.deepEqual(restored, { ...project, revision: 4, motion: { ...project.motion, playing: false }, expression: { preset: 'neutral', intensity: 1 } });
+  assert.deepEqual(restored, { ...project, revision: 8, motion: { ...project.motion, playing: false }, expression: { preset: 'neutral', intensity: 1 }, binding: neutralBinding(), actions: createDefaultProject().actions });
   restored.appearance.materials.head.image.name = '新名字.png';
   assert.equal(project.appearance.materials.head.image.name, '纹理.png');
   assert.notEqual(restored.appearance.lighting, project.appearance.lighting);
@@ -286,7 +319,7 @@ test('revision 1、2、3 迁移中立表情且完整保留历史字段，拒绝�
     original.parts.legs = { ...candidate(), name: '腿脚.obj' };
     const before = structuredClone(original);
     const restored = parseProject(JSON.stringify(original));
-    assert.equal(restored.revision, 4);
+    assert.equal(restored.revision, 8);
     assert.deepEqual(restored.expression, { preset: 'neutral', intensity: 1 });
     assert.deepEqual(restored.parts, original.parts);
     for (const group of Object.keys(original.design)) assert.deepEqual(restored.design[group], original.design[group]);
@@ -430,6 +463,161 @@ test('OBJ 候选编码、项目保存与加载完整复原，并暂停动作', a
   assert.equal(p.parts.arms.name, '手臂.OBJ');
 });
 
+test('revision 8 默认内置双臂及腿脚 v2 可保存恢复，与配置及解码结果无可变共享引用', () => {
+  const project = createDefaultProject();
+  const expected = {
+    arms: { kind: 'builtin', id: 'left-arm-v59-mirrored' },
+    legs: { kind: 'builtin', id: 'legs-smooth-v2-mirrored' },
+  };
+  assert.equal(project.revision, 8);
+  assert.deepEqual(project.parts, expected);
+  const restored = parseProject(serializeProject(project));
+  assert.deepEqual(restored, project);
+  for (const slot of ['arms', 'legs']) {
+    assert.deepEqual(APP_CONFIG.assets[slot].builtin.projectRecord, expected[slot]);
+    assert.ok(Object.isFrozen(APP_CONFIG.assets[slot].builtin.projectRecord));
+    assert.notEqual(project.parts[slot], APP_CONFIG.assets[slot].builtin.projectRecord);
+    const decoded = decodePart(restored.parts[slot], slot);
+    assert.deepEqual(decoded, expected[slot]);
+    assert.notEqual(decoded, restored.parts[slot]);
+    decoded.id = 'edited';
+    restored.parts[slot].id = 'other';
+  }
+  assert.deepEqual(project.parts, expected);
+  assert.deepEqual(createDefaultProject().parts, expected);
+});
+
+test('revision 6 腿脚 v1 保留版本、模型路径及全部原参数，显式换成 v2 后才引用新版', () => {
+  const original = version5Project();
+  original.revision = 6;
+  original.parts.legs = { kind: 'builtin', id: 'legs-reference-v1-mirrored' };
+  const before = structuredClone(original);
+  const restored = parseProject(serializeProject(original));
+  assert.deepEqual(restored, { ...original, revision: 8, motion: { ...original.motion, playing: false }, binding: neutralBinding(), actions: createDefaultProject().actions });
+  const decoded = decodePart(restored.parts.legs, 'legs');
+  assert.deepEqual(decoded, { kind: 'builtin', id: 'legs-reference-v1-mirrored' });
+  const asset = getBuiltinPartAsset(APP_CONFIG, 'legs', decoded);
+  assert.equal(asset.version, 'legs-v1');
+  assert.equal(asset.url, './assets/design/legs-v1/legs.glb');
+  assert.equal(asset.label, 'legs-v1 · 圆润腿脚');
+  assert.equal(asset.approved, false);
+  assert.ok(Object.isFrozen(asset));
+  decoded.id = 'changed';
+  assert.equal(restored.parts.legs.id, 'legs-reference-v1-mirrored');
+  assert.deepEqual(original, before);
+
+  restored.parts.legs = structuredClone(APP_CONFIG.assets.legs.builtin.projectRecord);
+  const updated = parseProject(serializeProject(restored));
+  assert.deepEqual(updated.parts.arms, original.parts.arms);
+  assert.deepEqual(updated.design, original.design);
+  assert.deepEqual(updated.appearance, original.appearance);
+  assert.deepEqual(updated.expression, original.expression);
+  const currentAsset = getBuiltinPartAsset(APP_CONFIG, 'legs', decodePart(updated.parts.legs, 'legs'));
+  assert.equal(currentAsset.version, 'legs-v2');
+  assert.equal(currentAsset.url, './assets/design/legs-v2/legs.glb');
+  assert.equal(currentAsset.label, 'legs-v2 · 平滑腿根');
+  assert.equal(currentAsset.approved, true);
+  assert.equal(currentAsset.approvalFile, './docs/approvals/legs-v2-approved.json');
+  for (const id of ['unknown', '__proto__', 'constructor', 'left-arm-v59-mirrored']) {
+    assert.equal(getBuiltinPartAsset(APP_CONFIG, 'legs', { kind: 'builtin', id }), null);
+  }
+  assert.equal(getBuiltinPartAsset(APP_CONFIG, 'arms', original.parts.legs), null);
+  assert.equal(getBuiltinPartAsset(APP_CONFIG, 'head', original.parts.legs), null);
+});
+
+test('显式移除双臂或腿脚后的 null 保存恢复仍为空，不回退到内置模型', () => {
+  for (const slot of ['arms', 'legs']) {
+    const project = createDefaultProject();
+    project.parts[slot] = null;
+    assert.deepEqual(parseProject(serializeProject(project)).parts, project.parts);
+  }
+  const project = createDefaultProject(); project.parts = { arms: null, legs: null };
+  assert.deepEqual(parseProject(serializeProject(project)).parts, project.parts);
+});
+
+test('revision 1 至 4 的空手臂和导入候选保持原意，不自动安装 v59', () => {
+  for (const make of [legacyProject, version2Project, version3Project, version4Project]) {
+    for (const arms of [null, candidate()]) {
+      const original = make();
+      original.parts.arms = arms;
+      const before = structuredClone(original);
+      const migrated = parseProject(JSON.stringify(original));
+      assert.equal(migrated.revision, 8);
+      assert.deepEqual(migrated.parts, original.parts);
+      for (const [key, value] of Object.entries(original.design)) assert.deepEqual(migrated.design[key], value);
+      if (original.expression) assert.deepEqual(migrated.expression, original.expression);
+      if (original.appearance) assert.deepEqual(migrated.appearance, original.appearance);
+      assert.deepEqual(original, before);
+      original.parts.arms = { kind: 'builtin', id: 'left-arm-v59-mirrored' };
+      assert.throws(() => validateProject(original), /旧版.*内置/);
+    }
+  }
+});
+
+test('revision 1 至 5 的空腿脚及导入腿脚不自动替换，revision 5 双臂记录完整保留', async () => {
+  for (const make of [legacyProject, version2Project, version3Project, version4Project, version5Project]) {
+    const armRecords = make === version5Project ? [null, candidate(), version5Project().parts.arms] : [null, candidate()];
+    for (const arms of armRecords) {
+      for (const legs of [null, { ...candidate(), name: '腿脚.obj' }]) {
+        const original = make(); original.parts = { arms, legs };
+        const before = structuredClone(original);
+        const migrated = parseProject(JSON.stringify(original));
+        assert.equal(migrated.revision, 8);
+        assert.deepEqual(migrated.parts, original.parts);
+        for (const [key, value] of Object.entries(original.design)) assert.deepEqual(migrated.design[key], value);
+        for (const [key, value] of Object.entries(original.motion)) assert.equal(migrated.motion[key], key === 'playing' ? false : value);
+        if (original.appearance) assert.deepEqual(migrated.appearance, original.appearance);
+        if (original.expression) assert.deepEqual(migrated.expression, original.expression);
+        assert.deepEqual(parseProject(serializeProject(migrated)), migrated);
+        assert.deepEqual(original, before);
+        if (legs) {
+          const file = decodePart(migrated.parts.legs, 'legs');
+          assert.equal(file.name, '腿脚.obj');
+          assert.equal(await file.text(), triangle);
+        }
+        for (const id of ['legs-reference-v1-mirrored', 'legs-smooth-v2-mirrored']) {
+          original.parts.legs = { kind: 'builtin', id };
+          assert.throws(() => validateProject(original), /旧版.*内置/);
+        }
+      }
+    }
+  }
+});
+
+test('内置记录拒绝错误槽位、未知 id、任意 URL、额外字段及动态属性', () => {
+  for (const [slot, valid] of [
+    ['arms', { kind: 'builtin', id: 'left-arm-v59-mirrored' }],
+    ['legs', { kind: 'builtin', id: 'legs-reference-v1-mirrored' }],
+    ['legs', { kind: 'builtin', id: 'legs-smooth-v2-mirrored' }],
+  ]) {
+    const otherSlot = slot === 'arms' ? 'legs' : 'arms';
+    const wrongSlot = createDefaultProject(); wrongSlot.parts[otherSlot] = valid;
+    assert.throws(() => validateProject(wrongSlot), /槽位/);
+    for (const rejectedSlot of [otherSlot, 'head', 'body', '__proto__', 'constructor']) {
+      assert.throws(() => decodePart(valid, rejectedSlot), /槽位/);
+    }
+    for (const value of [
+      { kind: 'builtin', id: 'unknown' }, { kind: 'file', id: valid.id },
+      { kind: 'builtin' }, { kind: 'builtin', id: valid.id, url: 'https://example.com/part.glb' },
+      { ...valid, name: 'part.glb' }, { ...valid, id: 59 }, { ...valid, kind: null },
+    ]) {
+      const project = createDefaultProject(); project.parts[slot] = value;
+      assert.throws(() => validateProject(project), Error);
+      assert.throws(() => decodePart(value, slot), Error);
+    }
+    for (const key of ['kind', 'id']) {
+      const project = createDefaultProject();
+      Object.defineProperty(project.parts[slot], key, { get() { throw new Error('must not execute'); }, enumerable: true });
+      assert.throws(() => validateProject(project), /动态属性/);
+      assert.throws(() => decodePart(project.parts[slot], slot), /动态属性/);
+    }
+    const inherited = Object.assign(Object.create({ untrusted: true }), valid);
+    assert.throws(() => decodePart(inherited, slot), /对象类型/);
+    const polluted = JSON.parse(JSON.stringify(valid).replace('{', '{"__proto__":{},'));
+    assert.throws(() => decodePart(polluted, slot), /不允许/);
+  }
+});
+
 test('拒绝损坏 base64、格式错配、无效 OBJ 和缺失候选字段', () => {
   const invalidParts = [
     { ...candidate(), data: '' }, { ...candidate(), data: '%%%%' },
@@ -485,4 +673,146 @@ test('空文件、错误扩展名、超限文件在读取前被拒绝', async ()
     arrayBuffer() { read = true; return new ArrayBuffer(0); },
   }), /文件大小/);
   assert.equal(read, false);
+});
+
+
+test('revision 8 默认绑定独立复制配置：16 个关节偏移及旋转全部中立', () => {
+  const first = createDefaultProject();
+  const second = createDefaultProject();
+  assert.equal(first.revision, 8);
+  assert.deepEqual(first.binding, neutralBinding());
+  assert.deepEqual(APP_CONFIG.design.binding.defaults, neutralBinding());
+  assert.deepEqual(new Set(Object.keys(APP_CONFIG.design.binding.joints)), new Set(BINDING_JOINT_KEYS));
+  assert.equal(Object.keys(APP_CONFIG.design.binding.joints).length, 16);
+  assert.ok(Object.isFrozen(APP_CONFIG.design.binding.defaults));
+  for (const group of ['offsets', 'rotations']) {
+    for (const key of BINDING_JOINT_KEYS) {
+      assert.notEqual(first.binding[group][key], second.binding[group][key]);
+      assert.notEqual(first.binding[group][key], APP_CONFIG.design.binding.defaults[group][key]);
+      assert.ok(Object.isFrozen(APP_CONFIG.design.binding.defaults[group][key]));
+    }
+  }
+  first.binding.offsets.shoulderL[0] = 1.25;
+  first.binding.rotations.kneeR[2] = -23.5;
+  assert.deepEqual(second.binding, neutralBinding());
+  assert.deepEqual(APP_CONFIG.design.binding.defaults, neutralBinding());
+  assert.deepEqual(createDefaultProject().binding, neutralBinding());
+});
+
+test('revision 8 保存恢复所有非中立关节浮点参数，不共享数组且不注入运行时动作', () => {
+  const project = createDefaultProject();
+  for (const [i, key] of BINDING_JOINT_KEYS.entries()) {
+    project.binding.offsets[key] = [i / 8 - 1, 1.25, -0.625];
+    project.binding.rotations[key] = [i * 2.5 - 20, -13.125, 57.25];
+  }
+  const before = structuredClone(project);
+  const normalized = validateBinding(project.binding);
+  const loaded = parseProject(serializeProject(project));
+  assert.deepEqual(normalized, project.binding);
+  assert.deepEqual(loaded, project);
+  assert.deepEqual(Object.keys(loaded.binding).sort(), ['offsets', 'rotations']);
+  for (const group of ['offsets', 'rotations']) {
+    for (const key of BINDING_JOINT_KEYS) {
+      assert.notEqual(normalized[group][key], project.binding[group][key]);
+      assert.notEqual(loaded.binding[group][key], project.binding[group][key]);
+    }
+  }
+  loaded.binding.offsets.shoulderL[0] = 4.75;
+  normalized.rotations.kneeR[0] = -49.5;
+  assert.deepEqual(project, before);
+});
+
+test('revision 1 至 6 独立历史输入中立迁移绑定，原参数和空槽/文件/v1/v2 资源保持', () => {
+  const fixtures = [legacyProject(), version2Project(), version3Project(), version4Project(), version5Project(), version6Project(), version6Project('legs-smooth-v2-mirrored')];
+  fixtures[0].parts.arms = candidate();
+  fixtures[1].parts.legs = { ...candidate(), name: '旧腿.obj' };
+  for (const original of fixtures) {
+    const before = structuredClone(original);
+    const loaded = parseProject(JSON.stringify(original));
+    assert.equal(loaded.revision, 8);
+    assert.deepEqual(loaded.binding, neutralBinding());
+    assert.equal(loaded.motion.playing, false);
+    assert.deepEqual(loaded.parts, original.parts);
+    for (const [group, values] of Object.entries(original.design)) assert.deepEqual(loaded.design[group], values);
+    for (const [key, value] of Object.entries(original.motion)) assert.deepEqual(loaded.motion[key], key === 'playing' ? false : value);
+    if (original.appearance) assert.deepEqual(loaded.appearance, original.appearance);
+    if (original.expression) assert.deepEqual(loaded.expression, original.expression);
+    assert.deepEqual(parseProject(serializeProject(loaded)), loaded);
+    assert.deepEqual(original, before);
+    for (const binding of [neutralBinding(), null, undefined]) {
+      assert.throws(() => validateProject({ ...original, binding }), /旧版.*binding/);
+    }
+  }
+});
+
+test('revision 8 绑定严格必填，拒绝缺关节/额外关节/层级/动作字段和错误向量', () => {
+  const missing = createDefaultProject(); delete missing.binding;
+  assert.throws(() => validateProject(missing), /缺少字段：binding/);
+  for (const value of [null, [], {}, { offsets: {} }, { ...neutralBinding(), joints: [] }, { ...neutralBinding(), clips: [] }]) {
+    assert.throws(() => validateProject({ ...createDefaultProject(), binding: value }), Error);
+  }
+  for (const group of ['offsets', 'rotations']) {
+    for (const key of BINDING_JOINT_KEYS) {
+      const missing = neutralBinding(); delete missing[group][key];
+      assert.throws(() => validateBinding(missing), /缺少字段/);
+      const extra = neutralBinding(); extra[group].unknown = [0, 0, 0];
+      assert.throws(() => validateBinding(extra), /不允许/);
+      for (const value of [null, 0, {}, [0, 0], [0, 0, 0, 0], new Array(3), new Float32Array(3)]) {
+        const binding = neutralBinding(); binding[group][key] = value;
+        assert.throws(() => validateBinding(binding), Error);
+      }
+    }
+  }
+});
+
+test('绑定各关节三轴仅接受有限浮点数及配置边界', () => {
+  for (const group of ['offsets', 'rotations']) {
+    const range = APP_CONFIG.design.binding.limits[group];
+    for (const key of BINDING_JOINT_KEYS) {
+      for (let axis = 0; axis < 3; axis += 1) {
+        for (const value of [NaN, Infinity, -Infinity, '1', true, null, range.min - 0.001, range.max + 0.001]) {
+          const binding = neutralBinding(); binding[group][key][axis] = value;
+          assert.throws(() => validateBinding(binding), Error, `${group}.${key}[${axis}] should reject ${String(value)}`);
+        }
+        for (const value of [range.min, 0.375, range.max]) {
+          const binding = neutralBinding(); binding[group][key][axis] = value;
+          assert.equal(validateBinding(binding)[group][key][axis], value);
+        }
+      }
+    }
+  }
+});
+
+test('绑定字典和向量阻止原型注入、继承、符号字段和 getter 执行', () => {
+  const bomb = () => { throw new Error('getter must not execute'); };
+  const factories = [
+    () => { const p = createDefaultProject(); Object.defineProperty(p, 'binding', { get: bomb }); return p; },
+    () => { const p = createDefaultProject(); Object.defineProperty(p.binding, 'offsets', { get: bomb }); return p; },
+    () => { const p = createDefaultProject(); Object.defineProperty(p.binding.rotations, 'kneeR', { get: bomb }); return p; },
+    () => { const p = createDefaultProject(); Object.defineProperty(p.binding.offsets.shoulderL, '0', { get: bomb }); return p; },
+  ];
+  for (const make of factories) assert.throws(() => validateProject(make()), /动态属性/);
+  for (const mutate of [
+    (b) => { Object.setPrototypeOf(b, { unknown: true }); },
+    (b) => { Object.setPrototypeOf(b.offsets, { unknown: true }); },
+    (b) => { Object.setPrototypeOf(b.offsets.shoulderL, Object.create(Array.prototype)); },
+    (b) => { b.offsets.shoulderL.extra = 1; },
+    (b) => { b.rotations.kneeR[Symbol('hidden')] = 0; },
+    (b) => { b[Symbol('hidden')] = true; },
+    (b) => { b.offsets.constructor = [0, 0, 0]; },
+  ]) {
+    const binding = neutralBinding(); mutate(binding);
+    assert.throws(() => validateBinding(binding), Error);
+  }
+  const text = serializeProject(createDefaultProject());
+  for (const field of ['binding', 'offsets', 'rotations']) {
+    for (const key of ['__proto__', 'constructor', 'prototype']) {
+      assert.throws(() => parseProject(text.replace(`"${field}": {`, `"${field}": { "${key}": {"polluted": true},`)), /不允许/);
+    }
+  }
+  const nullDictionary = neutralBinding();
+  Object.setPrototypeOf(nullDictionary, null);
+  Object.setPrototypeOf(nullDictionary.offsets, null);
+  assert.deepEqual(validateBinding(nullDictionary), neutralBinding());
+  assert.equal({}.polluted, undefined);
 });

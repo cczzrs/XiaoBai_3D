@@ -1,0 +1,244 @@
+{
+  "schema": "xiaobai.shape-approval.v1",
+  "approval": "approved",
+  "approvedDate": "2026-11-09",
+  "timezone": "America/Los_Angeles",
+  "approvalSource": "explicit-user-message",
+  "userApprovalText": "批准腿脚 v2！接下来绑定关节，仍然在设计副本中操作，已批准的头部、身体、手臂和腿部外形不要改动，完成绑定后先让我确认，再制作动作。",
+  "scope": "Legs-v2 external shape and its reviewed attachment to the previously approved head-v1/body-v7/v59-arms combination. This approval does not approve a new rig, skinning deformation, joint placement or motion clip.",
+  "approvedLegs": {
+    "version": "legs-v2",
+    "projectRecord": {
+      "kind": "builtin",
+      "id": "legs-smooth-v2-mirrored"
+    },
+    "path": "assets/design/legs-v2/legs.glb",
+    "placement": {
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "rotationEulerRadians": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "mirrorPlane": "x=0",
+    "mirrorStoredWithinAsset": true,
+    "meshes": 2,
+    "vertices": 52484,
+    "triangles": 104960,
+    "sha256": "3269336fc38594119e69769fd7ae86d6414442191edca6b66d149858e04261f4"
+  },
+  "previousAssemblyApproval": "docs/approvals/v59-assembly-approved.json",
+  "lockedComponents": [
+    {
+      "part": "head",
+      "version": "head-v1",
+      "path": "assets/approved/head-v1/xiaobai-head.glb",
+      "transform": {
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "rotationEulerRadians": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "part": "body",
+      "version": "body-v7",
+      "path": "assets/approved/body-v7/xiaobai-torso.glb",
+      "transform": {
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "rotationEulerRadians": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "part": "leftArm",
+      "version": "v59",
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "transform": {
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "rotationEulerRadians": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "part": "rightArm",
+      "version": "v59",
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "transform": {
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "rotationEulerRadians": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          -1,
+          1,
+          1
+        ]
+      },
+      "mirrorPlane": "x=0"
+    },
+    {
+      "part": "legs",
+      "version": "legs-v2",
+      "path": "assets/design/legs-v2/legs.glb",
+      "transform": {
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "rotationEulerRadians": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "mirrorPlane": "x=0",
+      "mirrorStoredWithinAsset": true
+    }
+  ],
+  "constraints": {
+    "preserveApprovedAssetBytes": true,
+    "preserveApprovedRestShapeGeometryNormalsTopologyMaterialsAndTransforms": true,
+    "riggingLocation": "independent-design-copy-only",
+    "authorizedNextStage": "joint-placement-and-skin-binding-only",
+    "rigApproval": "pending-user-review-after-binding",
+    "animationClipsAuthorized": false,
+    "requireUserApprovalOfBindingBeforeMotionCreation": true,
+    "requireExplicitReapprovalForLockedChanges": true
+  },
+  "fingerprintAlgorithm": "SHA-256",
+  "snapshotTiming": "Captured after explicit legs-v2 shape approval and before the new limb binding implementation; immutable baseline for rig validation.",
+  "lockedFileSnapshot": [
+    {
+      "path": "assets/approved/body-v7/APPROVAL.json",
+      "sizeBytes": 7086,
+      "sha256": "7c1f4146bcaaa2ea411527bd4a3d8745eedd298f16f8e7d9405e5ba6934aea30"
+    },
+    {
+      "path": "assets/approved/body-v7/xiaobai-torso.glb",
+      "sizeBytes": 1322824,
+      "sha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4"
+    },
+    {
+      "path": "assets/approved/head-v1/APPROVAL.json",
+      "sizeBytes": 2140,
+      "sha256": "ab29e766d9bb084108a6412c52e40e1197e7ff0070c086de909a845f4f001722"
+    },
+    {
+      "path": "assets/approved/head-v1/xiaobai-head.glb",
+      "sizeBytes": 4227680,
+      "sha256": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351"
+    },
+    {
+      "path": "assets/design/arms-v59/SOURCE-APPROVAL.md",
+      "sizeBytes": 536,
+      "sha256": "0194a9b6c01fc4be6c92edaf6da7416caaa9385bf8e0f97ba5c5cef909770146"
+    },
+    {
+      "path": "assets/design/arms-v59/display-lines.json",
+      "sizeBytes": 15318752,
+      "sha256": "92bc26b0692742e7c1dacc9baf34e485ca0267c8ee98bce6106b286d5f29717e"
+    },
+    {
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "sizeBytes": 3326332,
+      "sha256": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee"
+    },
+    {
+      "path": "assets/design/arms-v59/provenance.json",
+      "sizeBytes": 1024,
+      "sha256": "0421681cccd824e24c60261a1811db3d6decd8c505595f9c1e7c364b6a9c6eeb"
+    },
+    {
+      "path": "assets/design/legs-v2/contact-audit.json",
+      "sizeBytes": 55728,
+      "sha256": "f324cba11ff28e15fdbf985357f851a36ea33e4d7c8c802a217a7ac8b6be0777"
+    },
+    {
+      "path": "assets/design/legs-v2/legs.glb",
+      "sizeBytes": 1891860,
+      "sha256": "3269336fc38594119e69769fd7ae86d6414442191edca6b66d149858e04261f4"
+    },
+    {
+      "path": "assets/design/legs-v2/parameters.json",
+      "sizeBytes": 2223,
+      "sha256": "2ddb5dcc25c3e8518ae78e6d4710a645211dcb8aeebbbad5b0529515985b7bbe"
+    },
+    {
+      "path": "assets/design/legs-v2/provenance.json",
+      "sizeBytes": 915,
+      "sha256": "96b61222096dfdeb4169f435069d2f3ba1654d81b965696f8a0a67d700933df9"
+    },
+    {
+      "path": "docs/approvals/v59-assembly-approved.json",
+      "sizeBytes": 5264,
+      "sha256": "9f2368b408141127475ac8735ef19f93630843f0a8d973284145c40a1b88a165"
+    }
+  ],
+  "reviewedExportEvidence": {
+    "path": "qa/legs-v2-export-check.json",
+    "sha256": "88294592d5c55ed07a2f2d55dd8318d2d58790af531e0ca4beac74372f253dc0",
+    "actualExportSha256": "b1ab1d371e6a28a5e57942b8b29cf095e7a83483c415bf0c9fbd8626581d96cd"
+  },
+  "provenanceNote": "The pending fields inside the original legs-v2 GLB, provenance.json and earlier review reports describe their pre-approval state. This explicit approval record supersedes those historical status fields without rewriting any original asset bytes. Legs-v1 remains a separate, unapproved historical candidate.",
+  "snapshotExclusions": [
+    "Finder .DS_Store metadata is not model geometry or an approval artifact."
+  ]
+}

@@ -1,0 +1,736 @@
+{
+  "opposedGroups": {
+    "rim": 219,
+    "buriedRing": 0,
+    "cap": 0,
+    "other": 0
+  },
+  "opposedExamples": [
+    {
+      "triangle": 52005,
+      "vertex": 25924,
+      "group": "rim"
+    },
+    {
+      "triangle": 52006,
+      "vertex": 25924,
+      "group": "rim"
+    },
+    {
+      "triangle": 52009,
+      "vertex": 25926,
+      "group": "rim"
+    },
+    {
+      "triangle": 52010,
+      "vertex": 25926,
+      "group": "rim"
+    },
+    {
+      "triangle": 52021,
+      "vertex": 25932,
+      "group": "rim"
+    },
+    {
+      "triangle": 52022,
+      "vertex": 25932,
+      "group": "rim"
+    },
+    {
+      "triangle": 52025,
+      "vertex": 25934,
+      "group": "rim"
+    },
+    {
+      "triangle": 52026,
+      "vertex": 25934,
+      "group": "rim"
+    },
+    {
+      "triangle": 52029,
+      "vertex": 25936,
+      "group": "rim"
+    },
+    {
+      "triangle": 52030,
+      "vertex": 25936,
+      "group": "rim"
+    },
+    {
+      "triangle": 52037,
+      "vertex": 25940,
+      "group": "rim"
+    },
+    {
+      "triangle": 52038,
+      "vertex": 25940,
+      "group": "rim"
+    }
+  ],
+  "bands": [
+    {
+      "band": 0,
+      "t": 0,
+      "minClearance": 3.3624361097714157,
+      "count": 898,
+      "penetrations": 0
+    },
+    {
+      "band": 1,
+      "t": 0.013888888888888888,
+      "minClearance": 3.3025235193733167,
+      "count": 902,
+      "penetrations": 0
+    },
+    {
+      "band": 2,
+      "t": 0.027777777777777776,
+      "minClearance": 3.2419451006622424,
+      "count": 909,
+      "penetrations": 0
+    },
+    {
+      "band": 3,
+      "t": 0.041666666666666664,
+      "minClearance": 3.180742917458165,
+      "count": 913,
+      "penetrations": 0
+    },
+    {
+      "band": 4,
+      "t": 0.05555555555555555,
+      "minClearance": 3.1189586020205162,
+      "count": 918,
+      "penetrations": 0
+    },
+    {
+      "band": 5,
+      "t": 0.06944444444444445,
+      "minClearance": 3.0566360970361544,
+      "count": 921,
+      "penetrations": 0
+    },
+    {
+      "band": 6,
+      "t": 0.08333333333333333,
+      "minClearance": 2.993824460962877,
+      "count": 929,
+      "penetrations": 0
+    },
+    {
+      "band": 7,
+      "t": 0.09722222222222222,
+      "minClearance": 2.9305851614957987,
+      "count": 933,
+      "penetrations": 0
+    },
+    {
+      "band": 8,
+      "t": 0.1111111111111111,
+      "minClearance": 2.8669334073999657,
+      "count": 940,
+      "penetrations": 0
+    },
+    {
+      "band": 9,
+      "t": 0.125,
+      "minClearance": 2.8029123441920127,
+      "count": 945,
+      "penetrations": 0
+    },
+    {
+      "band": 10,
+      "t": 0.1388888888888889,
+      "minClearance": 2.7385644216678138,
+      "count": 953,
+      "penetrations": 0
+    },
+    {
+      "band": 11,
+      "t": 0.1527777777777778,
+      "minClearance": 2.673932699926727,
+      "count": 958,
+      "penetrations": 0
+    },
+    {
+      "band": 12,
+      "t": 0.16666666666666666,
+      "minClearance": 2.609617487191084,
+      "count": 963,
+      "penetrations": 0
+    },
+    {
+      "band": 13,
+      "t": 0.18055555555555555,
+      "minClearance": 2.5451747567641263,
+      "count": 970,
+      "penetrations": 0
+    },
+    {
+      "band": 14,
+      "t": 0.19444444444444445,
+      "minClearance": 2.4805964178137145,
+      "count": 976,
+      "penetrations": 0
+    },
+    {
+      "band": 15,
+      "t": 0.20833333333333334,
+      "minClearance": 2.4159225205073014,
+      "count": 981,
+      "penetrations": 0
+    },
+    {
+      "band": 16,
+      "t": 0.2222222222222222,
+      "minClearance": 2.351195570665059,
+      "count": 991,
+      "penetrations": 0
+    },
+    {
+      "band": 17,
+      "t": 0.2361111111111111,
+      "minClearance": 2.2864584775669243,
+      "count": 996,
+      "penetrations": 0
+    },
+    {
+      "band": 18,
+      "t": 0.25,
+      "minClearance": 2.22175179458711,
+      "count": 1005,
+      "penetrations": 0
+    },
+    {
+      "band": 19,
+      "t": 0.2638888888888889,
+      "minClearance": 2.1571183854440434,
+      "count": 1013,
+      "penetrations": 0
+    },
+    {
+      "band": 20,
+      "t": 0.2777777777777778,
+      "minClearance": 2.0925990762144018,
+      "count": 1018,
+      "penetrations": 0
+    },
+    {
+      "band": 21,
+      "t": 0.2916666666666667,
+      "minClearance": 2.0282365936945403,
+      "count": 1029,
+      "penetrations": 0
+    },
+    {
+      "band": 22,
+      "t": 0.3055555555555556,
+      "minClearance": 1.9640729622721196,
+      "count": 1036,
+      "penetrations": 0
+    },
+    {
+      "band": 23,
+      "t": 0.3194444444444444,
+      "minClearance": 1.9001506193635578,
+      "count": 1046,
+      "penetrations": 0
+    },
+    {
+      "band": 24,
+      "t": 0.3333333333333333,
+      "minClearance": 1.8365101646024975,
+      "count": 1056,
+      "penetrations": 0
+    },
+    {
+      "band": 25,
+      "t": 0.3472222222222222,
+      "minClearance": 1.7733617877645145,
+      "count": 1066,
+      "penetrations": 0
+    },
+    {
+      "band": 26,
+      "t": 0.3611111111111111,
+      "minClearance": 1.7110090483808733,
+      "count": 1077,
+      "penetrations": 0
+    },
+    {
+      "band": 27,
+      "t": 0.375,
+      "minClearance": 1.6490741684832564,
+      "count": 1087,
+      "penetrations": 0
+    },
+    {
+      "band": 28,
+      "t": 0.3888888888888889,
+      "minClearance": 1.5875987423955387,
+      "count": 1097,
+      "penetrations": 0
+    },
+    {
+      "band": 29,
+      "t": 0.4027777777777778,
+      "minClearance": 1.5266239292034527,
+      "count": 1111,
+      "penetrations": 0
+    },
+    {
+      "band": 30,
+      "t": 0.4166666666666667,
+      "minClearance": 1.4661913066763645,
+      "count": 1125,
+      "penetrations": 0
+    },
+    {
+      "band": 31,
+      "t": 0.4305555555555556,
+      "minClearance": 1.406342944277302,
+      "count": 1137,
+      "penetrations": 0
+    },
+    {
+      "band": 32,
+      "t": 0.4444444444444444,
+      "minClearance": 1.3471200027900032,
+      "count": 1152,
+      "penetrations": 0
+    },
+    {
+      "band": 33,
+      "t": 0.4583333333333333,
+      "minClearance": 1.2885640964888552,
+      "count": 1169,
+      "penetrations": 0
+    },
+    {
+      "band": 34,
+      "t": 0.4722222222222222,
+      "minClearance": 1.2307163246080535,
+      "count": 1187,
+      "penetrations": 0
+    },
+    {
+      "band": 35,
+      "t": 0.4861111111111111,
+      "minClearance": 1.1736192368437983,
+      "count": 1208,
+      "penetrations": 0
+    },
+    {
+      "band": 36,
+      "t": 0.5,
+      "minClearance": 1.117314232994115,
+      "count": 1228,
+      "penetrations": 0
+    },
+    {
+      "band": 37,
+      "t": 0.5138888888888888,
+      "minClearance": 1.062285911777547,
+      "count": 1256,
+      "penetrations": 0
+    },
+    {
+      "band": 38,
+      "t": 0.5277777777777778,
+      "minClearance": 1.0081744459576676,
+      "count": 1289,
+      "penetrations": 0
+    },
+    {
+      "band": 39,
+      "t": 0.5416666666666666,
+      "minClearance": 0.9549840403857672,
+      "count": 1330,
+      "penetrations": 0
+    },
+    {
+      "band": 40,
+      "t": 0.5555555555555556,
+      "minClearance": 0.9027553674025768,
+      "count": 1412,
+      "penetrations": 0
+    },
+    {
+      "band": 41,
+      "t": 0.5694444444444444,
+      "minClearance": 0.8515278040765537,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 42,
+      "t": 0.5833333333333334,
+      "minClearance": 0.8013436449234206,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 43,
+      "t": 0.5972222222222222,
+      "minClearance": 0.7522437685115335,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 44,
+      "t": 0.6111111111111112,
+      "minClearance": 0.7042694977230006,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 45,
+      "t": 0.625,
+      "minClearance": 0.6574621144285047,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 46,
+      "t": 0.6388888888888888,
+      "minClearance": 0.6118625437922667,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 47,
+      "t": 0.6527777777777778,
+      "minClearance": 0.5677056544213634,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 48,
+      "t": 0.6666666666666666,
+      "minClearance": 0.5250120288289963,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 49,
+      "t": 0.6805555555555556,
+      "minClearance": 0.4836508197114284,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 50,
+      "t": 0.6944444444444444,
+      "minClearance": 0.4436655451835563,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 51,
+      "t": 0.7083333333333334,
+      "minClearance": 0.40509509765917784,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 52,
+      "t": 0.7222222222222222,
+      "minClearance": 0.36798015274474594,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 53,
+      "t": 0.7361111111111112,
+      "minClearance": 0.33236229658523797,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 54,
+      "t": 0.75,
+      "minClearance": 0.29828217983464,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 55,
+      "t": 0.7638888888888888,
+      "minClearance": 0.2657814075954228,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 56,
+      "t": 0.7777777777777778,
+      "minClearance": 0.2348996859389061,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 57,
+      "t": 0.7916666666666666,
+      "minClearance": 0.20586280037321458,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 58,
+      "t": 0.8055555555555556,
+      "minClearance": 0.1786180601330578,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 59,
+      "t": 0.8194444444444444,
+      "minClearance": 0.15314253534435807,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 60,
+      "t": 0.8333333333333334,
+      "minClearance": 0.129439594728062,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 61,
+      "t": 0.8472222222222222,
+      "minClearance": 0.1075622105855274,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 62,
+      "t": 0.8611111111111112,
+      "minClearance": 0.0875478600813473,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 63,
+      "t": 0.875,
+      "minClearance": 0.06943987090289738,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 64,
+      "t": 0.8888888888888888,
+      "minClearance": 0.05327779708396463,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 65,
+      "t": 0.9027777777777778,
+      "minClearance": 0.03910402113739053,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 66,
+      "t": 0.9166666666666666,
+      "minClearance": 0.026958082230617464,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 67,
+      "t": 0.9305555555555556,
+      "minClearance": 0.01710410586612454,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 68,
+      "t": 0.9444444444444444,
+      "minClearance": 0.009316832754873161,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 69,
+      "t": 0.9583333333333334,
+      "minClearance": 0.0025973315613896375,
+      "count": 1440,
+      "penetrations": 0
+    },
+    {
+      "band": 70,
+      "t": 0.9722222222222222,
+      "minClearance": -0.0047868357078968415,
+      "count": 1440,
+      "penetrations": 26
+    },
+    {
+      "band": 71,
+      "t": 0.9861111111111112,
+      "minClearance": -0.014173853681661797,
+      "count": 1440,
+      "penetrations": 478
+    },
+    {
+      "band": 72,
+      "t": 1,
+      "minClearance": -0.000004025147934072493,
+      "count": 160,
+      "penetrations": 0
+    }
+  ],
+  "independent": true,
+  "source": "Direct decoded final GLB accessors; no imports from new geometry generator",
+  "topology": {
+    "vertices": 26242,
+    "triangles": 52480,
+    "edges": 78720,
+    "euler": 2,
+    "nonmanifoldEdges": 0,
+    "inconsistentEdgeWinding": 0,
+    "minTriangleArea": 0.001206157105272902,
+    "signedVolume": 6211.538250688704,
+    "nonfinite": 0,
+    "minNormalLength": 0.9999999580783648,
+    "maxNormalLength": 1.0000000484916594,
+    "normalOpposed": 219,
+    "visibleNormalOpposed": 0
+  },
+  "preservation": {
+    "retainedVertexCount": 14561,
+    "lowerMismatch": 0,
+    "mirrorMismatch": 0
+  },
+  "contact": {
+    "maxRimError": 0.000004705640517244092,
+    "maxRimNormalAngleDegrees": 0.000018131386516320817,
+    "maxEndTangentAngleDegrees": 1.5130219590170526,
+    "maxLastBandFaceNormalAngleDegrees": 2.1050652757844324,
+    "hiddenMinVerticalDepth": 0.1202433927957749
+  },
+  "clearance": {
+    "samples": {
+      "vertices": 11680,
+      "midpoints": 69120,
+      "centroids": 23040
+    },
+    "noHit": 15910,
+    "minClearance": -0.014173853681661797,
+    "penetrationsBelowMinus1e5": 504,
+    "worst": {
+      "p": [
+        18.96231174468994,
+        24.9569730758667,
+        3.373028874397278
+      ],
+      "triangle": 51688,
+      "clearance": -0.014173853681661797,
+      "kind": "midpoints"
+    }
+  },
+  "locks": [
+    {
+      "path": "assets/approved/.DS_Store",
+      "sizeBytes": 8196,
+      "sha256": "46d31c97d8d14a5814ed68c45b78c601f0a9058019bfc66b8eefea8d99219bff",
+      "unchanged": true
+    },
+    {
+      "path": "assets/approved/body-v7/APPROVAL.json",
+      "sizeBytes": 7086,
+      "sha256": "7c1f4146bcaaa2ea411527bd4a3d8745eedd298f16f8e7d9405e5ba6934aea30",
+      "unchanged": true
+    },
+    {
+      "path": "assets/approved/body-v7/xiaobai-torso.glb",
+      "sizeBytes": 1322824,
+      "sha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4",
+      "unchanged": true
+    },
+    {
+      "path": "assets/approved/head-v1/APPROVAL.json",
+      "sizeBytes": 2140,
+      "sha256": "ab29e766d9bb084108a6412c52e40e1197e7ff0070c086de909a845f4f001722",
+      "unchanged": true
+    },
+    {
+      "path": "assets/approved/head-v1/xiaobai-head.glb",
+      "sizeBytes": 4227680,
+      "sha256": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351",
+      "unchanged": true
+    },
+    {
+      "path": "assets/design/arms-v59/SOURCE-APPROVAL.md",
+      "sizeBytes": 536,
+      "sha256": "0194a9b6c01fc4be6c92edaf6da7416caaa9385bf8e0f97ba5c5cef909770146",
+      "unchanged": true
+    },
+    {
+      "path": "assets/design/arms-v59/display-lines.json",
+      "sizeBytes": 15318752,
+      "sha256": "92bc26b0692742e7c1dacc9baf34e485ca0267c8ee98bce6106b286d5f29717e",
+      "unchanged": true
+    },
+    {
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "sizeBytes": 3326332,
+      "sha256": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee",
+      "unchanged": true
+    },
+    {
+      "path": "assets/design/arms-v59/provenance.json",
+      "sizeBytes": 1024,
+      "sha256": "0421681cccd824e24c60261a1811db3d6decd8c505595f9c1e7c364b6a9c6eeb",
+      "unchanged": true
+    },
+    {
+      "path": "assets/design/legs-v1/legs.glb",
+      "sizeBytes": 2064676,
+      "sha256": "5cb41ba4291cb37e2bdd874ee0ae99be505f8341746194b3915b30e042242cb6",
+      "unchanged": true
+    },
+    {
+      "path": "assets/design/legs-v1/parameters.json",
+      "sizeBytes": 1774,
+      "sha256": "33779619678f37e1304f5744a287b4a7f4b955a24bd6e20376bcaa28580a6d10",
+      "unchanged": true
+    },
+    {
+      "path": "assets/design/legs-v1/provenance.json",
+      "sizeBytes": 1532,
+      "sha256": "c8ace58522f0cab4e432a901d02c1deeb097023df972d4e13c485e8d9301cf17",
+      "unchanged": true
+    },
+    {
+      "path": "assets/design/legs-v1/sections.json",
+      "sizeBytes": 19323,
+      "sha256": "ad889a4d9d7d18fae088a3aad1bdd0ce70b0167c3b831b84f2d81ac26d7167d0",
+      "unchanged": true
+    },
+    {
+      "path": "assets/design/legs-v1/source-fit.json",
+      "sizeBytes": 66391,
+      "sha256": "68d4726aad73d433d98bc2d658b62e722307003453bcd0782b59bc987c89ca25",
+      "unchanged": true
+    }
+  ],
+  "checks": {
+    "finiteManifoldOutward": true,
+    "visibleNormalsConsistent": true,
+    "lowerVerticesUnchanged": true,
+    "mirroredCoordinates": true,
+    "contactPositionAndTangency": true,
+    "buriedCapInsideBody": true,
+    "nonRimPatchSamplesOutsideBody": true,
+    "finalRimChordOverlapBelow002": true,
+    "opposedNormalsOnlyAtHiddenRim": true,
+    "lockedAssetsAndV1Unchanged": true
+  },
+  "passed": true,
+  "limitations": [
+    "Sampling vertices, edge midpoints and face centroids does not establish an exact global intersection proof.",
+    "Hidden-cap normals are reported separately; the visible collar is required to have outward normals.",
+    "This is a separate overlapping leg/body assembly, not a welded single surface. Only the terminal t>=0.95 rim band permits <=0.02 model-unit chord overlap (the full character is about 100 units tall) on the unchanged body triangulation; earlier collar samples retain the strict 1e-5 tolerance. Exact maximum overlap and affected bands remain reported."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "version": "legs-v1",
+  "approval": "pending",
+  "designOnly": true,
+  "referenceFit": {
+    "path": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-body-review/analysis/leg-fit.json",
+    "localCopy": "assets/design/legs-v1/source-fit.json",
+    "sha256": "68d4726aad73d433d98bc2d658b62e722307003453bcd0782b59bc987c89ca25",
+    "role": "Historical unapproved continuous silhouette fit; used as design input only"
+  },
+  "references": [
+    "assets/references/reference-approved.png",
+    "assets/references/01-standard-views.png",
+    "assets/references/01-turnaround.png"
+  ],
+  "coordinates": "+Y up, +Z front, floor y=0, original H100 units",
+  "mirror": "X=0",
+  "method": "Single cubic profile per leg, elliptical cross sections, average surface arc-length ring sampling, indexed triangles; no ankle stitch",
+  "targets": {
+    "width": 22.7,
+    "height": 15.8,
+    "depth": 23
+  },
+  "geometry": {
+    "meshes": 2,
+    "vertices": 57284,
+    "triangles": 114560,
+    "bounds": {
+      "min": [
+        -27.349071502685547,
+        0,
+        -7.4995012283325195
+      ],
+      "max": [
+        27.349071502685547,
+        30,
+        15.49950122833252
+      ]
+    }
+  },
+  "sha256": "5cb41ba4291cb37e2bdd874ee0ae99be505f8341746194b3915b30e042242cb6",
+  "bytes": 2064676,
+  "limitations": [
+    "Depth and hidden upper leg remain design estimates.",
+    "Legs are pending visual approval; no new rig or animation.",
+    "Approved head, body and v59 arms are not modified."
+  ]
+}

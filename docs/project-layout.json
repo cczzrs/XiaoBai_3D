@@ -1,0 +1,90 @@
+{
+  "schema": "xiaobai.project-layout.v1",
+  "date": "2026-11-09",
+  "scope": "Directory-only relocation; approved source bytes and historical approval records are preserved.",
+  "moves": [
+    {
+      "from": "qa/.DS_Store",
+      "to": "temp/system/qa/.DS_Store"
+    },
+    {
+      "from": "index.html",
+      "to": "web/index.html"
+    },
+    {
+      "from": "src/",
+      "to": "web/src/"
+    },
+    {
+      "from": "styles/",
+      "to": "web/styles/"
+    },
+    {
+      "from": "vendor/",
+      "to": "web/vendor/"
+    },
+    {
+      "from": "qa/appearance-fixtures/",
+      "to": "tests/fixtures/appearance/"
+    },
+    {
+      "from": "qa/invalid-model.obj",
+      "to": "tests/fixtures/invalid-model.obj"
+    },
+    {
+      "from": "qa/invalid-project.json",
+      "to": "tests/fixtures/invalid-project.json"
+    },
+    {
+      "from": "qa/actions-v1-test-export.glb",
+      "to": "temp/qa/actions-v1-test-export.glb"
+    },
+    {
+      "from": "qa/actions-v1-export-check.json",
+      "to": "temp/qa/actions-v1-export-check.json"
+    },
+    {
+      "from": "assets/xiaobai-left-arm.obj",
+      "to": "assets/imports/xiaobai-left-arm.obj"
+    },
+    {
+      "from": "qa/actions-v1-approval-tests.txt",
+      "to": "temp/qa/actions-v1-approval-tests.txt"
+    },
+    {
+      "from": "qa/actions-v1-approved-export-console.txt",
+      "to": "temp/qa/actions-v1-approved-export-console.txt"
+    },
+    {
+      "from": "qa/actions-v1-export-tests.txt",
+      "to": "temp/qa/actions-v1-export-tests.txt"
+    },
+    {
+      "from": "qa/actions-v1-motion-tests.txt",
+      "to": "temp/qa/actions-v1-motion-tests.txt"
+    },
+    {
+      "from": "qa/actions-v1-tests.txt",
+      "to": "temp/qa/actions-v1-tests.txt"
+    },
+    {
+      "from": ".DS_Store",
+      "to": "temp/system/.DS_Store"
+    },
+    {
+      "from": "assets/.DS_Store",
+      "to": "temp/system/assets/.DS_Store"
+    },
+    {
+      "from": "assets/approved/.DS_Store",
+      "to": "temp/system/assets/approved/.DS_Store"
+    },
+    {
+      "from": "qa/",
+      "to": "docs/qa/"
+    }
+  ],
+  "webRoot": "web/",
+  "temporaryRoot": "temp/",
+  "historicalPaths": "Resolve old relative paths through this mapping before checking their original hashes."
+}

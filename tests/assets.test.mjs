@@ -29,7 +29,7 @@ test('本地 Three.js 加载、导出和交互依赖齐全', async () => {
     'addons/utils/BufferGeometryUtils.js', 'addons/utils/SkeletonUtils.js',
   ];
   for (const file of files) {
-    const url = new URL(`vendor/${file}`, root);
+    const url = new URL(`web/vendor/${file}`, root);
     await access(url);
     if (!file.endsWith('.js')) continue;
     const code = await readFile(url, 'utf8');

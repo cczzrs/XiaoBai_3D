@@ -1,0 +1,394 @@
+{
+  "binding": {
+    "version": "rig-v1",
+    "approval": "pending",
+    "selectedJoint": "shoulderL",
+    "mirrorEdits": true,
+    "joints": {
+      "shoulderL": {
+        "label": "左肩",
+        "parent": "body",
+        "position": [
+          -18,
+          43.5,
+          0
+        ],
+        "slot": "arms",
+        "side": "L"
+      },
+      "elbowL": {
+        "label": "左肘",
+        "parent": "shoulderL",
+        "position": [
+          -31,
+          43,
+          0
+        ],
+        "slot": "arms",
+        "side": "L"
+      },
+      "wristL": {
+        "label": "左腕",
+        "parent": "elbowL",
+        "position": [
+          -42,
+          43,
+          0
+        ],
+        "slot": "arms",
+        "side": "L"
+      },
+      "handTipL": {
+        "label": "左掌端",
+        "parent": "wristL",
+        "position": [
+          -49,
+          43,
+          0
+        ],
+        "slot": "arms",
+        "side": "L"
+      },
+      "hipL": {
+        "label": "左髋",
+        "parent": "root",
+        "position": [
+          -10.5,
+          22,
+          0
+        ],
+        "slot": "legs",
+        "side": "L"
+      },
+      "kneeL": {
+        "label": "左膝",
+        "parent": "hipL",
+        "position": [
+          -13.5,
+          13,
+          2
+        ],
+        "slot": "legs",
+        "side": "L"
+      },
+      "ankleL": {
+        "label": "左踝",
+        "parent": "kneeL",
+        "position": [
+          -16,
+          7,
+          4
+        ],
+        "slot": "legs",
+        "side": "L"
+      },
+      "toeTipL": {
+        "label": "左脚尖",
+        "parent": "ankleL",
+        "position": [
+          -16,
+          4,
+          13
+        ],
+        "slot": "legs",
+        "side": "L"
+      },
+      "shoulderR": {
+        "label": "右肩",
+        "parent": "body",
+        "position": [
+          18,
+          43.5,
+          0
+        ],
+        "slot": "arms",
+        "side": "R"
+      },
+      "elbowR": {
+        "label": "右肘",
+        "parent": "shoulderR",
+        "position": [
+          31,
+          43,
+          0
+        ],
+        "slot": "arms",
+        "side": "R"
+      },
+      "wristR": {
+        "label": "右腕",
+        "parent": "elbowR",
+        "position": [
+          42,
+          43,
+          0
+        ],
+        "slot": "arms",
+        "side": "R"
+      },
+      "handTipR": {
+        "label": "右掌端",
+        "parent": "wristR",
+        "position": [
+          49,
+          43,
+          0
+        ],
+        "slot": "arms",
+        "side": "R"
+      },
+      "hipR": {
+        "label": "右髋",
+        "parent": "root",
+        "position": [
+          10.5,
+          22,
+          0
+        ],
+        "slot": "legs",
+        "side": "R"
+      },
+      "kneeR": {
+        "label": "右膝",
+        "parent": "hipR",
+        "position": [
+          13.5,
+          13,
+          2
+        ],
+        "slot": "legs",
+        "side": "R"
+      },
+      "ankleR": {
+        "label": "右踝",
+        "parent": "kneeR",
+        "position": [
+          16,
+          7,
+          4
+        ],
+        "slot": "legs",
+        "side": "R"
+      },
+      "toeTipR": {
+        "label": "右脚尖",
+        "parent": "ankleR",
+        "position": [
+          16,
+          4,
+          13
+        ],
+        "slot": "legs",
+        "side": "R"
+      }
+    },
+    "defaults": {
+      "offsets": {
+        "shoulderL": [
+          0,
+          0,
+          0
+        ],
+        "elbowL": [
+          0,
+          0,
+          0
+        ],
+        "wristL": [
+          0,
+          0,
+          0
+        ],
+        "handTipL": [
+          0,
+          0,
+          0
+        ],
+        "hipL": [
+          0,
+          0,
+          0
+        ],
+        "kneeL": [
+          0,
+          0,
+          0
+        ],
+        "ankleL": [
+          0,
+          0,
+          0
+        ],
+        "toeTipL": [
+          0,
+          0,
+          0
+        ],
+        "shoulderR": [
+          0,
+          0,
+          0
+        ],
+        "elbowR": [
+          0,
+          0,
+          0
+        ],
+        "wristR": [
+          0,
+          0,
+          0
+        ],
+        "handTipR": [
+          0,
+          0,
+          0
+        ],
+        "hipR": [
+          0,
+          0,
+          0
+        ],
+        "kneeR": [
+          0,
+          0,
+          0
+        ],
+        "ankleR": [
+          0,
+          0,
+          0
+        ],
+        "toeTipR": [
+          0,
+          0,
+          0
+        ]
+      },
+      "rotations": {
+        "shoulderL": [
+          0,
+          0,
+          0
+        ],
+        "elbowL": [
+          0,
+          0,
+          0
+        ],
+        "wristL": [
+          0,
+          0,
+          0
+        ],
+        "handTipL": [
+          0,
+          0,
+          0
+        ],
+        "hipL": [
+          0,
+          0,
+          0
+        ],
+        "kneeL": [
+          0,
+          0,
+          0
+        ],
+        "ankleL": [
+          0,
+          0,
+          0
+        ],
+        "toeTipL": [
+          0,
+          0,
+          0
+        ],
+        "shoulderR": [
+          0,
+          0,
+          0
+        ],
+        "elbowR": [
+          0,
+          0,
+          0
+        ],
+        "wristR": [
+          0,
+          0,
+          0
+        ],
+        "handTipR": [
+          0,
+          0,
+          0
+        ],
+        "hipR": [
+          0,
+          0,
+          0
+        ],
+        "kneeR": [
+          0,
+          0,
+          0
+        ],
+        "ankleR": [
+          0,
+          0,
+          0
+        ],
+        "toeTipR": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "limits": {
+      "offsets": {
+        "min": -5,
+        "max": 5,
+        "step": 0.1
+      },
+      "rotations": {
+        "min": -60,
+        "max": 60,
+        "step": 1
+      }
+    },
+    "weights": {
+      "armAnchor": {
+        "fullAt": 13,
+        "freeAt": 22
+      },
+      "armElbow": {
+        "width": 8
+      },
+      "armWrist": {
+        "width": 7
+      },
+      "legKnee": {
+        "width": 8
+      },
+      "legAnkle": {
+        "width": 6
+      },
+      "legCollar": {
+        "firstBlendVertex": 14401,
+        "contactVertex": 25921,
+        "radial": 160,
+        "anchorStart": 0.65
+      }
+    }
+  },
+  "coreJoints": {
+    "rootY": 16.5,
+    "neckY": 52
+  },
+  "bodyCenterY": 36.224963,
+  "headCenterY": 70.1
+}

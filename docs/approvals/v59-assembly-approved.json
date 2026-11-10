@@ -1,0 +1,177 @@
+{
+  "schema": "xiaobai.assembly-approval.v1",
+  "approval": "approved",
+  "approvedDate": "2026-11-09",
+  "timezone": "America/Los_Angeles",
+  "approvalSource": "explicit-user-message",
+  "userApprovalText": "批准这个组合效果！接下来制作腿部，仍然在设计副本中操作，已批准的头部、身体和手臂不要改动，完成后先让我确认。",
+  "scope": "Approved head-v1, body-v7 and v59 mirrored-arms combination in the design copy. Leg design is authorized as a separate candidate and remains pending user confirmation.",
+  "lockedComponents": [
+    {
+      "part": "head",
+      "version": "head-v1",
+      "path": "assets/approved/head-v1/xiaobai-head.glb",
+      "transform": {
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "rotationEulerRadians": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "part": "body",
+      "version": "body-v7",
+      "path": "assets/approved/body-v7/xiaobai-torso.glb",
+      "transform": {
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "rotationEulerRadians": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "part": "leftArm",
+      "version": "v59",
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "transform": {
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "rotationEulerRadians": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "part": "rightArm",
+      "version": "v59",
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "transform": {
+        "translation": [
+          0,
+          0,
+          0
+        ],
+        "rotationEulerRadians": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          -1,
+          1,
+          1
+        ]
+      },
+      "mirrorPlane": "x=0"
+    }
+  ],
+  "constraints": {
+    "preserveApprovedAssets": true,
+    "preserveApprovedHeadBodyAndArms": true,
+    "newGeometryLocation": "design-copy-only",
+    "legsApproval": "pending",
+    "requireUserConfirmationBeforeFurtherLegStage": true,
+    "requireExplicitReapprovalForLockedChanges": true
+  },
+  "fingerprintAlgorithm": "SHA-256",
+  "lockedFileSnapshot": [
+    {
+      "path": "assets/approved/.DS_Store",
+      "sizeBytes": 8196,
+      "sha256": "46d31c97d8d14a5814ed68c45b78c601f0a9058019bfc66b8eefea8d99219bff"
+    },
+    {
+      "path": "assets/approved/body-v7/APPROVAL.json",
+      "sizeBytes": 7086,
+      "sha256": "7c1f4146bcaaa2ea411527bd4a3d8745eedd298f16f8e7d9405e5ba6934aea30"
+    },
+    {
+      "path": "assets/approved/body-v7/xiaobai-torso.glb",
+      "sizeBytes": 1322824,
+      "sha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4"
+    },
+    {
+      "path": "assets/approved/head-v1/APPROVAL.json",
+      "sizeBytes": 2140,
+      "sha256": "ab29e766d9bb084108a6412c52e40e1197e7ff0070c086de909a845f4f001722"
+    },
+    {
+      "path": "assets/approved/head-v1/xiaobai-head.glb",
+      "sizeBytes": 4227680,
+      "sha256": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351"
+    },
+    {
+      "path": "assets/design/arms-v59/SOURCE-APPROVAL.md",
+      "sizeBytes": 536,
+      "sha256": "0194a9b6c01fc4be6c92edaf6da7416caaa9385bf8e0f97ba5c5cef909770146"
+    },
+    {
+      "path": "assets/design/arms-v59/display-lines.json",
+      "sizeBytes": 15318752,
+      "sha256": "92bc26b0692742e7c1dacc9baf34e485ca0267c8ee98bce6106b286d5f29717e"
+    },
+    {
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "sizeBytes": 3326332,
+      "sha256": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee"
+    },
+    {
+      "path": "assets/design/arms-v59/provenance.json",
+      "sizeBytes": 1024,
+      "sha256": "0421681cccd824e24c60261a1811db3d6decd8c505595f9c1e7c364b6a9c6eeb"
+    }
+  ],
+  "originalV59Sources": [
+    {
+      "path": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-left-arm-ring-curvature-fair-v59/xiaobai-left-arm.glb",
+      "sizeBytes": 3326332,
+      "sha256": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee",
+      "matchesImportedProvenance": true
+    },
+    {
+      "path": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-left-arm-ring-curvature-fair-v59/mesh.json",
+      "sizeBytes": 24814819,
+      "sha256": "676eb9c4ad17f623ca59e15411001e9899f0527af11d158743bc1ba3867f7501",
+      "matchesImportedProvenance": true
+    },
+    {
+      "path": "/Users/cong/Documents/Codex/2026-09-14/hatch-pet-users-cong-codex-skills/outputs/xiaobai-left-arm-ring-curvature-fair-v59/APPROVAL.md",
+      "sizeBytes": 536,
+      "sha256": "0194a9b6c01fc4be6c92edaf6da7416caaa9385bf8e0f97ba5c5cef909770146",
+      "matchesImportedProvenance": true
+    }
+  ],
+  "provenanceNote": "Existing arms-v59/provenance.json records the import-time pending assembly state. This approval record supersedes that status for the reviewed combination without changing the imported source files."
+}

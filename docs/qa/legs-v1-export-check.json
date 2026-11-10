@@ -1,0 +1,61 @@
+{
+  "sourceDownload": "/Users/cong/Downloads/xiaobai-design-design (5).glb",
+  "sha256": "e0e6c15e9652bb31915ab31df4c6be871f5bf1967cb1f81bccf86efa21697880",
+  "meshes": 9,
+  "approvedMeshChecks": [
+    {
+      "name": "Head",
+      "mirrorSign": 1,
+      "vertices": 73442,
+      "maximumWorldPositionError": 0.0,
+      "materialMatches": true
+    },
+    {
+      "name": "Eye_L",
+      "mirrorSign": 1,
+      "vertices": 8256,
+      "maximumWorldPositionError": 0.0,
+      "materialMatches": true
+    },
+    {
+      "name": "Eye_R",
+      "mirrorSign": 1,
+      "vertices": 8256,
+      "maximumWorldPositionError": 0.0,
+      "materialMatches": true
+    },
+    {
+      "name": "Nose",
+      "mirrorSign": 1,
+      "vertices": 2882,
+      "maximumWorldPositionError": 0.0,
+      "materialMatches": true
+    },
+    {
+      "name": "Body",
+      "mirrorSign": 1,
+      "vertices": 36674,
+      "maximumWorldPositionError": 0.0,
+      "materialMatches": true
+    },
+    {
+      "name": "Arm_L",
+      "mirrorSign": 1,
+      "vertices": 69266,
+      "maximumWorldPositionError": 0.0,
+      "materialMatches": true
+    },
+    {
+      "name": "Arm_L",
+      "mirrorSign": -1,
+      "vertices": 69266,
+      "maximumWorldPositionError": 0.0,
+      "materialMatches": true
+    }
+  ],
+  "legsPresent": [
+    "Leg_L",
+    "Leg_R"
+  ],
+  "displayGuidesExcluded": true
+}

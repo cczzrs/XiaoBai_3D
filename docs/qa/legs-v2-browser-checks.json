@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-09",
+  "browser": "Chrome",
+  "url": "http://127.0.0.1:8791/",
+  "candidate": "legs-v2",
+  "approval": "pending",
+  "checkedViews": [
+    "front detail",
+    "side detail",
+    "back",
+    "perspective"
+  ],
+  "visualResult": "Hard intersection line replaced by rounded tangent collar; reviewed under temporary directional light.",
+  "savedAndReloaded": true,
+  "restoredVersion": "legs-v2",
+  "defaultDirectionalLightingEnabled": false,
+  "background": "#000000",
+  "approvedParts": "Actual exported world positions, normals, indices and materials match approved head, body and mirrored v59 arm sources; see legs-v2-export-check.json.",
+  "screenshots": [
+    "qa/legs-v2-front-detail-lit.png",
+    "qa/legs-v2-side-detail-lit.png",
+    "qa/legs-v2-assembly-perspective-lit.png",
+    "qa/legs-v2-front-default.png"
+  ],
+  "targetedTests": {
+    "files": [
+      "tests/legs-v1.test.mjs",
+      "tests/legs-v2.test.mjs",
+      "tests/arm-v59.test.mjs",
+      "tests/project-state.test.mjs"
+    ],
+    "uniquePassed": 44,
+    "fullRegressionRun": false
+  },
+  "console": "Observed warning entries originated from a Chrome extension; no application errors observed.",
+  "limits": [
+    "Separate leg/body meshes with buried closure; finite rim chord overlap bounded and documented in legs-v2-geometry-check.json.",
+    "Visual approval is still required before proceeding."
+  ]
+}

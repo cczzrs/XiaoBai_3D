@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "source": "actual-Chrome-export",
+  "input": "/Users/cong/Downloads/xiaobai-actions-v1 (5).glb",
+  "bytes": 24602708,
+  "sha256": "2e9f5104f077b1ad722de98c63f011a240a4a3d082d235dee275b79a6fc80203",
+  "clips": [
+    {
+      "name": "xiaobai_walk_v1",
+      "duration": 1.2000000476837158,
+      "tracks": 22,
+      "maxSampledGroundError": 0.000037890214424018964
+    },
+    {
+      "name": "xiaobai_run_v1",
+      "duration": 0.800000011920929,
+      "tracks": 22,
+      "maxSampledGroundError": 0.001205468200846771
+    },
+    {
+      "name": "xiaobai_wave_v1",
+      "duration": 2,
+      "tracks": 22,
+      "maxSampledGroundError": 0
+    },
+    {
+      "name": "xiaobai_thinking_v1",
+      "duration": 4,
+      "tracks": 22,
+      "maxSampledGroundError": 0
+    },
+    {
+      "name": "xiaobai_sit_v1",
+      "duration": 1,
+      "tracks": 22,
+      "maxSampledGroundError": 0.0000010864998412074556
+    }
+  ],
+  "originalAttributesAndMaterialsUnchanged": true,
+  "lockedFilesUnchanged": 24,
+  "bones": 20,
+  "skins": 4
+}

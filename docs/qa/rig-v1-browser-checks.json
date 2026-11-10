@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-09",
+  "browser": "Chrome",
+  "url": "http://127.0.0.1:8791/",
+  "candidate": "rig-v1",
+  "bindingApproval": "pending",
+  "shapeApprovals": [
+    "head-v1",
+    "body-v7",
+    "v59",
+    "legs-v2"
+  ],
+  "checks": {
+    "neutralFrontSkeleton": true,
+    "neutralPerspective": true,
+    "mirroredElbowsZDegrees": 36,
+    "mirroredKneesXDegrees": -24,
+    "elbowYOffsetSavedAndReloaded": 2,
+    "allOffsetsAndRotationsReset": true,
+    "neutralDraftSaved": true,
+    "directionalLightRestoredOff": true,
+    "blackBackground": true,
+    "GLBExportContainsRig": true,
+    "projectJSONRevision": 7,
+    "consoleErrors": 0
+  },
+  "screenshots": [
+    "qa/rig-v1-neutral-review.png",
+    "qa/rig-v1-elbow-test.png",
+    "qa/rig-v1-knee-test.png"
+  ],
+  "targetedTests": {
+    "passed": 52,
+    "files": [
+      "tests/rig-binding.test.mjs",
+      "tests/project-state.test.mjs",
+      "tests/model-io.test.mjs",
+      "tests/legs-v1.test.mjs"
+    ],
+    "fullRegression": false
+  },
+  "exports": {
+    "model": "assets/design/rig-v1/xiaobai-rig-v1.glb",
+    "project": "assets/design/rig-v1/project.json",
+    "audit": "qa/rig-v1-export-check.json"
+  },
+  "animationClipsCreated": 0
+}

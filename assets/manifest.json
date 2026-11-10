@@ -48,12 +48,12 @@
             "min": [
               -40.79999923706055,
               41.79999923706055,
-              -35.0
+              -35
             ],
             "max": [
               40.79999923706055,
               98.4000015258789,
-              35.0
+              35
             ]
           },
           "boundsVerifiedFromBinaryPositions": true
@@ -117,7 +117,7 @@
         "min": [
           -40.79999923706055,
           41.79999923706055,
-          -35.0
+          -35
         ],
         "max": [
           40.79999923706055,
@@ -158,7 +158,7 @@
             ],
             "max": [
               19.878122329711914,
-              56.0,
+              56,
               17.99734115600586
             ]
           },
@@ -173,28 +173,92 @@
         ],
         "max": [
           19.878122329711914,
-          56.0,
+          56,
           17.99734115600586
         ]
       }
-    }
-  },
-  "pending": {
+    },
     "arms": {
-      "status": "not-approved",
-      "asset": null
+      "id": "v59-mirrored-combination",
+      "path": "assets/design/arms-v59/left-arm.glb",
+      "displayLines": "assets/design/arms-v59/display-lines.json",
+      "status": "approved",
+      "approvalFile": "docs/approvals/v59-assembly-approved.json",
+      "approvedAtLocal": "2026-11-09",
+      "scope": "Original v59 coordinates, materials, surface and display lines; left identity, right X mirror; approved combined with head-v1/body-v7. Stored as design copy.",
+      "sha256": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee"
     },
     "legs": {
-      "status": "not-approved",
-      "asset": null
+      "id": "legs-v2",
+      "path": "assets/design/legs-v2/legs.glb",
+      "status": "approved",
+      "approvalFile": "docs/approvals/legs-v2-approved.json",
+      "approvedAtLocal": "2026-11-09",
+      "scope": "Reviewed legs-v2 geometry, normals, topology, material, mirror and attachment position; source asset bytes preserved. Binding and motion are not approved by the shape approval.",
+      "sha256": "3269336fc38594119e69769fd7ae86d6414442191edca6b66d149858e04261f4",
+      "bytes": 1891860
+    },
+    "rig": {
+      "id": "rig-v1",
+      "schema": "xiaobai.binding-approved.v1",
+      "status": "approved",
+      "designOnly": true,
+      "shapeApproval": "docs/approvals/legs-v2-approved.json",
+      "scope": "Joint placement and skin binding of independent design copies while preserving approved rest geometry and materials.",
+      "animationClipsAuthorized": true,
+      "artifactStatus": "preserved-approved-binding-baseline",
+      "asset": "assets/design/rig-v1/xiaobai-rig-v1.glb",
+      "project": "assets/design/rig-v1/project.json",
+      "provenance": "assets/design/rig-v1/provenance.json",
+      "sha256": "cc97dd9ef74a48bdeaf0bce3c895d587be5da8e871cd3dc1c7766f0b7a5377f7",
+      "counts": {
+        "meshes": 9,
+        "vertices": 320526,
+        "triangles": 641024,
+        "skins": 4,
+        "bones": 20,
+        "animationClips": 0
+      },
+      "review": "docs/rig-v1-review.md",
+      "approvalFile": "docs/approvals/rig-v1-approved.json"
+    },
+    "actions": {
+      "id": "actions-v1",
+      "status": "approved",
+      "designOnly": true,
+      "bindingApproval": "docs/approvals/rig-v1-approved.json",
+      "asset": "assets/design/actions-v1/xiaobai-actions-v1.glb",
+      "project": "assets/design/actions-v1/project.json",
+      "parameters": "assets/design/actions-v1/default-parameters.json",
+      "review": "docs/actions-v1-review.md",
+      "clips": [
+        "walk",
+        "run",
+        "wave",
+        "thinking",
+        "sit"
+      ],
+      "sha256": "431b8b5e2dceb2dd003f05ca99e18c5d17324ee5504102cca89791e349c6faad",
+      "bytes": 24602536,
+      "counts": {
+        "bones": 20,
+        "skins": 4,
+        "animationClips": 5
+      },
+      "approvalFile": "docs/approvals/actions-v1-approved.json",
+      "approvedAtLocal": "2026-11-09",
+      "artifactStatus": "preserved-approved-motion-baseline",
+      "provenance": "assets/design/actions-v1/provenance.json",
+      "scope": "Reviewed actions-v1 clips, default parameters, transitions and adjustable controls; source artifact bytes preserved. Later parameter edits are independent design copies."
     }
   },
+  "pending": {},
   "boundaries": {
     "preserveApprovedBytes": true,
-    "approvalAuthority": "Original APPROVAL.json, not stale candidate/pending text embedded in GLB extras, material names or source configs.",
+    "approvalAuthority": "Original APPROVAL.json and subsequent explicit approval records in docs/approvals; historical pending GLB extras or provenance do not override those records.",
     "modifyApprovedBaseline": "Requires explicit subsequent user approval.",
     "designWorkspace": "Shape, rig and motion experiments act on a separate working copy and must not overwrite approved files.",
-    "generation": "This asset migration generates no new mesh; future arm and leg assets remain imports for review."
+    "generation": "Head/body/v59 arms/legs-v2, rig-v1 binding and actions-v1 are approved immutable baselines. Later edits stay in independent design copies and require explicit approval before replacing a baseline."
   },
   "references": [
     {

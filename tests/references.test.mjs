@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { createReferences } from '../src/references.js';
-import { APP_CONFIG } from '../src/config.js';
+import { createReferences } from '../web/src/references.js';
+import { APP_CONFIG } from '../web/src/config.js';
 
 function deferred() {
   let resolve;

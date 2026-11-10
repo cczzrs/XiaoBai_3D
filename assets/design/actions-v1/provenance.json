@@ -1,0 +1,59 @@
+{
+  "schema": "xiaobai.actions-candidate.v1",
+  "version": "actions-v1",
+  "approval": "pending-user-review",
+  "designOnly": true,
+  "bindingApproval": "docs/approvals/rig-v1-approved.json",
+  "approvedDefaultsSource": "xiaobai-rigged-3d/motion-config.js",
+  "geometryAndBindingPreserved": true,
+  "lockedFilesVerified": 19,
+  "model": {
+    "path": "xiaobai-actions-v1.glb",
+    "sha256": "431b8b5e2dceb2dd003f05ca99e18c5d17324ee5504102cca89791e349c6faad",
+    "bytes": 24602536
+  },
+  "project": {
+    "path": "project.json",
+    "sha256": "6841ab071239180c99130193a7430a858672455181a46329739319e43effdf67",
+    "revision": 8
+  },
+  "clips": [
+    {
+      "name": "xiaobai_walk_v1",
+      "duration": 1.2000000476837158,
+      "tracks": 22,
+      "maxSampledGroundError": 0.000037890214424018964
+    },
+    {
+      "name": "xiaobai_run_v1",
+      "duration": 0.800000011920929,
+      "tracks": 22,
+      "maxSampledGroundError": 0.001205468200846771
+    },
+    {
+      "name": "xiaobai_wave_v1",
+      "duration": 2,
+      "tracks": 22,
+      "maxSampledGroundError": 0
+    },
+    {
+      "name": "xiaobai_thinking_v1",
+      "duration": 4,
+      "tracks": 22,
+      "maxSampledGroundError": 0
+    },
+    {
+      "name": "xiaobai_sit_v1",
+      "duration": 1,
+      "tracks": 22,
+      "maxSampledGroundError": 0.0000010864998412074556
+    }
+  ],
+  "validation": [
+    "qa/actions-v1-tests.txt",
+    "qa/actions-v1-motion-tests.txt",
+    "qa/actions-v1-browser-checks.json",
+    "qa/actions-v1-browser-export-check.json"
+  ],
+  "knownReviewItem": "At larger running knee flexion, the inner leg/foot surface shows a localized pointed crease in side view. Approved skinning was preserved; this remains an explicit visual review item."
+}

@@ -1,0 +1,31 @@
+{
+  "feature": "legs-v1 腿脚设计副本与批准组合",
+  "date": "2026-11-09",
+  "environment": "External Chrome · http://127.0.0.1:8791/",
+  "approval": "legs pending user visual approval; head/body/v59 assembly already approved",
+  "scope": "仅腿脚制作、接入、保存恢复与导出相关检查，没有全流程回归",
+  "checks": [
+    "已恢复旧草稿保留空腿脚槽，使用腿脚 v1 设计副本后出现 9 个网格、650624 个三角形",
+    "正面、背面、透视组合显示，以及正侧面特写均已视觉检查",
+    "临时开启既有定向柔光检查脚背、踝脚连续性与上腿连接，随后恢复原均匀光设置",
+    "隐藏腿脚回到 7 个网格、536064 个三角形，恢复腿脚回到 9 个网格",
+    "构建模块保持原头身 5 个网格、259008 个三角形，新腿脚仅在设计模块显示",
+    "草稿保存刷新后确认已恢复本地草稿及双腿，保持腿部待确认状态",
+    "浏览器实际 GLB 下载成功；下载事件等待超时后，通过最终下载文件核验导出结果",
+    "实际组合导出含 9 网格，其中 7 个批准网格的全部世界坐标及原始材质逐项一致；未导出显示线",
+    "assets/approved 与 assets/design/arms-v59 的全部 9 文件与操作前字节大小及 SHA-256 完全一致"
+  ],
+  "tests": {
+    "command": "node --test tests/legs-v1.test.mjs tests/arm-v59.test.mjs tests/project-state.test.mjs",
+    "passed": 38,
+    "failed": 0,
+    "coverage": ["闭合连通流形", "非退化三角面与正向法线", "左右逐顶点镜像", "脚宽/深及地面尺寸", "GLB 往返", "批准资产哈希", "revision 6 与旧草稿兼容"]
+  },
+  "artifacts": ["legs-v1-assembly-front.png", "legs-v1-assembly-back.png", "legs-v1-front-detail-lit.png", "legs-v1-side-detail-lit.png", "legs-v1-export-check.json"],
+  "limits": [
+    "腿脚由历史参考轮廓拟合生成，深度与隐藏上端是设计推测，不声称与所有生成视图精确一致",
+    "没有改变批准头部、身体、手臂的几何、世界位置、材质或比例",
+    "没有新增腿部关节、蒙皮、动画或执行 Git 提交",
+    "数值检查不能代替用户外形批准"
+  ]
+}

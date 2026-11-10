@@ -1,0 +1,34 @@
+{
+  "feature": "v59 镜像双臂接入设计工作台",
+  "date": "2026-11-09",
+  "environment": "External Chrome · http://127.0.0.1:8791/",
+  "scope": "仅 v59 手臂接入与相关项目恢复、导出检查；没有执行全流程回归",
+  "checks": [
+    "默认设计模块正面显示批准头身副本和 v59 镜像双臂，7 个网格、536064 个三角形",
+    "透视视图显示双臂及环线、直线、前斜线、后斜线",
+    "切换构建模块仅显示批准头身，5 个网格、259008 个三角形",
+    "设计模块隐藏双臂后为 5 个网格，恢复显示后为 7 个网格",
+    "使用 v59 对称双臂按钮可重新装配，三角形数量保持不变",
+    "保存草稿后刷新，页面确认已恢复本地草稿并显示 v59 组合",
+    "检查到的 Chrome 日志仅有浏览器扩展警告；当前记录中没有项目来源错误",
+    "assets/approved 全部 5 个文件与操作前 SHA-256 完全一致"
+  ],
+  "tests": {
+    "command": "node --test tests/arm-v59.test.mjs tests/model-io.test.mjs tests/project-state.test.mjs",
+    "passed": 37,
+    "failed": 0,
+    "coverage": ["v59 源曲面及四类显示线数据", "左右逐顶点镜像", "肩端位置与原始材质", "走线开关", "GLB 导出往返及显示线过滤", "revision 5 内置资源恢复和旧草稿兼容"]
+  },
+  "approvedAssetHashes": {
+    "head-v1": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351",
+    "body-v7": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4",
+    "arm-v59-source-and-copy": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee"
+  },
+  "artifacts": ["v59-assembly-front.png", "v59-guides-perspective.png", "v59-approved-build.png"],
+  "boundaries": [
+    "组合为未批准设计副本；v59 原坐标与比例保留，右臂通过 X=0 镜像生成",
+    "没有修改批准头部、身体或原 v59 资源，没有新增独立手臂关节、蒙皮或动画",
+    "v59 显示线是评审叠加线，不作为三角面拓扑导出",
+    "未进行 Git 提交"
+  ]
+}

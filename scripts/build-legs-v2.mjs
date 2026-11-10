@@ -1,0 +1,34 @@
+import { registerHooks } from 'node:module';
+import { mkdir, writeFile, readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { APP_CONFIG } from '../web/src/config.js';
+const hook = registerHooks({ resolve(specifier, context, next) { return next(specifier === 'three' ? new URL('../web/vendor/three.module.js', import.meta.url).href : specifier, context); } });
+globalThis.FileReader = class { async readAsArrayBuffer(blob) { this.result = await blob.arrayBuffer(); this.onloadend?.(); } };
+const THREE = await import('three');
+const { GLTFLoader } = await import('../web/vendor/addons/loaders/GLTFLoader.js');
+const { createSmoothLegGeometry } = await import('../web/src/leg-hip-blend.js');
+const { exportModel, describeObject, disposeObjects } = await import('../web/src/model-io.js');
+const hash = (b) => createHash('sha256').update(b).digest('hex');
+const bodyBytes = await readFile(new URL('../assets/approved/body-v7/xiaobai-torso.glb', import.meta.url));
+const body = (await new GLTFLoader().parseAsync(bodyBytes.buffer.slice(bodyBytes.byteOffset, bodyBytes.byteOffset + bodyBytes.byteLength), '')).scene;
+let bodyMesh; body.traverse((o) => { if (o.isMesh) bodyMesh = o; });
+const { geometry, report } = createSmoothLegGeometry(APP_CONFIG.design.legs, APP_CONFIG.design.legHipBlend, bodyMesh.geometry);
+const root = new THREE.Group();
+root.name = 'XiaoBai_Legs_Smooth_V2';
+root.userData = { version: 'legs-v2', designOnly: true, approval: 'pending', mirrorPlane: 'x=0', skinning: false, method: 'body-tangent-hip-collar' };
+for (const sign of [1, -1]) {
+  const mesh = new THREE.Mesh(geometry.clone(), new THREE.MeshStandardMaterial(APP_CONFIG.design.legs.material));
+  mesh.name = sign > 0 ? 'Leg_R' : 'Leg_L'; mesh.scale.x = sign;
+  mesh.userData = { designOnly: true, approval: 'pending', smoothHipConnection: true };
+  root.add(mesh);
+}
+const output = new URL('../temp/generated/legs-v2/', import.meta.url);
+await mkdir(output, { recursive: true });
+const glb = new Uint8Array(await exportModel(root));
+await writeFile(new URL('legs.glb', output), glb);
+await writeFile(new URL('parameters.json', output), JSON.stringify({ legs: APP_CONFIG.design.legs, hipBlend: APP_CONFIG.design.legHipBlend }, null, 2) + '\n');
+await writeFile(new URL('contact-audit.json', output), JSON.stringify(report, null, 2) + '\n');
+const info = describeObject(root);
+await writeFile(new URL('provenance.json', output), JSON.stringify({ version: 'legs-v2', approval: 'pending', designOnly: true, previous: 'assets/design/legs-v1/legs.glb', bodyReference: { path: 'assets/approved/body-v7/xiaobai-torso.glb', sha256: hash(bodyBytes), operation: 'read-only triangle intersection and interpolated normals' }, method: 'Replace leg upper cap with a tangent collar along the actual body surface; keep original lower foot vertices and mirror across X=0.', geometry: info, sha256: hash(glb), bytes: glb.length }, null, 2) + '\n');
+console.log(JSON.stringify({ ...info, startY: report.startY, minimumClearance: report.minimumClearance, sha256: hash(glb) }));
+geometry.dispose(); disposeObjects([root, body]); hook.deregister();

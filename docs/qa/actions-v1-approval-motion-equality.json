@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "approvedArtifact": "assets/design/actions-v1/xiaobai-actions-v1.glb",
+  "currentChromeExport": "/Users/cong/Downloads/xiaobai-actions-v1 (5).glb",
+  "binaryChunkEqual": true,
+  "animationDefinitionsEqual": true,
+  "accessorDefinitionsEqual": true,
+  "binaryBytes": 24522552,
+  "binarySHA256": "8735d44a81bd14317a0fdb9c5faba437ae211dd7f0c7517361c106c2cd39be6d"
+}
