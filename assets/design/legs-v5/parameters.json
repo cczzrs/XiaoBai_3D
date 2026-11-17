@@ -1,0 +1,26 @@
+{
+  "sourceBody": "assets/approved/body-v7/xiaobai-torso.glb",
+  "sourceLegs": "assets/design/legs-v4/legs.glb",
+  "refinement": {
+    "version": "legs-v5",
+    "field": {
+      "cellSize": 0.35,
+      "halfWidth": 29.4,
+      "halfDepth": 22.4,
+      "blendRadius": 4.5
+    },
+    "transition": {
+      "footFadeEndY": 17,
+      "bodyFadeStartY": 26,
+      "bodyFadeEndY": 29,
+      "bodyPreserveAboveY": 30,
+      "boundaryGap": 0.25
+    },
+    "projection": {
+      "iterations": 3,
+      "derivativeStep": 0.002,
+      "relaxationPasses": 3,
+      "relaxationWeight": 0.4
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "version": "legs-v5",
+  "method": "local-C2-smooth-union-shared-indexed-surface",
+  "footY": 13.447979714854908,
+  "footCount": 15041,
+  "footRadial": 160,
+  "preservedFootTrianglesPerSide": 29920,
+  "bodyY": 30.17572021484375,
+  "bodyStart": 14593,
+  "bodyOffset": 30082,
+  "bodyPreservedCount": 22081,
+  "patchOffset": 52163,
+  "patchVertices": 82598,
+  "patchTriangles": 163792,
+  "grid": {
+    "nx": 84,
+    "ny": 47,
+    "nz": 128,
+    "sx": 0.35,
+    "sy": 0.34527107446784766,
+    "sz": 0.35
+  },
+  "boundaryLoops": [
+    {
+      "kind": "right-foot",
+      "count": 334,
+      "y": 13.69797971485483
+    },
+    {
+      "kind": "body",
+      "count": 738,
+      "y": 29.92572021484375
+    },
+    {
+      "kind": "left-foot",
+      "count": 334,
+      "y": 13.69797971485483
+    }
+  ]
+}

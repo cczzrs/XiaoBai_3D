@@ -204,6 +204,18 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     });
   }
 
+  function fusedBodyAsset() {
+    const id = parts.legs?.metadata.builtin;
+    const asset = id ? getBuiltinPartAsset(config, 'legs', { kind: 'builtin', id }) : null;
+    return asset?.replacesBodyInDesign ? asset : null;
+  }
+
+  function syncDraftBodyVisibility() {
+    // The approved assembly keeps its own untouched body. Only the design copy
+    // is suppressed while a complete fused body/legs candidate occupies its place.
+    if (parts.body) parts.body.wrapper.visible = visibility.body && !fusedBodyAsset();
+  }
+
   function createPart(source, slot, metadata, attach = true) {
     const build = clonePart(source);
     const copy = clonePart(source);
@@ -251,6 +263,14 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
   }
 
   function applyDesign() {
+    if (fusedBodyAsset()) {
+      for (const key of ['bodyWidth', 'bodyHeight', 'bodyDepth']) design.shape[key] = config.design.defaults.shape[key];
+      design.pose.bodyLean = config.design.defaults.pose.bodyLean;
+      motion.preset = config.design.motion.defaults.preset;
+      if (motion.eyesPreset === 'none' && motion.nosePreset === 'none') motion.playing = false;
+      transition = null;
+    }
+    syncDraftBodyVisibility();
     const { shape, rig, pose } = design;
     draft.position.set(0, 0, 0);
     const phase = motion.progress * Math.PI * 2;
@@ -373,16 +393,18 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     let vertices = 0;
     let triangles = 0;
     const summary = {};
+    const fused = mode === 'design' ? fusedBodyAsset() : null;
     for (const slot of PART_KEYS) {
       const part = parts[slot];
       const builtinAsset = part?.metadata.builtin ? getBuiltinPartAsset(config, slot, { kind: 'builtin', id: part.metadata.builtin }) : null;
-      summary[slot] = part ? { ...part.metadata, visible: visibility[slot] && !(mode === 'build' && part.metadata.designOnly), approved: Boolean(config.assets[slot].approved || builtinAsset?.approved), version: part.metadata.sourceVersion ?? config.assets[slot].version ?? null } : null;
-      if (!part || !visibility[slot] || (mode === 'build' && part.metadata.designOnly)) continue;
+      const replaced = slot === 'body' && Boolean(fused);
+      summary[slot] = part ? { ...part.metadata, visible: visibility[slot] && !replaced && !(mode === 'build' && part.metadata.designOnly), approved: !replaced && Boolean(config.assets[slot].approved || builtinAsset?.approved), version: replaced ? fused.version : part.metadata.sourceVersion ?? config.assets[slot].version ?? null, ...(replaced ? { replacedBy: 'legs', approvedBaseline: config.assets.body.version } : {}) } : null;
+      if (!part || !visibility[slot] || replaced || (mode === 'build' && part.metadata.designOnly)) continue;
       meshes += part.metadata.meshes;
       vertices += part.metadata.vertices;
       triangles += part.metadata.triangles;
     }
-    return { mode, parts: summary, meshes, vertices, triangles, bones: mode === 'design' ? bones.length : 0, skinnedMeshes: mode === 'design' ? limbRig.getStats().skinnedMeshes : 0 };
+    return { mode, parts: summary, meshes, vertices, triangles, fusedBody: Boolean(fused), bones: mode === 'design' ? bones.length : 0, skinnedMeshes: mode === 'design' ? limbRig.getStats().skinnedMeshes : 0 };
   }
 
   async function loadCandidate(file, slot) {
@@ -458,7 +480,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     if (!previous) return;
     parts[slot] = null;
     releasePart(previous);
-    needsRender = true;
+    applyDesign();
   }
 
   function render() {
@@ -540,6 +562,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
       if (!PART_KEYS.includes(slot)) throw new Error('未知模型部件。');
       visibility[slot] = Boolean(visible);
       if (parts[slot]) parts[slot].build.visible = parts[slot].wrapper.visible = visibility[slot];
+      syncDraftBodyVisibility();
       needsRender = true;
     },
     setWireframe(enabled) {
@@ -617,13 +640,20 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
       const source = mode === 'design' ? draft : assembly;
       const copy = cloneSkeleton(source);
       copy.visible = true;
+      const completeApprovedRig = limbRig.getStats().skinnedMeshes === 4;
+      const fused = mode === 'design' ? fusedBodyAsset() : null;
       copy.userData = {
         ...copy.userData, project: config.project.name, schema: config.project.schema,
-        mode, approvedSources: { head: config.assets.head.version, body: config.assets.body.version, ...(parts.arms?.metadata.builtin ? { arms: config.assets.arms.builtin.version, assemblyApproval: config.assets.arms.builtin.approvalFile } : {}), ...(parts.legs?.metadata.builtin === config.assets.legs.builtin.projectRecord.id ? { legs: config.assets.legs.builtin.version, legsApproval: config.assets.legs.builtin.approvalFile } : {}) },
+        mode, approvedSources: { head: config.assets.head.version, ...(!fused ? { body: config.assets.body.version } : {}), ...(parts.arms?.metadata.builtin ? { arms: config.assets.arms.builtin.version, ...(!fused ? { assemblyApproval: config.assets.arms.builtin.approvalFile } : {}) } : {}), ...(parts.legs?.metadata.builtin === config.assets.legs.builtin.projectRecord.id ? { legs: config.assets.legs.builtin.version, legsApproval: config.assets.legs.builtin.approvalFile } : {}) },
+        ...(fused ? { designSources: { bodyAndLegs: { version: fused.version, file: fused.url, approval: 'pending', skinning: false } }, preservedApprovedBaselines: { body: { version: config.assets.body.version, file: config.assets.body.url, operation: 'read-only source for independent design copy' }, ...(parts.arms?.metadata.builtin ? { assemblyApproval: config.assets.arms.builtin.approvalFile } : {}) } } : {}),
         designParameters: mode === 'design' ? structuredClone(design) : null,
         binding: mode === 'design' ? structuredClone(binding) : null,
-        rigApproval: mode === 'design' ? 'approved' : null,
-        rigApprovalFile: config.design.actions.bindingApproval,
+        skinning: mode === 'design' && limbRig.getStats().skinnedMeshes > 0,
+        rigApproval: mode === 'design' ? completeApprovedRig ? 'approved' : 'incomplete-design-copy' : null,
+        rigApprovalFile: mode === 'design' && completeApprovedRig ? config.design.actions.bindingApproval : null,
+        rigBaselineApproval: config.design.binding.approval,
+        rigBaselineApprovalFile: config.design.actions.bindingApproval,
+        ...(mode === 'design' && !completeApprovedRig ? { description: 'Independent shape design copy; the current limb assembly is not the complete approved rig-v1 binding.' } : {}),
         actions: mode === 'design' ? structuredClone(actions) : null,
         ...(mode === 'design' ? describeActionApproval(actions, config) : {}),
         expression: mode === 'design' ? { ...expression } : null,

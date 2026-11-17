@@ -1,0 +1,28 @@
+{
+  "version": "legs-v4",
+  "approval": "pending",
+  "designOnly": true,
+  "previous": "assets/design/legs-v3/legs.glb",
+  "previousSha256": "9c468d989848cb89c2b5804e8df5722333405ff70c3b0d0a31857a6d3fd4ccf2",
+  "method": "single-monotone-elliptical-upper-sweep-no-contact-ring",
+  "geometry": {
+    "meshes": 2,
+    "vertices": 60484,
+    "triangles": 120960,
+    "bounds": {
+      "min": [
+        -27.34943199157715,
+        0,
+        -7.499017238616943
+      ],
+      "max": [
+        27.34943199157715,
+        33.02327346801758,
+        15.499016761779785
+      ]
+    }
+  },
+  "sha256": "25bf6f666f58c7fdbf9b13a5dd06978d51c9b2452cd062113f021a2ffa5cb6e9",
+  "bytes": 2179840,
+  "binding": "not-bound; v2 vertex-index weights must not be reused"
+}

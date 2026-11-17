@@ -1,0 +1,53 @@
+{
+  "version": "legs-v4",
+  "source": "legs-v3",
+  "startY": 13.447979714854908,
+  "radial": 160,
+  "firstBlendVertex": 14881,
+  "preservedVertexCount": 15041,
+  "preservedNormalCount": 14881,
+  "preservedTriangleCount": 29920,
+  "capVertex": 30241,
+  "crown": [
+    11.27378875758749,
+    33.02327303808032,
+    2.836507261896921
+  ],
+  "boundaryJet": {
+    "x": {
+      "value": 13.92148186061374,
+      "first": -0.4955023135431169,
+      "second": 0.30936592088082193
+    },
+    "z": {
+      "value": 4,
+      "first": 0,
+      "second": 0
+    },
+    "rx": {
+      "value": 8.07118839961022,
+      "first": -0.1380293451651582,
+      "second": 0.3671866259935541
+    },
+    "rz": {
+      "value": 9.097136340286086,
+      "first": -0.15557458329062968,
+      "second": 0.4138605902426207
+    }
+  },
+  "regions": {
+    "foot": {
+      "intervals": 94,
+      "arcLength": 22.52785596742882,
+      "minimumMeanSpacing": 0.23960584802042156,
+      "maximumMeanSpacing": 0.23983827212531067
+    },
+    "upper": {
+      "intervals": 96,
+      "arcLength": 23.12343131754469,
+      "minimumMeanSpacing": 0.24081863212186733,
+      "maximumMeanSpacing": 0.24086957723513508
+    }
+  },
+  "method": "single-monotone-elliptical-upper-sweep-no-contact-ring"
+}

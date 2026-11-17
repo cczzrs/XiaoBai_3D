@@ -1,0 +1,29 @@
+{
+  "version": "legs-v3",
+  "approval": "pending",
+  "designOnly": true,
+  "previous": "assets/design/legs-v2/legs.glb",
+  "previousSha256": "3269336fc38594119e69769fd7ae86d6414442191edca6b66d149858e04261f4",
+  "bodyReference": "assets/approved/body-v7/xiaobai-torso.glb",
+  "method": "curvature-continuous-instep-uniform-arc-rings-rounded-buried-dome",
+  "geometry": {
+    "meshes": 2,
+    "vertices": 64644,
+    "triangles": 129280,
+    "bounds": {
+      "min": [
+        -27.34943199157715,
+        0,
+        -8.452322006225586
+      ],
+      "max": [
+        27.34943199157715,
+        33.02327346801758,
+        15.499016761779785
+      ]
+    }
+  },
+  "sha256": "9c468d989848cb89c2b5804e8df5722333405ff70c3b0d0a31857a6d3fd4ccf2",
+  "bytes": 2329612,
+  "binding": "not-bound; v2 vertex-index weights must not be reused"
+}

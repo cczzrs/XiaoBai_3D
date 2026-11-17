@@ -32,7 +32,7 @@
       <div class="progress-summary"><div><strong><b id="approved-count">03</b><span> / 04</span></strong><span>已批准部件</span></div><div class="progress-track"><i class="is-approved"></i><i class="is-approved"></i><i class="is-approved"></i><i></i></div></div>
       <div class="part-list" aria-label="部件列表">
         <button class="part-card" data-part="head" aria-pressed="true"><span class="part-symbol head-symbol" aria-hidden="true">◉</span><span class="part-copy"><strong>头部</strong><small>head-v1</small></span><span class="approved-badge">已批准</span></button>
-        <button class="part-card" data-part="body" aria-pressed="false"><span class="part-symbol" aria-hidden="true">◒</span><span class="part-copy"><strong>身体</strong><small>body-v7</small></span><span class="approved-badge">已批准</span></button>
+        <button class="part-card" data-part="body" aria-pressed="false"><span class="part-symbol" aria-hidden="true">◒</span><span class="part-copy"><strong>身体</strong><small id="body-version">body-v7</small></span><span id="body-badge" class="approved-badge">已批准</span></button>
         <div class="part-divider"><span>后续构建</span></div>
         <button class="part-card pending" data-part="arms" aria-pressed="false"><span class="part-symbol" aria-hidden="true">⌁</span><span class="part-copy"><strong>手臂</strong><small id="arms-file">等待导入模型</small></span><span id="arms-badge" class="pending-badge">待构建</span></button>
         <button class="part-card pending" data-part="legs" aria-pressed="false"><span class="part-symbol" aria-hidden="true">⋀</span><span class="part-copy"><strong>腿脚</strong><small id="legs-file">等待导入模型</small></span><span id="legs-badge" class="pending-badge">待构建</span></button>
@@ -44,12 +44,16 @@
         <p class="help-text">GLB / OBJ · 最大 50 MB<br>导入后可装配检查，保留候选状态。</p>
       </section>
       <section class="sidebar-section" data-mode-section="design" hidden>
-        <div class="section-title">腿脚 v2<span class="approved-badge">外形已批准</span></div>
+        <div class="section-title">身体与腿衔接<span class="draft-badge">v6 待确认</span></div>
         <p id="legs-state" class="help-text"></p>
+        <button id="use-legs-v6" class="wide-secondary" data-needs-model disabled>查看身体与腿 v6 圆润副本</button>
+        <button id="use-legs-v5" class="wide-secondary" data-needs-model disabled>对比身体与腿 v5 融合副本</button>
+        <button id="use-legs-v4" class="wide-secondary" data-needs-model disabled>对比腿脚 v4 独立副本</button>
+        <button id="use-legs-v3" class="wide-secondary" data-needs-model disabled>对比上一版腿脚 v3</button>
         <button id="use-legs-v2" class="wide-secondary" data-needs-model disabled>使用腿脚 v2 设计副本</button>
-        <label class="toggle-row"><span>显示腿脚</span><input id="design-legs-visible" type="checkbox"></label>
+        <label class="toggle-row"><span id="design-legs-visible-label">显示腿脚</span><input id="design-legs-visible" type="checkbox"></label>
         <div class="part-actions"><button data-leg-focus="front" data-needs-model disabled>正面特写</button><button data-leg-focus="right" data-needs-model disabled>侧面特写</button></div>
-        <p class="help-text">v2 外形已批准并锁定。关节绑定应用于设计副本，左右腿保持批准的镜像外形。</p>
+        <p class="help-text">v6 保留脚部，继续调整身体接缝与脚腕处的明暗过渡。设计模式共用身体与腿显示开关；批准身体原件及旧版腿脚保留，可切换对比。</p>
         <details class="leg-references"><summary>腿脚外形参考</summary><figure><img src="./assets/references/reference-approved.png" alt="腿脚正面主要参考"><figcaption>正面主要参考</figcaption></figure><figure><img src="./assets/references/01-standard-views.png" alt="标准正面、侧面和背面参考"><figcaption>标准多视角辅助参考</figcaption></figure></details>
       </section>
       <section class="sidebar-section" data-mode-section="design" hidden>
@@ -131,6 +135,7 @@
         <section class="inspector-section" data-design-panel="shape">
           <div class="section-title">形体比例<span class="draft-badge">设计副本</span></div>
           <p class="description">基于已批准模型调整整体比例，原始几何与材质保留。</p>
+          <p id="fused-shape-note" class="help-text" hidden>当前身体与腿为同一静态设计副本，保持原比例检查接缝，身体单独缩放和躯干动作暂不可用。统一外观可通过“腿脚皮肤”调整。</p>
           <div class="parameter"><div class="range-label"><label for="head-scale">头部大小</label><output data-output="shape.headScale"></output></div><input id="head-scale" type="range" data-design="shape.headScale"></div>
           <div class="parameter"><div class="range-label"><label for="body-width">身体宽度</label><output data-output="shape.bodyWidth"></output></div><input id="body-width" type="range" data-design="shape.bodyWidth"></div>
           <div class="parameter"><div class="range-label"><label for="body-height">身体高度</label><output data-output="shape.bodyHeight"></output></div><input id="body-height" type="range" data-design="shape.bodyHeight"></div>

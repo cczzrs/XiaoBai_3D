@@ -1,0 +1,20 @@
+{
+  "source": "assets/design/legs-v3/legs.glb",
+  "refinement": {
+    "version": "legs-v4",
+    "sampling": {
+      "ringSpacing": 0.24,
+      "radial": 160,
+      "denseSteps": 2048
+    },
+    "upper": {
+      "crownY": 33.02327303808032,
+      "crownCenterZ": 2.836507261896921,
+      "radiusCurvatureDecay": 0.6,
+      "radiusTaperRelaxation": 3,
+      "centerCurvatureDecay": 0.6,
+      "centerXRelaxation": 5.5,
+      "derivativeStep": 0.002
+    }
+  }
+}

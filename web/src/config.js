@@ -34,6 +34,30 @@ export const APP_CONFIG = freezeTree({
         url: './assets/design/legs-v2/legs.glb',
       },
       versions: {
+        'body-legs-fair-v6': {
+          version: 'legs-v6', label: 'v6 · 身体与脚腕圆润过渡', approved: false,
+          projectRecord: { kind: 'builtin', id: 'body-legs-fair-v6' },
+          url: './assets/design/legs-v6/body-legs.glb', replacesBodyInDesign: true,
+          review: { view: 'front', skeleton: false },
+        },
+        'body-legs-fused-v5': {
+          version: 'legs-v5', label: 'v5 · 身体与腿连续融合', approved: false,
+          projectRecord: { kind: 'builtin', id: 'body-legs-fused-v5' },
+          url: './assets/design/legs-v5/body-legs.glb', replacesBodyInDesign: true,
+          review: { view: 'front', skeleton: false },
+        },
+        'legs-continuous-v4-mirrored': {
+          version: 'legs-v4', label: 'legs-v4 · 连续圆润腿脚', approved: false,
+          projectRecord: { kind: 'builtin', id: 'legs-continuous-v4-mirrored' },
+          url: './assets/design/legs-v4/legs.glb',
+          review: { view: 'right', skeleton: false },
+        },
+        'legs-rounded-v3-mirrored': {
+          version: 'legs-v3', label: 'legs-v3 · 圆弧腿脚优化', approved: false,
+          projectRecord: { kind: 'builtin', id: 'legs-rounded-v3-mirrored' },
+          url: './assets/design/legs-v3/legs.glb',
+          review: { view: 'right', skeleton: false },
+        },
         'legs-reference-v1-mirrored': {
           version: 'legs-v1', label: 'legs-v1 · 圆润腿脚', approved: false,
           projectRecord: { kind: 'builtin', id: 'legs-reference-v1-mirrored' },
@@ -132,6 +156,36 @@ export const APP_CONFIG = freezeTree({
       preserveBelowY: 13.5, contactSpread: 2, contactSteps: 20,
       minimumCenterGap: 3, startTangentScale: 0.9, endTangentScale: 0.8,
       rings: 72, hiddenInset: 0.12, capLift: 5,
+    },
+    legRefinementV3: {
+      version: 'legs-v3',
+      // Continue the sole's curvature through the widest toe row into the instep.
+      foot: { peakSearch: [5, 8], derivativeStep: 0.002 },
+      // One surface-distance target for the foot, knee, collar and buried dome.
+      sampling: { ringSpacing: 0.24, radial: 160, denseSteps: 2048 },
+      dome: { rise: 8, startTangentLength: 4, crownRadiusScale: 0.65 },
+    },
+    legRefinementV4: {
+      version: 'legs-v4',
+      sampling: { ringSpacing: 0.24, radial: 160, denseSteps: 2048 },
+      upper: {
+        crownY: 33.02327303808032, crownCenterZ: 2.836507261896921,
+        radiusCurvatureDecay: 0.6, radiusTaperRelaxation: 3, centerCurvatureDecay: 0.6,
+        centerXRelaxation: 5.5, derivativeStep: 0.002,
+      },
+    },
+    bodyLegBlendV5: {
+      version: 'legs-v5',
+      field: { cellSize: 0.35, halfWidth: 29.4, halfDepth: 22.4, blendRadius: 4.5 },
+      transition: { footFadeEndY: 17, bodyFadeStartY: 26, bodyFadeEndY: 29, bodyPreserveAboveY: 30, boundaryGap: 0.25 },
+      projection: { iterations: 3, derivativeStep: 0.002, relaxationPasses: 3, relaxationWeight: 0.4 },
+    },
+    bodyLegBlendV6: {
+      version: 'legs-v6',
+      field: { cellSize: 0.35, halfWidth: 29.4, halfDepth: 22.4, blendRadius: 4.5, stableLegDistance: true, distanceSamples: 2048 },
+      upper: { radiusCurvatureDecay: 1.2, centerCurvatureDecay: 1.2 },
+      transition: { footFadeEndY: 17, naturalBodyFade: true, bodyPreserveAboveY: 32.5, boundaryGap: 0.25 },
+      projection: { iterations: 3, derivativeStep: 0.002, relaxationPasses: 3, relaxationWeight: 0.4 },
     },
     armGuides: {
       enabled: false,

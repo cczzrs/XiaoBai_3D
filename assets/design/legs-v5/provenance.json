@@ -1,0 +1,27 @@
+{
+  "version": "legs-v5",
+  "approval": "pending",
+  "designOnly": true,
+  "bodyReferenceSha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4",
+  "legsReferenceSha256": "25bf6f666f58c7fdbf9b13a5dd06978d51c9b2452cd062113f021a2ffa5cb6e9",
+  "method": "local-C2-smooth-union-shared-indexed-surface",
+  "geometry": {
+    "meshes": 1,
+    "vertices": 134761,
+    "triangles": 269518,
+    "bounds": {
+      "min": [
+        -27.34943199157715,
+        0,
+        -17.99728775024414
+      ],
+      "max": [
+        27.34943199157715,
+        56,
+        17.997331619262695
+      ]
+    }
+  },
+  "sha256": "a4a3c8b57558d5414843bb6fdded8a8520500e6489540a17501227d693af5c28",
+  "binding": "not-bound; unified design copy only"
+}

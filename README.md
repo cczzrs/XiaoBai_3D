@@ -2,6 +2,8 @@
 
 本地运行的模型装配、形体、骨骼和动作工作台。当前已批准：头部 head-v1、身体 body-v7、v59 镜像双臂、腿脚 v2、关节绑定 rig-v1 和动作 actions-v1。批准资产保留原件，后续编辑使用独立设计副本。
 
+身体与腿 [v6 圆润设计副本](docs/legs-v6-review.md) 已加入形体设计页，点击“查看身体与腿 v6 圆润副本”预览。v6 保留已认可的脚部，继续优化身体接缝与脚腕处的明暗过渡；形体仍待确认，尚未绑定。设计模式隐藏独立身体副本，显示融合后的身体与双腿；构建模式继续显示批准身体原件。[v5 融合副本](docs/legs-v5-review.md)、[v4 独立副本](docs/legs-v4-review.md)、v3 与已批准的 v2 均可切换对比。
+
 ## 启动
 
 在项目根目录运行：
@@ -46,6 +48,8 @@ AGENTS.md               项目工作约定
 - [工作台使用说明](docs/WORKBENCH.md)：装配、形体、绑定、动作、材质、保存与导出。
 - [项目结构与维护](docs/PROJECT_STRUCTURE.md)：目录职责、服务器路径、临时产物和历史路径映射。
 - [资产与审批依据](docs/ASSETS.md)：来源、坐标、哈希和批准范围。
+- [身体与腿 v6 评审](docs/legs-v6-review.md)：身体接缝与脚腕的圆润过渡、脚部保留及本轮相关验证。
+- [身体与腿 v5 评审](docs/legs-v5-review.md)：上一版融合副本、脚部保留与模式切换。
 - [动作 v1 说明](docs/actions-v1-review.md) · [绑定 v1 说明](docs/rig-v1-review.md) · [腿脚 v2 说明](docs/legs-v2-review.md)。
 - [当前动作批准记录](docs/approvals/actions-v1-approved.json)：继承前序批准与 24 个基线文件快照。
 - [专项验证记录](docs/VALIDATION.md)：各阶段检查及其范围。

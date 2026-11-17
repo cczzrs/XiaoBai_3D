@@ -1,0 +1,23 @@
+{
+  "source": "assets/design/legs-v2/parameters.json",
+  "refinement": {
+    "version": "legs-v3",
+    "foot": {
+      "peakSearch": [
+        5,
+        8
+      ],
+      "derivativeStep": 0.002
+    },
+    "sampling": {
+      "ringSpacing": 0.24,
+      "radial": 160,
+      "denseSteps": 2048
+    },
+    "dome": {
+      "rise": 8,
+      "startTangentLength": 4,
+      "crownRadiusScale": 0.65
+    }
+  }
+}

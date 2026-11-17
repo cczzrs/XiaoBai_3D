@@ -1,0 +1,33 @@
+{
+  "toeY": 6.306949350232339,
+  "startY": 13.447979714854908,
+  "radial": 160,
+  "firstBlendVertex": 14881,
+  "contactVertex": 20481,
+  "capVertex": 32321,
+  "crown": [
+    11.182408844938685,
+    33.02327303808032,
+    2.836507261896921
+  ],
+  "regions": {
+    "foot": {
+      "intervals": 94,
+      "arcLength": 22.52785596742882,
+      "minimumMeanSpacing": 0.23960584802042156,
+      "maximumMeanSpacing": 0.23983827212531067
+    },
+    "collar": {
+      "intervals": 35,
+      "arcLength": 8.428335270199389,
+      "minimumMeanSpacing": 0.24071174562335101,
+      "maximumMeanSpacing": 0.2408068492947081
+    },
+    "dome": {
+      "intervals": 74,
+      "arcLength": 17.83157782624202,
+      "minimumMeanSpacing": 0.2407090254277048,
+      "maximumMeanSpacing": 0.24096573371913382
+    }
+  }
+}
