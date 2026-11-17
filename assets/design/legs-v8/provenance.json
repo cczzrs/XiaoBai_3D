@@ -1,0 +1,51 @@
+{
+  "version": "legs-v8",
+  "approval": "pending",
+  "designOnly": true,
+  "source": "assets/design/legs-v6/body-legs.glb",
+  "sourceSha256": "d6304d97b26ddd0745a1907f0d423611f40f2b7949c1d528be97bd9a3ec16edd",
+  "method": "independent-elliptical-leg-sweep-fixed-front-back-plane-mirrored-upper-topology",
+  "geometry": {
+    "meshes": 2,
+    "vertices": 60484,
+    "triangles": 120960,
+    "bounds": {
+      "min": [
+        -27.34943199157715,
+        0,
+        -7.499017238616943
+      ],
+      "max": [
+        27.34943199157715,
+        33.02327346801758,
+        15.499016761779785
+      ]
+    }
+  },
+  "files": {
+    "legs.glb": {
+      "bytes": 2180016,
+      "sha256": "d27b37edec17c2524ea861b10d64c05d3cbc9301218f52580a18af460d12e09f",
+      "meshes": 2
+    },
+    "leg-left.glb": {
+      "bytes": 1090276,
+      "sha256": "4b880960f177db673eb0afce8ae8bcc6bfe468e2e47c55bd14054c5714bac646",
+      "meshes": 1
+    },
+    "leg-right.glb": {
+      "bytes": 1090260,
+      "sha256": "44fbb904af445b0864050aa7eabceeea9c18bd6b0dcd08f43167a635ff85b8d7",
+      "meshes": 1
+    }
+  },
+  "frontBackPlaneZ": 4,
+  "preservedFoot": {
+    "vertexCount": 15041,
+    "normalCount": 15041,
+    "triangleCount": 29920,
+    "positionAndNormalBytes": "unchanged",
+    "triangleOrder": "unchanged"
+  },
+  "binding": "not-bound; independent left and right design meshes require new skin weights"
+}

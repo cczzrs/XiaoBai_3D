@@ -1,0 +1,74 @@
+{
+  "version": "rig-v7",
+  "approval": "pending",
+  "visibleShapeReference": "./docs/approvals/legs-v6-shape-approved.json",
+  "independentStructureApproval": "pending",
+  "sourceHashes": {
+    "head": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351",
+    "arms": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee",
+    "legs": "557c99070095afb996df0bf063ee88a34fd568ffdc1cb823c53e6f29ee413963",
+    "body": "af464810d0dade9940c1a06114ad47f4665430a19142719340894708a05a69c6"
+  },
+  "files": {
+    "xiaobai-rig-v7.glb": {
+      "bytes": 34516472,
+      "sha256": "81f1814b776a4c58d4d3b54c90950f484c62fc9e457d912a39ae0c75709fde2e"
+    },
+    "xiaobai-legs-v7-actions-design.glb": {
+      "bytes": 37860564,
+      "sha256": "3c67386411487adc6761b3dbe3e509c9375f3b8c9e46eda9315adfe5f4be2683"
+    }
+  },
+  "stats": {
+    "bones": 20,
+    "limbBones": 16,
+    "skinnedMeshes": 5,
+    "weightedVertices": 421339,
+    "maximumInfluences": 4,
+    "slots": [
+      "arms",
+      "body",
+      "legs"
+    ],
+    "armsBound": true,
+    "legsBound": true,
+    "bodyBound": true,
+    "completeLimbRig": true,
+    "splitBodyLegs": true,
+    "rigVersion": "rig-v7",
+    "fusedBodyLegs": false,
+    "bindingVersions": [
+      "rig-v1",
+      "rig-v7"
+    ],
+    "skinning": "linear-blend",
+    "animations": 0
+  },
+  "clips": [
+    {
+      "name": "xiaobai_walk_v1",
+      "duration": 1.2,
+      "tracks": 22
+    },
+    {
+      "name": "xiaobai_run_v1",
+      "duration": 0.8,
+      "tracks": 22
+    },
+    {
+      "name": "xiaobai_wave_v1",
+      "duration": 2,
+      "tracks": 22
+    },
+    {
+      "name": "xiaobai_thinking_v1",
+      "duration": 4,
+      "tracks": 22
+    },
+    {
+      "name": "xiaobai_sit_v1",
+      "duration": 1,
+      "tracks": 22
+    }
+  ]
+}

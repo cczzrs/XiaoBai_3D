@@ -1,0 +1,75 @@
+{
+  "schema": "xiaobai.shape-approval.v1",
+  "approval": "approved",
+  "approvedDate": "2026-11-15",
+  "timezone": "America/Los_Angeles",
+  "approvalSource": "explicit-user-message",
+  "userApprovalText": "可以了，完成腿部的剩余部分吧",
+  "scope": "The reviewed legs-v6 neutral external shape: the unified body-and-legs design copy, including the accepted feet and rounded body/ankle transitions. This records acceptance of the shape only; it does not approve new skinning weights, deformation, pose results or motion clips, and does not replace the approved body-v7 original.",
+  "approvedLegs": {
+    "version": "legs-v6",
+    "projectRecord": {
+      "kind": "builtin",
+      "id": "body-legs-fair-v6"
+    },
+    "path": "assets/design/legs-v6/body-legs.glb",
+    "placement": {
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "rotationEulerRadians": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "mirrorPlane": "x=0",
+    "mirrorStoredWithinAsset": true,
+    "meshes": 1,
+    "vertices": 144419,
+    "triangles": 288834,
+    "sha256": "d6304d97b26ddd0745a1907f0d423611f40f2b7949c1d528be97bd9a3ec16edd",
+    "containsBodyDesignCopy": true,
+    "preservedFeet": {
+      "verticesPerSide": 15041,
+      "trianglesPerSide": 29920,
+      "positionNormalAndIndexMapping": "exactly retained from the reviewed source"
+    }
+  },
+  "priorShapeReview": "docs/legs-v6-review.md",
+  "priorApprovedBody": {
+    "path": "assets/approved/body-v7/xiaobai-torso.glb",
+    "sha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4",
+    "operation": "read-only baseline; not replaced"
+  },
+  "previousApprovalRecords": [
+    "docs/approvals/legs-v2-approved.json",
+    "docs/approvals/rig-v1-approved.json",
+    "docs/approvals/actions-v1-approved.json"
+  ],
+  "constraints": {
+    "preserveApprovedAssetBytes": true,
+    "preserveAcceptedNeutralGeometryNormalsTopologyMaterialsAndTransforms": true,
+    "riggingLocation": "independent-design-copy-only",
+    "authorizedNextStage": "complete leg joint binding, pose controls and integration/export with the existing motion definitions in a design copy",
+    "rigApproval": "pending-user-review",
+    "motionResultApproval": "pending-user-review",
+    "doesNotReplaceApprovedBodyOriginal": true
+  },
+  "fingerprintAlgorithm": "SHA-256",
+  "lockedFileSnapshot": [
+    {
+      "path": "assets/design/legs-v6/body-legs.glb",
+      "sizeBytes": 6933580,
+      "sha256": "d6304d97b26ddd0745a1907f0d423611f40f2b7949c1d528be97bd9a3ec16edd"
+    }
+  ],
+  "provenanceNote": "Pending/unbound fields in the original GLB, provenance.json and earlier review reports describe their pre-approval state. This new shape approval record supersedes only that shape status without changing historical asset bytes; binding and motion effects remain pending review."
+}

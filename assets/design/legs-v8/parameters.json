@@ -1,0 +1,22 @@
+{
+  "source": "assets/design/legs-v6/body-legs.glb",
+  "footProfile": "assets/design/legs-v3/parameters.json",
+  "refinement": {
+    "version": "legs-v8",
+    "symmetryCenterZ": 4,
+    "sampling": {
+      "ringSpacing": 0.24,
+      "radial": 160,
+      "denseSteps": 2048
+    },
+    "upper": {
+      "crownY": 33.02327303808032,
+      "crownCenterZ": 4,
+      "radiusCurvatureDecay": 1.2,
+      "radiusTaperRelaxation": 3,
+      "centerCurvatureDecay": 1.2,
+      "centerXRelaxation": 5.5,
+      "derivativeStep": 0.002
+    }
+  }
+}

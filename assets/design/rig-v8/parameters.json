@@ -1,0 +1,220 @@
+{
+  "bindingVersion": "rig-v8",
+  "bindingApproval": "pending",
+  "binding": {
+    "offsets": {
+      "shoulderL": [
+        0,
+        0,
+        0
+      ],
+      "elbowL": [
+        0,
+        0,
+        0
+      ],
+      "wristL": [
+        0,
+        0,
+        0
+      ],
+      "handTipL": [
+        0,
+        0,
+        0
+      ],
+      "hipL": [
+        0,
+        0,
+        0
+      ],
+      "kneeL": [
+        0,
+        0,
+        0
+      ],
+      "ankleL": [
+        0,
+        0,
+        0
+      ],
+      "toeTipL": [
+        0,
+        0,
+        0
+      ],
+      "shoulderR": [
+        0,
+        0,
+        0
+      ],
+      "elbowR": [
+        0,
+        0,
+        0
+      ],
+      "wristR": [
+        0,
+        0,
+        0
+      ],
+      "handTipR": [
+        0,
+        0,
+        0
+      ],
+      "hipR": [
+        0,
+        0,
+        0
+      ],
+      "kneeR": [
+        0,
+        0,
+        0
+      ],
+      "ankleR": [
+        0,
+        0,
+        0
+      ],
+      "toeTipR": [
+        0,
+        0,
+        0
+      ]
+    },
+    "rotations": {
+      "shoulderL": [
+        0,
+        0,
+        0
+      ],
+      "elbowL": [
+        0,
+        0,
+        0
+      ],
+      "wristL": [
+        0,
+        0,
+        0
+      ],
+      "handTipL": [
+        0,
+        0,
+        0
+      ],
+      "hipL": [
+        0,
+        0,
+        0
+      ],
+      "kneeL": [
+        0,
+        0,
+        0
+      ],
+      "ankleL": [
+        0,
+        0,
+        0
+      ],
+      "toeTipL": [
+        0,
+        0,
+        0
+      ],
+      "shoulderR": [
+        0,
+        0,
+        0
+      ],
+      "elbowR": [
+        0,
+        0,
+        0
+      ],
+      "wristR": [
+        0,
+        0,
+        0
+      ],
+      "handTipR": [
+        0,
+        0,
+        0
+      ],
+      "hipR": [
+        0,
+        0,
+        0
+      ],
+      "kneeR": [
+        0,
+        0,
+        0
+      ],
+      "ankleR": [
+        0,
+        0,
+        0
+      ],
+      "toeTipR": [
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "weights": {
+    "bodyFreeY": 13.447979927062988,
+    "bodyFullY": 40,
+    "centerHalfWidth": 5,
+    "kneeContribution": 0.1
+  },
+  "actions": {
+    "parameters": {
+      "transition": {
+        "duration": 0.3
+      },
+      "walk": {
+        "duration": 1.2,
+        "hipFront": 20,
+        "hipRear": -20,
+        "kneeFront": 15,
+        "kneeRear": 30,
+        "armSwing": 15
+      },
+      "run": {
+        "duration": 0.8,
+        "hipFront": 45,
+        "hipRear": -25,
+        "knee": 70,
+        "forwardLean": 8,
+        "armFront": 45,
+        "armRear": -35,
+        "elbowFront": 95,
+        "elbowRear": 80,
+        "rearTwist": 180
+      },
+      "wave": {
+        "duration": 2,
+        "upperArmElevation": 70,
+        "elbowFlexion": 80,
+        "wristAmplitude": 15
+      },
+      "thinking": {
+        "duration": 4,
+        "minimum": 9,
+        "middle": 13,
+        "maximum": 17
+      },
+      "sit": {
+        "hip": 80,
+        "knee": 60
+      }
+    },
+    "waveSide": "L"
+  }
+}

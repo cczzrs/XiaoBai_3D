@@ -44,16 +44,20 @@
         <p class="help-text">GLB / OBJ · 最大 50 MB<br>导入后可装配检查，保留候选状态。</p>
       </section>
       <section class="sidebar-section" data-mode-section="design" hidden>
-        <div class="section-title">身体与腿衔接<span class="draft-badge">v6 待确认</span></div>
+        <div class="section-title">前后对称双腿 v8<span class="draft-badge">设计副本</span></div>
         <p id="legs-state" class="help-text"></p>
-        <button id="use-legs-v6" class="wide-secondary" data-needs-model disabled>查看身体与腿 v6 圆润副本</button>
+        <button id="use-legs-v8" class="wide-secondary" data-needs-model disabled>使用 v8 前后对称双腿</button>
+        <button id="use-legs-v7" class="wide-secondary" data-needs-model disabled>对比 v7 独立双腿</button>
+        <button id="use-legs-v6" class="wide-secondary" data-needs-model disabled>对比 v6 一体模型</button>
         <button id="use-legs-v5" class="wide-secondary" data-needs-model disabled>对比身体与腿 v5 融合副本</button>
         <button id="use-legs-v4" class="wide-secondary" data-needs-model disabled>对比腿脚 v4 独立副本</button>
         <button id="use-legs-v3" class="wide-secondary" data-needs-model disabled>对比上一版腿脚 v3</button>
         <button id="use-legs-v2" class="wide-secondary" data-needs-model disabled>使用腿脚 v2 设计副本</button>
         <label class="toggle-row"><span id="design-legs-visible-label">显示腿脚</span><input id="design-legs-visible" type="checkbox"></label>
+        <label class="toggle-row" id="design-body-visible-row" hidden><span>显示独立身体副本</span><input id="design-body-visible" type="checkbox"></label>
+        <div class="part-actions" id="split-legs-actions" hidden><button id="isolate-design-legs" data-needs-model disabled>单独查看双腿</button><button id="show-design-assembly" data-needs-model disabled>显示完整装配</button></div>
         <div class="part-actions"><button data-leg-focus="front" data-needs-model disabled>正面特写</button><button data-leg-focus="right" data-needs-model disabled>侧面特写</button></div>
-        <p class="help-text">v6 保留脚部，继续调整身体接缝与脚腕处的明暗过渡。设计模式共用身体与腿显示开关；批准身体原件及旧版腿脚保留，可切换对比。</p>
+        <p class="help-text">v8 左右腿各自独立，前后对称，顶部为圆润椭圆弧面。脚部保留，身体接合处使用配套设计副本；可单独查看双腿或完整装配。</p>
         <details class="leg-references"><summary>腿脚外形参考</summary><figure><img src="./assets/references/reference-approved.png" alt="腿脚正面主要参考"><figcaption>正面主要参考</figcaption></figure><figure><img src="./assets/references/01-standard-views.png" alt="标准正面、侧面和背面参考"><figcaption>标准多视角辅助参考</figcaption></figure></details>
       </section>
       <section class="sidebar-section" data-mode-section="design" hidden>
@@ -71,11 +75,11 @@
         <p class="help-text">头身与双臂组合已批准。保留 v59 曲面、比例、材质及镜像位置。</p>
       </section>
       <section class="sidebar-section" data-mode-section="design" hidden>
-        <div class="section-title">关节层级<span class="approved-badge">已批准</span></div>
+        <div class="section-title">关节层级<span id="skeleton-approval-badge" class="approved-badge">基线已批准</span></div>
         <ol class="bone-tree"><li><span class="joint-dot"></span> Root <small>根节点</small></li><li><span class="joint-dot"></span> Body → Neck → Head <small>身体与头部</small></li><li><span class="joint-dot"></span> Shoulder → Elbow → Wrist <small>左右肩 · 肘 · 腕</small></li><li><span class="joint-dot"></span> Hip → Knee → Ankle <small>左右髋 · 膝 · 踝</small></li><li><span class="joint-dot"></span> HandTip / ToeTip <small>掌端与脚尖定位</small></li></ol>
         <p id="binding-summary" class="help-text">正在载入关节绑定副本。</p>
       </section>
-      <div class="library-footer"><span class="lock-icon" aria-hidden="true">▣</span><div><strong>外形、绑定与动作已批准</strong><p>批准基线保留原件<br>后续调整使用独立设计副本</p></div></div>
+      <div class="library-footer"><span class="lock-icon" aria-hidden="true">▣</span><div><strong id="library-approval-title">批准基线保留原件</strong><p>批准记录分别保留<br>后续调整使用独立设计副本</p></div></div>
     </aside>
 
     <section class="viewport-area" aria-label="3D 工作视口">
@@ -143,8 +147,8 @@
           <button id="reset-shape" class="wide-secondary">恢复批准比例</button>
         </section>
         <section class="inspector-section" data-design-panel="rig" hidden>
-          <div class="section-title">关节绑定 v1<span class="approved-badge">已批准</span></div>
-          <p class="description">头身保持刚性，四肢使用平滑蒙皮。中立姿态保持全部批准外形。动作在独立设计副本中预览。</p>
+          <div class="section-title"><span id="binding-title">关节绑定 v1</span><span id="binding-badge" class="approved-badge">基线已批准</span></div>
+          <p id="binding-description" class="description">头身保持刚性，四肢使用平滑蒙皮。中立姿态保持全部批准外形。动作在独立设计副本中预览。</p>
           <label class="toggle-row"><span>显示骨骼</span><input id="show-skeleton" type="checkbox"></label>
           <label class="stacked-label" for="binding-joint">检查关节</label>
           <select id="binding-joint">
@@ -164,7 +168,7 @@
           <div class="parameter"><div class="range-label"><label for="binding-rotation-x">X 轴转角</label><output id="binding-rotation-x-value"></output></div><input id="binding-rotation-x" type="range" data-binding="rotations" data-axis="0"></div>
           <div class="parameter"><div class="range-label"><label for="binding-rotation-y">Y 轴转角</label><output id="binding-rotation-y-value"></output></div><input id="binding-rotation-y" type="range" data-binding="rotations" data-axis="1"></div>
           <div class="parameter"><div class="range-label"><label for="binding-rotation-z">Z 轴转角</label><output id="binding-rotation-z-value"></output></div><input id="binding-rotation-z" type="range" data-binding="rotations" data-axis="2"></div>
-          <p id="binding-joint-note" class="help-text">拖动转角检查蒙皮，回到中立即恢复批准外形。</p>
+          <p id="binding-joint-note" class="help-text">拖动转角检查蒙皮，回到中立即恢复当前模型外形。</p>
           <button id="binding-neutral" class="wide-secondary" data-needs-model disabled>回到中立姿态</button>
           <button id="binding-reset" class="wide-secondary" data-needs-model disabled>恢复本版关节位置</button>
           <details class="binding-offsets"><summary>根与颈部位置</summary>
@@ -172,7 +176,7 @@
           <div class="parameter"><div class="range-label"><label for="neck-y">颈关节高度</label><output data-output="rig.neckY"></output></div><input id="neck-y" type="range" data-design="rig.neckY"></div>
           <button id="reset-rig" class="wide-secondary">恢复关节位置</button>
           </details>
-          <div class="inline-note">关节位置与转角可以保存为设计草稿。掌端和脚尖是末端定位点，由腕与踝带动；绑定与动作基线均已批准。</div>
+          <div id="binding-footnote" class="inline-note">关节位置与转角可以保存为设计草稿。掌端和脚尖是末端定位点，由腕与踝带动；绑定与动作基线均已批准。</div>
         </section>
         <section class="inspector-section face-section" data-design-panel="face" hidden>
           <div class="section-title">五官参数与动作<span class="draft-badge">设计副本</span></div>
@@ -231,8 +235,8 @@
           <p class="help-text">可与身体动作一起播放。点击视口下方播放按钮，或拖动时间轴检查表情；幅度为 0 时保持静态。</p>
         </section>
         <section class="inspector-section" data-design-panel="motion" hidden>
-          <div class="section-title">动作设计 v1<span class="approved-badge">基线已批准</span></div>
-          <p class="description">五个动作及默认参数已批准。选择动作后播放，或拖动时间轴逐帧检查。</p>
+          <div class="section-title"><span id="action-panel-title">动作设计 v1</span><span id="action-panel-badge" class="approved-badge">基线已批准</span></div>
+          <p id="action-panel-description" class="description">五个动作及默认参数已批准。选择动作后播放，或拖动时间轴逐帧检查。</p>
           <p id="action-approval-state" class="help-text"></p>
           <div class="action-presets" role="group" aria-label="标准动作"><button data-action="walk">步行</button><button data-action="run">小跑</button><button data-action="wave">招手</button><button data-action="thinking">思考</button><button data-action="sit">坐姿</button><button data-action="none">中立</button></div>
           <label class="stacked-label" for="motion-preset">当前动作</label><select id="motion-preset"><option value="none">中立姿态</option><option value="walk">原地步行</option><option value="run">原地小跑</option><option value="wave">招手</option><option value="thinking">思考鼻伸缩</option><option value="sit">坐姿保持</option><option value="nod">轻轻点头</option><option value="sway">左右摇摆</option><option value="breathe">呼吸起伏</option></select>
@@ -267,7 +271,7 @@
           <div data-action-group="transition" hidden><div class="subsection-title">切换过渡参数</div><div class="parameter"><div class="range-label"><label for="action-transition-duration">动作过渡</label><output data-action-output="transition.duration"></output></div><input id="action-transition-duration" type="range" data-action-param="transition.duration"></div></div>
 <button id="reset-action-parameters" class="wide-secondary">恢复当前动作默认参数</button>
           <button id="export-actions" class="wide-secondary" data-needs-model disabled>导出全部动作 GLB</button>
-          <p class="help-text">参数随项目 JSON 保存。动作 GLB 包含五个片段；切换过渡用于工作台预览。坐姿为保持姿态。</p>
+          <p id="action-export-note" class="help-text">参数随项目 JSON 保存。动作 GLB 包含五个片段；切换过渡用于工作台预览。坐姿为保持姿态。</p>
           <details class="binding-offsets"><summary>附加静态姿态与旧版动作</summary>          <div class="section-title">静态姿态<span class="tiny-label">POSE</span></div>
           <div class="parameter"><div class="range-label"><label for="head-yaw">头部左右转向</label><output data-output="pose.headYaw"></output></div><input id="head-yaw" type="range" data-design="pose.headYaw"></div>
           <div class="parameter"><div class="range-label"><label for="head-pitch">抬头 / 低头</label><output data-output="pose.headPitch"></output></div><input id="head-pitch" type="range" data-design="pose.headPitch"></div>

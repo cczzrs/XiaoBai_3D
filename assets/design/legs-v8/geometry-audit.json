@@ -1,0 +1,57 @@
+{
+  "schema": "xiaobai.symmetric-legs.v1",
+  "version": "legs-v8",
+  "source": "legs-v6",
+  "frontBackPlaneZ": 4,
+  "startY": 13.447979714854908,
+  "radial": 160,
+  "firstBlendVertex": 14881,
+  "preservedVertexCount": 15041,
+  "preservedNormalCount": 15041,
+  "preservedTriangleCount": 29920,
+  "upperFirstVertex": 15041,
+  "capVertex": 30241,
+  "crown": [
+    11.273792215706553,
+    33.02327303808032,
+    4
+  ],
+  "boundaryJet": {
+    "x": {
+      "value": 13.92148186061374,
+      "first": -0.4955023135431169,
+      "second": 0.30936592088082193
+    },
+    "z": {
+      "value": 4,
+      "first": 0,
+      "second": 0
+    },
+    "rx": {
+      "value": 8.07118839961022,
+      "first": -0.1380293451651582,
+      "second": 0.3671866259935541
+    },
+    "rz": {
+      "value": 9.097136340286086,
+      "first": -0.15557458329062968,
+      "second": 0.4138605902426207
+    }
+  },
+  "regions": {
+    "foot": {
+      "intervals": 94,
+      "arcLength": 22.52785596742882,
+      "minimumMeanSpacing": 0.23960584802042156,
+      "maximumMeanSpacing": 0.23983827212531067
+    },
+    "upper": {
+      "intervals": 96,
+      "arcLength": 23.075906532132354,
+      "minimumMeanSpacing": 0.2403238980988145,
+      "maximumMeanSpacing": 0.24037490017592492
+    }
+  },
+  "method": "independent-elliptical-leg-sweep-fixed-front-back-plane-mirrored-upper-topology",
+  "sourceSha256": "d6304d97b26ddd0745a1907f0d423611f40f2b7949c1d528be97bd9a3ec16edd"
+}

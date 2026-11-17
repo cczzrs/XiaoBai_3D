@@ -6,12 +6,12 @@ import { createAppearanceController, createStudioLighting } from './appearance.j
 import { loadBuiltinArms, setArmGuides } from './arm-v59.js';
 import { loadBuiltinLegs } from './legs-v1.js';
 import { getBuiltinPartAsset } from './builtin-parts.js';
-import { createLimbRig } from './limb-rig.js';
+import { createLimbRig } from './limb-rig-v8.js';
 import { validateBinding, validateActions } from './project-state.js';
 import { clone as cloneSkeleton } from '../vendor/addons/utils/SkeletonUtils.js';
 
 import { sampleAction, applyAction, actionDuration, captureActionPose, blendActionPose } from './action-motion.js';
-import { bakeActionClips } from './action-export.js';
+import { bakeActionClips } from './action-export-v8.js';
 import { describeActionApproval } from './action-approval.js';
 
 const PART_KEYS = ['head', 'body', 'arms', 'legs'];
@@ -210,10 +210,27 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     return asset?.replacesBodyInDesign ? asset : null;
   }
 
+  function splitBodyAsset() {
+    const id = parts.legs?.metadata.builtin;
+    const asset = id ? getBuiltinPartAsset(config, 'legs', { kind: 'builtin', id }) : null;
+    return asset?.companionBody ? asset : null;
+  }
+
+  function designSourceMetadata(asset) {
+    const source = definition => ({ version: definition.version, file: definition.url,
+      approval: definition.approved ? 'approved' : 'pending', approvalFile: definition.approvalFile,
+      skinning: Boolean(asset.binding), bindingVersion: asset.binding?.version, bindingApproval: asset.binding?.approval });
+    return {
+      designSources: asset.companionBody ? { body: source(asset.companionBody), legs: source(asset) } : { bodyAndLegs: source(asset) },
+      preservedApprovedBaselines: { body: { version: config.assets.body.version, file: config.assets.body.url, operation: 'read-only source for independent design copy' }, ...(parts.arms?.metadata.builtin ? { assemblyApproval: config.assets.arms.builtin.approvalFile } : {}) },
+    };
+  }
+
   function syncDraftBodyVisibility() {
-    // The approved assembly keeps its own untouched body. Only the design copy
-    // is suppressed while a complete fused body/legs candidate occupies its place.
-    if (parts.body) parts.body.wrapper.visible = visibility.body && !fusedBodyAsset();
+    // The approved assembly keeps its untouched body. A split companion is a
+    // separate design object, with its own body visibility and material target.
+    if (parts.body) parts.body.wrapper.visible = visibility.body && !fusedBodyAsset() && !splitBodyAsset();
+    if (parts.legs?.bodyDesignPart) parts.legs.bodyDesignPart.wrapper.visible = visibility.body;
   }
 
   function createPart(source, slot, metadata, attach = true) {
@@ -226,7 +243,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     wrapper.add(offset);
     offset.add(copy);
     const builtinAsset = metadata.builtin ? getBuiltinPartAsset(config, slot, { kind: 'builtin', id: metadata.builtin }) : null;
-    const approved = config.assets[slot].approved || builtinAsset?.approved;
+    const approved = metadata.approved ?? (config.assets[slot].approved || builtinAsset?.approved);
     const sourceData = { ...source.userData, approval: approved ? 'approved' : 'pending', approvalFile: builtinAsset?.approvalFile, version: metadata.sourceVersion ?? config.assets[slot].version ?? null, sourceFile: metadata.name };
     build.userData = structuredClone(sourceData);
     copy.userData = structuredClone(sourceData);
@@ -240,6 +257,27 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     return part;
   }
 
+  function createLoadedPart(loaded, slot, attach = true) {
+    const { root, bodyCompanion, ...metadata } = loaded;
+    const part = createPart(root, slot, metadata, false);
+    try {
+      if (bodyCompanion) {
+        const { root: bodyRoot, ...bodyMetadata } = bodyCompanion;
+        part.bodyDesignPart = createPart(bodyRoot, 'body', bodyMetadata, false);
+        part.bodyDesignPart.wrapper.name = `${bodyMetadata.sourceVersion}_ShapePivot`;
+        part.bodyDesignPart.offset.name = `${bodyMetadata.sourceVersion}_WorldOffset`;
+      }
+      if (attach) attachPart(part, slot);
+      return part;
+    } catch (error) {
+      releasePart(part);
+      if (bodyCompanion && !part.bodyDesignPart) disposeObjects([bodyCompanion.root]);
+      throw error;
+    }
+  }
+
+  function loadedRoots(loaded) { return [loaded.root, loaded.bodyCompanion?.root].filter(Boolean); }
+
   function attachPart(part, slot) {
     if (!part.metadata.designOnly) assembly.add(part.build);
     if (slot === 'head') headBone.add(part.wrapper);
@@ -250,11 +288,13 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     draft.updateMatrixWorld(true);
     limbRig.bindPart(part, slot);
     appearanceController.register(part.draft, part.source, slot, part.metadata.format);
+    if (part.bodyDesignPart) attachPart(part.bodyDesignPart, 'body');
     if (slot === 'arms' && part.metadata.builtin) updateArmGuides();
   }
 
   function releasePart(part) {
     if (!part) return;
+    if (part.bodyDesignPart) releasePart(part.bodyDesignPart);
     part.build.removeFromParent();
     part.wrapper.removeFromParent();
     appearanceController.unregister(part.draft);
@@ -263,13 +303,24 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
   }
 
   function applyDesign() {
-    if (fusedBodyAsset()) {
+    const fused = fusedBodyAsset(), split = splitBodyAsset(), surfaceAsset = split || fused;
+    if (surfaceAsset) {
       for (const key of ['bodyWidth', 'bodyHeight', 'bodyDepth']) design.shape[key] = config.design.defaults.shape[key];
-      design.pose.bodyLean = config.design.defaults.pose.bodyLean;
-      motion.preset = config.design.motion.defaults.preset;
-      if (motion.eyesPreset === 'none' && motion.nosePreset === 'none') motion.playing = false;
-      transition = null;
+      if (!surfaceAsset.binding) design.pose.bodyLean = config.design.defaults.pose.bodyLean;
+      if (!surfaceAsset.binding || motion.preset === 'breathe') {
+        motion.preset = config.design.motion.defaults.preset;
+        if (motion.eyesPreset === 'none' && motion.nosePreset === 'none') motion.playing = false;
+        transition = null;
+      }
     }
+    const rigStats = limbRig.getStats();
+    draft.userData.rigType = rigStats.rigVersion;
+    draft.userData.rigApproval = rigStats.fusedBodyLegs || rigStats.splitBodyLegs ? 'pending' : rigStats.completeLimbRig ? config.design.binding.approval : 'incomplete-design-copy';
+    draft.userData.description = rigStats.splitBodyLegs
+      ? 'Separate left leg, right leg and paired body design meshes; shape, component structure and spatial binding remain pending review.'
+      : rigStats.fusedBodyLegs
+      ? 'Approved v6 neutral shape with a new design-only binding pending review.'
+      : rigStats.completeLimbRig ? 'Independent design copy of the approved rig-v1 and actions-v1 baselines.' : 'Independent design copy with an incomplete limb binding.';
     syncDraftBodyVisibility();
     const { shape, rig, pose } = design;
     draft.position.set(0, 0, 0);
@@ -293,6 +344,10 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
       part.offset.position.set(0, -pivotY, 0);
       if (slot === 'head') part.wrapper.scale.setScalar(shape.headScale);
       else if (slot === 'body') part.wrapper.scale.set(shape.bodyWidth * breathe, shape.bodyHeight, shape.bodyDepth * breathe);
+    }
+    if (parts.legs?.bodyDesignPart) {
+      parts.legs.bodyDesignPart.offset.position.set(0, -bodyCenterY, 0);
+      parts.legs.bodyDesignPart.wrapper.scale.set(1, 1, 1);
     }
     limbRig.apply(binding);
     const sample = sampleAction(activeMotion, motion.progress, actions, config);
@@ -394,17 +449,24 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     let triangles = 0;
     const summary = {};
     const fused = mode === 'design' ? fusedBodyAsset() : null;
+    const split = mode === 'design' ? splitBodyAsset() : null;
     for (const slot of PART_KEYS) {
-      const part = parts[slot];
+      const companion = slot === 'body' && split ? parts.legs.bodyDesignPart : null;
+      const part = companion || parts[slot];
       const builtinAsset = part?.metadata.builtin ? getBuiltinPartAsset(config, slot, { kind: 'builtin', id: part.metadata.builtin }) : null;
       const replaced = slot === 'body' && Boolean(fused);
-      summary[slot] = part ? { ...part.metadata, visible: visibility[slot] && !replaced && !(mode === 'build' && part.metadata.designOnly), approved: !replaced && Boolean(config.assets[slot].approved || builtinAsset?.approved), version: replaced ? fused.version : part.metadata.sourceVersion ?? config.assets[slot].version ?? null, ...(replaced ? { replacedBy: 'legs', approvedBaseline: config.assets.body.version } : {}) } : null;
+      summary[slot] = part ? { ...part.metadata, visible: visibility[slot] && !replaced && !(mode === 'build' && part.metadata.designOnly), approved: replaced ? fused.approved : companion ? Boolean(split.companionBody.approved) : Boolean(config.assets[slot].approved || builtinAsset?.approved), version: replaced ? fused.version : part.metadata.sourceVersion ?? config.assets[slot].version ?? null, ...(replaced ? { replacedBy: 'legs', approvedBaseline: config.assets.body.version } : companion ? { independentDesignBody: true, approvedBaseline: config.assets.body.version } : {}) } : null;
       if (!part || !visibility[slot] || replaced || (mode === 'build' && part.metadata.designOnly)) continue;
       meshes += part.metadata.meshes;
       vertices += part.metadata.vertices;
       triangles += part.metadata.triangles;
     }
-    return { mode, parts: summary, meshes, vertices, triangles, fusedBody: Boolean(fused), bones: mode === 'design' ? bones.length : 0, skinnedMeshes: mode === 'design' ? limbRig.getStats().skinnedMeshes : 0 };
+    const rig = limbRig.getStats();
+    return { mode, parts: summary, meshes, vertices, triangles, fusedBody: Boolean(fused), splitBodyLegs: Boolean(split), bones: mode === 'design' ? bones.length : 0, skinnedMeshes: mode === 'design' ? rig.skinnedMeshes : 0,
+      rigReadyForActions: mode === 'design' && rig.completeLimbRig && visibility.head && visibility.arms && visibility.legs && (Boolean(fused) || visibility.body),
+      rigVersion: rig.rigVersion,
+      rigApproval: rig.fusedBodyLegs || rig.splitBodyLegs ? 'pending' : rig.completeLimbRig ? config.design.binding.approval : 'incomplete-design-copy',
+    };
   }
 
   async function loadCandidate(file, slot) {
@@ -425,17 +487,16 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     const generation = ++importGeneration[slot];
     const imported = await loadCandidate(file, slot);
     if (disposed || generation !== importGeneration[slot]) {
-      disposeObjects([imported.root]);
+      disposeObjects(loadedRoots(imported));
       throw new Error('该导入已被更新的操作替代。');
     }
-    const { root, ...metadata } = imported;
-    const replacement = createPart(root, slot, metadata);
+    const replacement = createLoadedPart(imported, slot);
     const previous = parts[slot];
     parts[slot] = replacement;
     releasePart(previous);
     applyDesign();
     onStatus({ type: 'import', slot, message: `${config.assets[slot].label}候选模型已载入。`, stats: getStats() });
-    return { slot, ...metadata };
+    return { slot, ...replacement.metadata };
   }
 
   async function replaceCandidates(files) {
@@ -446,7 +507,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     const loaded = results.filter((result) => result.status === 'fulfilled' && result.value).map((result) => result.value);
     const failure = results.find((result) => result.status === 'rejected');
     if (failure || disposed || slots.some((slot) => importGeneration[slot] !== generations[slot])) {
-      disposeObjects(loaded.map((part) => part.root));
+      disposeObjects(loaded.flatMap(loadedRoots));
       throw failure?.reason ?? new Error('项目恢复已被更新的操作替代。');
     }
     const replacements = {};
@@ -454,13 +515,15 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
       slots.forEach((slot, index) => {
         const value = results[index].value;
         if (value) {
-          const { root, ...metadata } = value;
-          replacements[slot] = createPart(root, slot, metadata, false);
+          replacements[slot] = createLoadedPart(value, slot, false);
         } else replacements[slot] = null;
       });
     } catch (error) {
-      for (const part of Object.values(replacements).filter(Boolean)) appearanceController.unregister(part.draft);
-      disposeObjects([...loaded.map((part) => part.root), ...Object.values(replacements).filter(Boolean).flatMap((part) => [part.build, part.draft])]);
+      for (const part of Object.values(replacements).filter(Boolean)) {
+        appearanceController.unregister(part.draft);
+        if (part.bodyDesignPart) appearanceController.unregister(part.bodyDesignPart.draft);
+      }
+      disposeObjects([...loaded.flatMap(loadedRoots), ...Object.values(replacements).filter(Boolean).flatMap((part) => [part.build, part.draft, part.bodyDesignPart?.build, part.bodyDesignPart?.draft].filter(Boolean))]);
       throw error;
     }
     const previous = slots.map((slot) => parts[slot]);
@@ -512,7 +575,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     observer.disconnect();
     controls.removeEventListener('change', handleCameraChange);
     controls.dispose();
-    const objects = Object.values(parts).filter(Boolean).flatMap((part) => [part.source, part.build, part.draft]);
+    const objects = Object.values(parts).filter(Boolean).flatMap((part) => [part.source, part.build, part.draft, part.bodyDesignPart?.source, part.bodyDesignPart?.build, part.bodyDesignPart?.draft].filter(Boolean));
     appearanceController.dispose();
     lighting.dispose();
     limbRig.dispose();
@@ -538,8 +601,7 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     const { root, ...metadata } = await loadBuiltinArms(config);
     parts.arms = createPart(root, 'arms', metadata);
     const legs = await loadBuiltinLegs(config);
-    const { root: legsRoot, ...legsMetadata } = legs;
-    parts.legs = createPart(legsRoot, 'legs', legsMetadata);
+    parts.legs = createLoadedPart(legs, 'legs');
     await setAppearance(config.appearance.defaults);
     setMode(mode);
     render();
@@ -614,13 +676,15 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
     },
     async exportActionsGLB() {
       if (mode !== 'design') throw new Error('请在设计副本中导出动作。');
-      if (limbRig.getStats().skinnedMeshes !== 4) throw new Error('动作导出需要批准的 v59 双臂与 legs-v2 双腿。');
+      if (!getStats().rigReadyForActions) throw new Error('动作导出需要显示头部、身体、v59 双臂及已绑定的双腿。');
       const previousMotion = motion, previousTransition = transition;
       let base;
       try {
         motion = structuredClone(config.design.motion.defaults); transition = null;
         applyDesign();
         base = cloneSkeleton(draft);
+        const surfaceAsset = splitBodyAsset() || fusedBodyAsset();
+        if (surfaceAsset) base.userData = { ...base.userData, ...designSourceMetadata(surfaceAsset) };
         base.traverse((node) => { if (node.geometry) node.geometry = node.geometry.clone(); });
       } finally { motion = previousMotion; transition = previousTransition; applyDesign(); }
       const { root, clips } = bakeActionClips(base, actions, config);
@@ -640,20 +704,24 @@ export async function createStudio({ canvas, config, onStatus = () => {}, onCame
       const source = mode === 'design' ? draft : assembly;
       const copy = cloneSkeleton(source);
       copy.visible = true;
-      const completeApprovedRig = limbRig.getStats().skinnedMeshes === 4;
-      const fused = mode === 'design' ? fusedBodyAsset() : null;
+      const rig = limbRig.getStats();
+      const newDesignBinding = rig.fusedBodyLegs || rig.splitBodyLegs;
+      const completeApprovedRig = rig.completeLimbRig && !newDesignBinding;
+      const surfaceAsset = mode === 'design' ? splitBodyAsset() || fusedBodyAsset() : null;
       copy.userData = {
         ...copy.userData, project: config.project.name, schema: config.project.schema,
-        mode, approvedSources: { head: config.assets.head.version, ...(!fused ? { body: config.assets.body.version } : {}), ...(parts.arms?.metadata.builtin ? { arms: config.assets.arms.builtin.version, ...(!fused ? { assemblyApproval: config.assets.arms.builtin.approvalFile } : {}) } : {}), ...(parts.legs?.metadata.builtin === config.assets.legs.builtin.projectRecord.id ? { legs: config.assets.legs.builtin.version, legsApproval: config.assets.legs.builtin.approvalFile } : {}) },
-        ...(fused ? { designSources: { bodyAndLegs: { version: fused.version, file: fused.url, approval: 'pending', skinning: false } }, preservedApprovedBaselines: { body: { version: config.assets.body.version, file: config.assets.body.url, operation: 'read-only source for independent design copy' }, ...(parts.arms?.metadata.builtin ? { assemblyApproval: config.assets.arms.builtin.approvalFile } : {}) } } : {}),
+        mode, approvedSources: { head: config.assets.head.version, ...(!surfaceAsset ? { body: config.assets.body.version } : {}), ...(parts.arms?.metadata.builtin ? { arms: config.assets.arms.builtin.version, ...(!surfaceAsset ? { assemblyApproval: config.assets.arms.builtin.approvalFile } : {}) } : {}), ...(parts.legs?.metadata.builtin === config.assets.legs.builtin.projectRecord.id ? { legs: config.assets.legs.builtin.version, legsApproval: config.assets.legs.builtin.approvalFile } : {}) },
+        ...(surfaceAsset ? designSourceMetadata(surfaceAsset) : {}),
         designParameters: mode === 'design' ? structuredClone(design) : null,
         binding: mode === 'design' ? structuredClone(binding) : null,
         skinning: mode === 'design' && limbRig.getStats().skinnedMeshes > 0,
-        rigApproval: mode === 'design' ? completeApprovedRig ? 'approved' : 'incomplete-design-copy' : null,
+        rigType: mode === 'design' ? rig.rigVersion : null,
+        rigApproval: mode === 'design' ? newDesignBinding ? 'pending' : completeApprovedRig ? 'approved' : 'incomplete-design-copy' : null,
         rigApprovalFile: mode === 'design' && completeApprovedRig ? config.design.actions.bindingApproval : null,
+        ...(mode === 'design' && newDesignBinding ? { deformationApproval: 'pending' } : {}),
         rigBaselineApproval: config.design.binding.approval,
         rigBaselineApprovalFile: config.design.actions.bindingApproval,
-        ...(mode === 'design' && !completeApprovedRig ? { description: 'Independent shape design copy; the current limb assembly is not the complete approved rig-v1 binding.' } : {}),
+        ...(mode === 'design' && !completeApprovedRig ? { description: rig.splitBodyLegs ? 'Separate left leg, right leg and body design meshes; component structure and spatial binding remain pending review.' : rig.fusedBodyLegs ? 'Approved v6 neutral shape with a new design-only binding pending review.' : 'Independent shape design copy; the current limb assembly is not the complete approved rig-v1 binding.' } : {}),
         actions: mode === 'design' ? structuredClone(actions) : null,
         ...(mode === 'design' ? describeActionApproval(actions, config) : {}),
         expression: mode === 'design' ? { ...expression } : null,

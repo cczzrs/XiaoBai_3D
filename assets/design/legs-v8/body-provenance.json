@@ -1,0 +1,63 @@
+{
+  "version": "body-design-v8",
+  "approval": "pending",
+  "designOnly": true,
+  "bodyReferenceSha256": "9a7b08fa9a629f857d26d2fc8c094b95f53e8fbe2c8cf56a4c0ac7e2c529a5b4",
+  "legsReferenceSha256": "44fbb904af445b0864050aa7eabceeea9c18bd6b0dcd08f43167a635ff85b8d7",
+  "method": "symmetric-legs-with-natural-union-body-companion",
+  "geometry": {
+    "meshes": 1,
+    "vertices": 137355,
+    "triangles": 274706,
+    "bounds": {
+      "min": [
+        -22.13060188293457,
+        11.447979927062988,
+        -17.99723243713379
+      ],
+      "max": [
+        22.13060188293457,
+        56,
+        17.99708366394043
+      ]
+    }
+  },
+  "sha256": "bbc73ab9f735226c5f630628d869c1e227f4ceeb90821116bc915a902b207c94",
+  "parameters": {
+    "version": "legs-v8",
+    "internalCaps": {
+      "depth": 2,
+      "rings": 72
+    },
+    "surfaceClearance": {
+      "distance": 0.004,
+      "riseHeight": 1.2,
+      "fadeStartY": 17,
+      "fadeEndY": 20
+    },
+    "field": {
+      "cellSize": 0.35,
+      "halfWidth": 29.4,
+      "halfDepth": 22.4,
+      "blendRadius": 4.5,
+      "stableLegDistance": true,
+      "distanceSamples": 2048
+    },
+    "upper": {
+      "radiusCurvatureDecay": 1.2,
+      "centerCurvatureDecay": 1.2
+    },
+    "transition": {
+      "footFadeEndY": 17,
+      "naturalBodyFade": true,
+      "bodyPreserveAboveY": 32.5,
+      "boundaryGap": 0.25
+    },
+    "projection": {
+      "iterations": 3,
+      "derivativeStep": 0.002,
+      "relaxationPasses": 3,
+      "relaxationWeight": 0.4
+    }
+  }
+}

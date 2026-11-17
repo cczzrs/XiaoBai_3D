@@ -1,0 +1,31 @@
+{
+  "version": "legs-v7",
+  "approval": "pending",
+  "source": "./assets/design/legs-v6/body-legs.glb",
+  "sourceSha256": "d6304d97b26ddd0745a1907f0d423611f40f2b7949c1d528be97bd9a3ec16edd",
+  "designOnly": true,
+  "files": {
+    "legs.glb": {
+      "bytes": 6679052,
+      "sha256": "557c99070095afb996df0bf063ee88a34fd568ffdc1cb823c53e6f29ee413963",
+      "meshes": 2
+    },
+    "body.glb": {
+      "bytes": 6829120,
+      "sha256": "af464810d0dade9940c1a06114ad47f4665430a19142719340894708a05a69c6",
+      "meshes": 1
+    },
+    "leg-left.glb": {
+      "bytes": 3339824,
+      "sha256": "d85316b32c0f69bbfcc5957452e22ae52151cae4cfdc543d2573383aa4af314f",
+      "meshes": 1
+    },
+    "leg-right.glb": {
+      "bytes": 3339824,
+      "sha256": "35892593660c2e553ed3cf41300bd45205c0bc35acaae7ec41579d701d62fc6f",
+      "meshes": 1
+    }
+  },
+  "exterior": "Original v6 exterior retained; only triangles crossing the part boundary are subdivided along original edges. Original POSITION and NORMAL values retained; new boundary normals use normalized edge interpolation.",
+  "hiddenCaps": "New closed rounded internal tops/bottoms, pending review."
+}

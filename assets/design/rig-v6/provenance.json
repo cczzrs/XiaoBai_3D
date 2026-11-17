@@ -1,0 +1,68 @@
+{
+  "version": "rig-v6",
+  "approval": "pending",
+  "neutralShapeApproval": "./docs/approvals/legs-v6-shape-approved.json",
+  "sourceHashes": {
+    "head": "2fc19d89fc33f57f46ac7fe716f3ae04e1b8a243b502c0cdf625f60ac4648351",
+    "arms": "c6d26f71133dfddabfd9128e068e229be6b65c001e9a66ff914532b32e5067ee",
+    "legs": "d6304d97b26ddd0745a1907f0d423611f40f2b7949c1d528be97bd9a3ec16edd"
+  },
+  "files": {
+    "xiaobai-rig-v6.glb": {
+      "bytes": 24616032,
+      "sha256": "8d212f9b590fecf355ceea8d50fe64aab7b87d428e436ca7ef6e3600b91e577e"
+    },
+    "xiaobai-legs-v6-actions-design.glb": {
+      "bytes": 27960080,
+      "sha256": "62ad2e477abff03816740c4d0f04c3c2e1b8d0e85500db3dcf67294e9df2b90e"
+    }
+  },
+  "stats": {
+    "bones": 20,
+    "limbBones": 16,
+    "skinnedMeshes": 3,
+    "weightedVertices": 282951,
+    "maximumInfluences": 4,
+    "slots": [
+      "arms",
+      "legs"
+    ],
+    "armsBound": true,
+    "legsBound": true,
+    "completeLimbRig": true,
+    "fusedBodyLegs": true,
+    "bindingVersions": [
+      "rig-v1",
+      "rig-v6"
+    ],
+    "skinning": "linear-blend",
+    "animations": 0
+  },
+  "clips": [
+    {
+      "name": "xiaobai_walk_v1",
+      "duration": 1.2,
+      "tracks": 22
+    },
+    {
+      "name": "xiaobai_run_v1",
+      "duration": 0.8,
+      "tracks": 22
+    },
+    {
+      "name": "xiaobai_wave_v1",
+      "duration": 2,
+      "tracks": 22
+    },
+    {
+      "name": "xiaobai_thinking_v1",
+      "duration": 4,
+      "tracks": 22
+    },
+    {
+      "name": "xiaobai_sit_v1",
+      "duration": 1,
+      "tracks": 22
+    }
+  ]
+}

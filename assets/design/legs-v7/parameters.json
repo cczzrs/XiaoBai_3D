@@ -1,0 +1,23 @@
+{
+  "source": "./assets/design/legs-v6/body-legs.glb",
+  "cut": {
+    "intercept": 14,
+    "slope": 0.5
+  },
+  "caps": {
+    "rings": 16,
+    "legTopY": 31.5,
+    "legCenterX": 10,
+    "legCenterZ": 0,
+    "bodyInsetDepth": 3,
+    "tangentScale": 1,
+    "inwardBias": 1.5,
+    "bodyInwardBias": 3,
+    "targetSpacing": 0.35,
+    "arcSamples": 128
+  },
+  "containment": {
+    "cellSize": 1,
+    "tolerance": 0.002
+  }
+}

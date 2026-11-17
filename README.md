@@ -2,7 +2,11 @@
 
 本地运行的模型装配、形体、骨骼和动作工作台。当前已批准：头部 head-v1、身体 body-v7、v59 镜像双臂、腿脚 v2、关节绑定 rig-v1 和动作 actions-v1。批准资产保留原件，后续编辑使用独立设计副本。
 
-身体与腿 [v6 圆润设计副本](docs/legs-v6-review.md) 已加入形体设计页，点击“查看身体与腿 v6 圆润副本”预览。v6 保留已认可的脚部，继续优化身体接缝与脚腕处的明暗过渡；形体仍待确认，尚未绑定。设计模式隐藏独立身体副本，显示融合后的身体与双腿；构建模式继续显示批准身体原件。[v5 融合副本](docs/legs-v5-review.md)、[v4 独立副本](docs/legs-v4-review.md)、v3 与已批准的 v2 均可切换对比。
+当前设计使用 **v8 前后对称独立双腿**：以原脚中面为固定对称面，修正 v7 腿身及顶部向后偏移的问题。左腿和右腿各自独立，顶部为圆润椭圆弧面，脚部保留原数据；身体接合处使用新的配套设计副本。详见 [v8 对称修正记录](docs/legs-v8-review.md)。
+
+形体设计页可加载 v8，并保留 v7、v6、v5、v4、v3 和 v2 对照入口。新外形、配套身体及绑定效果待确认；批准原件及历史审批记录保留。新建项目默认仍沿用 v2，显式选择和保存的版本会随项目恢复。
+
+[双腿 GLB](assets/design/legs-v8/legs.glb) · [左腿 GLB](assets/design/legs-v8/leg-left.glb) · [右腿 GLB](assets/design/legs-v8/leg-right.glb) · [配套身体副本](assets/design/legs-v8/body.glb)。完整绑定与五个既有动作保存在 [rig-v8 设计目录](assets/design/rig-v8/)。原绑定、动作定义和批准资产保留原字节，过程证据保存在 `temp/`。
 
 ## 启动
 
@@ -49,6 +53,7 @@ AGENTS.md               项目工作约定
 - [项目结构与维护](docs/PROJECT_STRUCTURE.md)：目录职责、服务器路径、临时产物和历史路径映射。
 - [资产与审批依据](docs/ASSETS.md)：来源、坐标、哈希和批准范围。
 - [身体与腿 v6 评审](docs/legs-v6-review.md)：身体接缝与脚腕的圆润过渡、脚部保留及本轮相关验证。
+- [腿部 v6 绑定与动作接入](docs/legs-v6-rig-review.md)：连续蒙皮、关节姿态、动作预览和导出，以及形体批准与绑定待确认的边界。
 - [身体与腿 v5 评审](docs/legs-v5-review.md)：上一版融合副本、脚部保留与模式切换。
 - [动作 v1 说明](docs/actions-v1-review.md) · [绑定 v1 说明](docs/rig-v1-review.md) · [腿脚 v2 说明](docs/legs-v2-review.md)。
 - [当前动作批准记录](docs/approvals/actions-v1-approved.json)：继承前序批准与 24 个基线文件快照。

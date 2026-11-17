@@ -35,22 +35,43 @@ function toast(message) {
 }
 function dirty() { $('#save-state').textContent = '草稿有未保存修改'; }
 function showError(error) { toast(error.message || '操作失败，请重试。'); }
-function fusedBodyReview() { return Boolean(getBuiltinPartAsset(config, 'legs', project.parts.legs)?.replacesBodyInDesign); }
+function currentLegAsset() { return getBuiltinPartAsset(config, 'legs', project.parts.legs); }
+function fusedBodyReview() { return Boolean(currentLegAsset()?.replacesBodyInDesign); }
+function splitBodyReview() { return Boolean(currentLegAsset()?.companionBody); }
+function connectedSurfaceReview() { return fusedBodyReview() || splitBodyReview(); }
+function staticFusedReview() { const asset = currentLegAsset(); return Boolean(asset?.replacesBodyInDesign && !asset.binding); }
 function normalizeFusedProject() {
-  if (!fusedBodyReview()) return;
+  if (!connectedSurfaceReview()) return;
   for (const key of ['bodyWidth', 'bodyHeight', 'bodyDepth']) project.design.shape[key] = config.design.defaults.shape[key];
-  project.design.pose.bodyLean = config.design.defaults.pose.bodyLean;
-  project.motion.preset = config.design.motion.defaults.preset;
-  if (project.motion.eyesPreset === 'none' && project.motion.nosePreset === 'none') project.motion.playing = false;
+  if (staticFusedReview()) project.design.pose.bodyLean = config.design.defaults.pose.bodyLean;
+  if (staticFusedReview() || project.motion.preset === 'breathe') {
+    project.motion.preset = config.design.motion.defaults.preset;
+    if (project.motion.eyesPreset === 'none' && project.motion.nosePreset === 'none') project.motion.playing = false;
+  }
 }
 function updateFusedControls() {
-  const fused = fusedBodyReview();
-  $('#fused-shape-note').hidden = !fused;
-  for (const id of ['body-width', 'body-height', 'body-depth', 'body-lean', 'motion-preset']) $(`#${id}`).disabled = fused || busy;
-  $$('[data-action]').forEach(button => { button.disabled = fused || busy; });
-  $('#export-actions').disabled = fused || busy || !studio;
-  $('#play-motion').disabled = busy || !studio || (fused && selectedPanel !== 'face');
+  const fused = fusedBodyReview(), split = splitBodyReview(), constrained = fused || split, staticFused = staticFusedReview(), stats = studio?.getStats();
+  $('#fused-shape-note').hidden = !constrained;
+  $('#fused-shape-note').textContent = split
+    ? '左右腿和身体是三个独立模型，可分别显示、隔离和设置材质。可见轮廓沿用已认可版本，接缝使用一致的空间蒙皮；身体单独缩放保持锁定。部件结构与绑定效果待确认。'
+    : staticFused
+    ? '当前身体与腿为同一静态设计副本，保持原比例检查接缝，身体单独缩放和躯干动作暂不可用。统一外观可通过“腿脚皮肤”调整。'
+    : '当前身体与腿为连续蒙皮设计副本，外形已认可。身体单独缩放保持锁定；身体姿态、髋膝踝关节及动作可调整，绑定和动作效果待确认。旧版呼吸通过单独缩放身体实现，不适用于联合曲面。统一外观可通过“腿脚皮肤”调整。';
+  const breatheOption = $('#motion-preset option[value="breathe"]');
+  breatheOption.disabled = constrained;
+  breatheOption.textContent = constrained ? '呼吸起伏（接缝配套模型不适用）' : '呼吸起伏';
+  for (const id of ['body-width', 'body-height', 'body-depth']) $(`#${id}`).disabled = constrained || busy;
+  for (const id of ['body-lean', 'motion-preset']) $(`#${id}`).disabled = staticFused || busy;
+  $$('[data-action]').forEach(button => { button.disabled = staticFused || busy; });
+  $('#export-actions').disabled = busy || !studio || !stats?.rigReadyForActions;
+  $('#play-motion').disabled = busy || !studio || (staticFused && selectedPanel !== 'face');
   $('#design-legs-visible-label').textContent = fused ? '显示身体与腿' : '显示腿脚';
+  $('#design-body-visible-row').hidden = !split;
+  $('#design-body-visible').checked = $('[data-visible="body"]').checked;
+  $('#split-legs-actions').hidden = !split;
+  $('#action-export-note').textContent = !stats?.rigReadyForActions
+    ? '完整动作导出需要载入并显示 v59 双臂及已绑定双腿。动作参数可随项目 JSON 保存。'
+    : '参数随项目 JSON 保存。动作 GLB 包含五个片段；切换过渡用于工作台预览。坐姿为保持姿态。';
 }
 function setBusy(value) {
   busy = value;
@@ -71,21 +92,31 @@ function updateStats() {
     const builtinAsset = getBuiltinPartAsset(config, slot, part);
     const approved = builtinAsset?.approved;
     $(`#${slot}-file`).textContent = builtinAsset ? builtinAsset.label : part?.name ?? '等待导入模型';
-    $(`#${slot}-badge`).textContent = approved ? '已批准组合' : builtin ? '待确认' : part ? '候选' : '待构建';
+    $(`#${slot}-badge`).textContent = approved ? builtinAsset?.binding ? '外形已认可' : '已批准组合' : builtin ? '待确认' : part ? '候选' : '待构建';
     $(`#${slot}-badge`).className = approved ? 'approved-badge' : 'draft-badge';
   }
   const approvedCount = Object.values(stats.parts).filter((part) => part?.approved).length;
   $('#approved-count').textContent = String(approvedCount).padStart(2, '0');
   $$('.progress-track i').forEach((item, i) => item.classList.toggle('is-approved', i < approvedCount));
-  $('#body-version').textContent = stats.fusedBody ? `${stats.parts.body.version} · 身体融合副本` : config.assets.body.version;
-  $('#body-badge').textContent = stats.fusedBody ? '设计副本' : '已批准';
-  $('#body-badge').className = stats.fusedBody ? 'draft-badge' : 'approved-badge';
-  $('#v59-state').textContent = project.parts.arms?.kind === 'builtin' ? stats.fusedBody ? 'v59 双臂沿用批准基线，身体使用融合设计副本' : '头部、身体与 v59 双臂组合已批准' : '可将已批准 v59 作为镜像双臂加入设计副本';
+  $('#body-version').textContent = stats.splitBodyLegs ? `${stats.parts.body.version} · 独立身体副本` : stats.fusedBody ? `${stats.parts.body.version} · 身体融合副本` : config.assets.body.version;
+  $('#body-badge').textContent = stats.splitBodyLegs ? '设计副本' : stats.fusedBody ? currentLegAsset()?.approved ? '外形已认可' : '设计副本' : '已批准';
+  $('#body-badge').className = stats.fusedBody || stats.splitBodyLegs ? 'draft-badge' : 'approved-badge';
+  $('#v59-state').textContent = project.parts.arms?.kind === 'builtin' ? stats.splitBodyLegs ? 'v59 双臂沿用批准基线，身体与双腿分别为独立设计模型' : stats.fusedBody ? 'v59 双臂沿用批准基线，身体使用融合设计副本' : '头部、身体与 v59 双臂组合已批准' : '可将已批准 v59 作为镜像双臂加入设计副本';
   $('#design-arms-visible').checked = $('[data-visible="arms"]').checked;
   const legsAsset = getBuiltinPartAsset(config, 'legs', project.parts.legs);
-  $('#legs-state').textContent = legsAsset ? `${legsAsset.version} · ${legsAsset.approved ? '外形已批准 · 绑定在设计副本中进行' : legsAsset.replacesBodyInDesign ? '身体与双腿融合副本 · 脚部保留 · 待确认 · 尚未绑定' : legsAsset.version === 'legs-v4' ? '沿用 v3 脚部 · 膝盖至腿顶连续弧面 · 待确认 · 尚未绑定' : legsAsset.version === 'legs-v3' ? '上一版圆弧副本 · 静态外形待确认 · 尚未绑定' : '外形待你确认'}` : '可查看身体与腿 v6 圆润副本，或加入已批准的 v2';
+  $('#legs-state').textContent = legsAsset ? `${legsAsset.version} · ${legsAsset.companionBody ? '左腿、右腿两个独立模型 · 配套身体独立 · 脚部保留 · 外形与绑定待确认' : legsAsset.binding ? '外形已认可 · 连续蒙皮设计副本 · 绑定与动作待确认' : legsAsset.approved ? '外形已批准 · 绑定在设计副本中进行' : legsAsset.replacesBodyInDesign ? '身体与双腿融合副本 · 脚部保留 · 待确认 · 尚未绑定' : legsAsset.version === 'legs-v4' ? '沿用 v3 脚部 · 膝盖至腿顶连续弧面 · 待确认 · 尚未绑定' : legsAsset.version === 'legs-v3' ? '上一版圆弧副本 · 静态外形待确认 · 尚未绑定' : '外形待你确认'}` : '可加入 v8 前后对称独立双腿，或对比历史腿脚';
   $('#design-legs-visible').checked = $('[data-visible="legs"]').checked;
-  $('#binding-summary').textContent = `${stats.bones} 个骨骼节点 · ${stats.skinnedMeshes} 个蒙皮网格。${legsAsset?.review ? `当前 ${legsAsset.version} 腿脚为静态形体副本，尚未绑定。原绑定与动作基线保留。` : '绑定 v1 与动作 v1 基线已批准。'}`;
+  const newBinding = Boolean(legsAsset?.binding);
+  $('#binding-summary').textContent = `${stats.bones} 个骨骼节点 · ${stats.skinnedMeshes} 个蒙皮网格。${legsAsset?.companionBody ? '左腿、右腿、身体为独立网格，接缝权重一致；部件结构与绑定效果待确认。' : newBinding ? '当前 v6 使用身体与双腿连续蒙皮，外形已认可，绑定与动作效果待确认。' : legsAsset?.review ? `当前 ${legsAsset.version} 腿脚为静态形体副本，尚未绑定。原绑定与动作基线保留。` : '绑定 v1 与动作 v1 基线已批准。'}`;
+  $('#binding-title').textContent = newBinding ? legsAsset.companionBody ? `独立腿部绑定 ${legsAsset.binding.version}` : '腿部绑定 v6' : '关节绑定 v1';
+  $('#binding-badge').textContent = newBinding ? '待确认' : '基线已批准';
+  $('#binding-badge').className = newBinding ? 'draft-badge' : 'approved-badge';
+  $('#binding-description').textContent = legsAsset?.companionBody ? '左右两腿分别为独立模型，身体另存为配套设计副本；三者共用骨架及接缝处一致的权重。脚部保持原样，姿态与动作只作用于设计副本。' : newBinding ? '身体与双腿共用连续网格和骨架；髋、膝、踝平滑蒙皮。中立姿态保留已认可外形，所有姿态与动作作用于独立设计副本。' : '头身保持刚性，四肢使用平滑蒙皮。中立姿态保持全部批准外形。动作在独立设计副本中预览。';
+  $('#binding-footnote').textContent = newBinding ? `关节位置与转角可以保存为设计草稿。掌端和脚尖是末端定位点，由腕与踝带动；${legsAsset.version} 绑定及动作效果待确认。` : '关节位置与转角可以保存为设计草稿。掌端和脚尖是末端定位点，由腕与踝带动；绑定与动作基线均已批准。';
+  $('#skeleton-approval-badge').textContent = newBinding ? '设计副本' : '基线已批准';
+  $('#skeleton-approval-badge').className = newBinding ? 'draft-badge' : 'approved-badge';
+  $('#library-approval-title').textContent = legsAsset?.companionBody ? `${legsAsset.version} 独立双腿 · 设计副本` : newBinding ? 'v6 外形已认可 · 绑定待确认' : '批准基线保留原件';
+  updateActionControls();
   updateAppearanceControls();
   updateFusedControls();
 }
@@ -158,12 +189,17 @@ function selectPart(part) {
   const builtinAsset = getBuiltinPartAsset(config, part, imported);
   const fusedAsset = getBuiltinPartAsset(config, 'legs', project.parts.legs);
   const fusedBody = part === 'body' && mode === 'design' && fusedBodyReview();
-  const approved = !fusedBody && (asset.approved || builtinAsset?.approved);
+  const splitBody = part === 'body' && mode === 'design' && splitBodyReview();
+  const approved = !fusedBody && !splitBody && (asset.approved || builtinAsset?.approved);
   $('#selected-name').textContent = asset.label;
-  $('#selected-version').textContent = fusedBody ? `${fusedAsset.version} · 联合身体副本` : builtinAsset ? builtinAsset.version : asset.version ?? (imported ? '导入候选' : '尚未构建');
-  $('#selected-status').textContent = approved ? '已批准 · 基线保留' : builtin || fusedBody ? '设计副本 · 外形待确认' : imported ? '候选 · 待批准' : '等待构建';
-  $('#selected-status').className = approved ? 'approved-badge' : 'draft-badge';
-  $('#selected-description').textContent = fusedBody ? `当前设计视图使用 ${fusedAsset.version} 身体与双腿融合副本，共用腿脚显示开关；批准 body-v7 原件保留，构建模式仍显示原件。` : part === 'head' ? '保留已批准的头部、眼睛与鼻子，以及原始材质和比例。' : part === 'body' ? '身体 v7 左右、前后对称，主要依据 TIFF 第 1 帧；已批准并锁定。' : builtin && part === 'arms' ? '已批准的 v59 双臂组合，原曲面、显示线、材质及镜像位置保持不变。' : builtin && approved ? '腿脚 v2 外形及衔接已批准并锁定。绑定与动作沿用已批准版本，调整作用于设计副本。' : builtinAsset?.replacesBodyInDesign ? `${builtinAsset.version} 身体与双腿融合设计副本：保留脚部，${builtinAsset.version === 'legs-v6' ? '继续优化身体接缝与脚腕处的明暗过渡' : '身体连接处已融合，可与 v6 对比'}。当前静态外形待确认，尚未绑定；批准身体原件未覆盖。` : builtinAsset?.version === 'legs-v4' ? '腿脚 v4 独立设计副本：脚部沿用已认可的 v3，膝盖至腿顶调整为连续、圆润的弧面过渡。当前外形待确认，尚未绑定。' : builtinAsset?.version === 'legs-v3' ? '腿脚 v3 上一版设计副本：保留已认可的脚部圆弧，腿顶凸圈与折痕待改进。可与 v4 对比，尚未绑定。' : builtin ? '参考正面轮廓及标准侧视图制作的连续腿脚，左右镜像。当前为历史设计副本，尚未批准。' : imported ? `${imported.name} 已加入装配，尚未批准。导入模型沿用文件中的原始坐标和单位。` : `可导入后续${asset.label}模型，与已批准部件装配、叠图核对。`;
+  $('#selected-version').textContent = splitBody ? `${fusedAsset.companionBody.version} · 独立身体副本` : fusedBody ? `${fusedAsset.version} · 联合身体副本` : builtinAsset ? builtinAsset.version : asset.version ?? (imported ? '导入候选' : '尚未构建');
+  const newBinding = Boolean((fusedBody || splitBody ? fusedAsset : builtinAsset)?.binding);
+  $('#selected-status').textContent = splitBody || builtinAsset?.companionBody ? '外形与绑定待确认' : newBinding ? '外形已认可 · 绑定待确认' : approved ? '已批准 · 基线保留' : builtin || fusedBody ? '设计副本 · 外形待确认' : imported ? '候选 · 待批准' : '等待构建';
+  $('#selected-status').className = approved && !newBinding ? 'approved-badge' : 'draft-badge';
+  $('#selected-description').textContent = fusedBody ? `当前设计视图使用 ${fusedAsset.version} 身体与双腿融合副本，共用腿脚显示开关；${newBinding ? '外形已认可，绑定与动作效果待确认。' : ''}批准 body-v7 原件保留，构建模式仍显示原件。` : part === 'head' ? '保留已批准的头部、眼睛与鼻子，以及原始材质和比例。' : part === 'body' ? '身体 v7 左右、前后对称，主要依据 TIFF 第 1 帧；已批准并锁定。' : builtin && part === 'arms' ? '已批准的 v59 双臂组合，原曲面、显示线、材质及镜像位置保持不变。' : newBinding ? 'v6 身体与双腿外形已认可并锁定。当前连续蒙皮支持髋、膝、踝关节及身体姿态，绑定与动作效果待确认；批准身体原件未覆盖。' : builtin && approved ? '腿脚 v2 外形及衔接已批准并锁定。绑定与动作沿用已批准版本，调整作用于设计副本。' : builtinAsset?.replacesBodyInDesign ? `${builtinAsset.version} 身体与双腿融合设计副本：保留脚部，身体连接处已融合，可与 v6 对比。当前静态外形待确认，尚未绑定；批准身体原件未覆盖。` : builtinAsset?.version === 'legs-v4' ? '腿脚 v4 独立设计副本：脚部沿用已认可的 v3，膝盖至腿顶调整为连续、圆润的弧面过渡。当前外形待确认，尚未绑定。' : builtinAsset?.version === 'legs-v3' ? '腿脚 v3 上一版设计副本：保留已认可的脚部圆弧，腿顶凸圈与折痕待改进。可与 v4 对比，尚未绑定。' : builtin ? '参考正面轮廓及标准侧视图制作的连续腿脚，左右镜像。当前为历史设计副本，尚未批准。' : imported ? `${imported.name} 已加入装配，尚未批准。导入模型沿用文件中的原始坐标和单位。` : `可导入后续${asset.label}模型，与已批准部件装配、叠图核对。`;
+  if (builtinAsset?.version === 'legs-v8') $('#selected-description').textContent = '左右两个独立腿部模型，整段前后对称，顶部采用圆润椭圆弧面；脚部保持原样。当前形体与绑定效果待确认。';
+  else if (splitBody) $('#selected-description').textContent = '身体为独立设计模型，左右腿另存为两个模型；身体可单独显示和设置材质。接合曲面随当前腿部设计适配，批准 body-v7 原件保留，构建模式继续显示原件。';
+  else if (builtinAsset?.companionBody) $('#selected-description').textContent = '腿脚资产只包含左腿、右腿两个独立模型，脚部及已认可的可见轮廓保持不变。身体另存为配套设计模型，分别显示和导出；接缝使用一致的空间权重。新部件结构与绑定效果待确认。';
   $('#remove-part').hidden = !imported;
   if (part === 'arms' || part === 'legs') $('#import-slot').value = part;
 }
@@ -386,7 +422,7 @@ $('#design-arms-visible').addEventListener('change', (event) => {
   $('[data-visible="arms"]').checked = event.target.checked;
   updateStats();
 });
-for (const [buttonId, versionId] of [['#use-legs-v6', 'body-legs-fair-v6'], ['#use-legs-v5', 'body-legs-fused-v5'], ['#use-legs-v4', 'legs-continuous-v4-mirrored'], ['#use-legs-v3', 'legs-rounded-v3-mirrored']]) $(buttonId).addEventListener('click', async () => {
+for (const [buttonId, versionId] of [['#use-legs-v8', 'legs-symmetric-v8'], ['#use-legs-v7', 'legs-separated-v7'], ['#use-legs-v6', 'body-legs-fair-v6'], ['#use-legs-v5', 'body-legs-fused-v5'], ['#use-legs-v4', 'legs-continuous-v4-mirrored'], ['#use-legs-v3', 'legs-rounded-v3-mirrored']]) $(buttonId).addEventListener('click', async () => {
   if (!studio || busy) return;
   setBusy(true);
   try {
@@ -397,13 +433,23 @@ for (const [buttonId, versionId] of [['#use-legs-v6', 'body-legs-fair-v6'], ['#u
     project.binding.rotations = structuredClone(config.design.binding.defaults.rotations);
     project.design.pose = structuredClone(config.design.defaults.pose);
     project.motion = structuredClone(config.design.motion.defaults);
-    if (asset.replacesBodyInDesign) project.design.shape = structuredClone(config.design.defaults.shape);
+    if (asset.replacesBodyInDesign || asset.companionBody) project.design.shape = structuredClone(config.design.defaults.shape);
     normalizeFusedProject();
     studio.setMotion(project.motion, { immediate: true });
     studio.setDesign(project.design);
     studio.setBinding(project.binding);
     studio.setVisibility('legs', true);
     $('[data-visible="legs"]').checked = true;
+    if (asset.companionBody) {
+      studio.setVisibility('body', true);
+      $('[data-visible="body"]').checked = true;
+    }
+    if (asset.review.isolateLegs) {
+      $$('[data-visible]').forEach(input => {
+        input.checked = input.dataset.visible === 'legs';
+        studio.setVisibility(input.dataset.visible, input.checked);
+      });
+    }
     $('#show-skeleton').checked = asset.review.skeleton;
     studio.setSkeleton(asset.review.skeleton);
     setMode('design'); updateDesignControls(); updateBindingControls(); selectPart('legs');
@@ -411,7 +457,7 @@ for (const [buttonId, versionId] of [['#use-legs-v6', 'body-legs-fair-v6'], ['#u
     studio.focusLegs(asset.review.view);
     $('#camera-label').textContent = `LEGS / ${asset.review.view === 'front' ? '正面' : '侧面'}特写`;
     dirty();
-    toast(`${asset.version} 已载入中立静态视图，外形待你确认。`);
+    toast(asset.companionBody ? '已载入左右两个独立腿模型及配套身体副本，部件结构与绑定效果待确认。' : asset.binding ? `${asset.version} 已载入绑定设计副本，外形已认可，绑定与动作效果待确认。` : `${asset.version} 已载入中立静态视图，外形待你确认。`);
   } catch (error) { showError(error); }
   finally { setBusy(false); }
 });
@@ -433,6 +479,19 @@ $('#design-legs-visible').checked = config.viewer.defaults.visibility.legs;
 $('#design-legs-visible').addEventListener('change', (event) => {
   studio?.setVisibility('legs', event.target.checked);
   $('[data-visible="legs"]').checked = event.target.checked;
+  updateStats();
+});
+$('#design-body-visible').addEventListener('change', event => {
+  studio?.setVisibility('body', event.target.checked);
+  $('[data-visible="body"]').checked = event.target.checked;
+  updateStats();
+});
+$('#isolate-design-legs').addEventListener('click', () => {
+  $$('[data-visible]').forEach(input => { input.checked = input.dataset.visible === 'legs'; studio.setVisibility(input.dataset.visible, input.checked); });
+  updateStats();
+});
+$('#show-design-assembly').addEventListener('click', () => {
+  $$('[data-visible]').forEach(input => { input.checked = true; studio.setVisibility(input.dataset.visible, true); });
   updateStats();
 });
 $$('[data-leg-focus]').forEach((button) => button.addEventListener('click', () => {
@@ -533,7 +592,15 @@ $('#reset-expression').addEventListener('click', () => {
 function updateActionControls() {
   const name = project.motion.preset;
   const approval = describeActionApproval(project.actions, config);
-  $('#action-approval-state').textContent = approval.motionApproval === 'approved'
+  const legAsset = currentLegAsset(), newBinding = Boolean(legAsset?.binding);
+  const version = legAsset?.version.replace('legs-', '');
+  $('#action-panel-title').textContent = newBinding ? `${version} 动作检查` : '动作设计 v1';
+  $('#action-panel-badge').textContent = newBinding ? '效果待确认' : '基线已批准';
+  $('#action-panel-badge').className = newBinding ? 'draft-badge' : 'approved-badge';
+  $('#action-panel-description').textContent = newBinding ? `五个动作沿用已批准动作定义，在 ${version} 绑定副本上预览。选择动作后播放，或拖动时间轴逐帧检查；新绑定下的动作效果待确认。` : '五个动作及默认参数已批准。选择动作后播放，或拖动时间轴逐帧检查。';
+  $('#action-approval-state').textContent = newBinding
+    ? approval.motionApproval === 'approved' ? `动作参数沿用批准默认值；当前 ${version} 绑定及变形效果尚未批准。` : `动作参数已调整；当前 ${version} 绑定及变形效果尚未批准。`
+    : approval.motionApproval === 'approved'
     ? '当前动作参数与已批准默认值一致。'
     : '当前动作参数已调整，保存为独立设计副本。';
   $$('[data-action]').forEach((button) => button.setAttribute('aria-pressed', button.dataset.action === name));
@@ -547,7 +614,7 @@ function updateActionControls() {
   });
   $('#action-wave-side').value = project.actions.waveSide;
   const captions = {
-    none: '中立姿态 · 保持已批准外形', walk: '原地循环 · 左右相差半周期 · 对侧摆臂',
+    none: '中立姿态 · 当前模型外形', walk: '原地循环 · 左右相差半周期 · 对侧摆臂',
     run: '原地循环 · 沿用已批准的跑步手臂角度', wave: '单侧招手 · 手腕往复摆动',
     thinking: '鼻宽下限 → 中值 → 上限 → 中值 → 下限', sit: '保持姿态 · 髋与膝屈曲可调',
   };
@@ -588,8 +655,9 @@ $('#export-actions').addEventListener('click', async () => {
   try {
     if (!await appearanceTask) return;
     const bytes = await studio.exportActionsGLB();
-    download(bytes, 'xiaobai-actions-v1.glb', 'model/gltf-binary');
-    toast('五个动作片段已导出；可调参数请同时保存项目 JSON。');
+    const asset = currentLegAsset(), newBinding = Boolean(asset?.binding);
+    download(bytes, newBinding ? `xiaobai-${asset.version}-actions-design.glb` : 'xiaobai-actions-v1.glb', 'model/gltf-binary');
+    toast(newBinding ? `${asset.version} 设计副本的五个动作已导出，绑定与动作效果待确认；参数请同时保存项目 JSON。` : '五个动作片段已导出；可调参数请同时保存项目 JSON。');
   } catch (error) { showError(error); }
   finally { setBusy(false); }
 });

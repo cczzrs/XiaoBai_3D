@@ -34,8 +34,35 @@ export const APP_CONFIG = freezeTree({
         url: './assets/design/legs-v2/legs.glb',
       },
       versions: {
+        'legs-symmetric-v8': {
+          version: 'legs-v8', label: 'v8 · 前后对称独立双腿', approved: false,
+          binding: { version: 'rig-v8', approval: 'pending' },
+          projectRecord: { kind: 'builtin', id: 'legs-symmetric-v8' },
+          url: './assets/design/legs-v8/legs.glb',
+          companionBody: {
+            version: 'body-design-v8', label: 'v8 · 配套身体设计副本', approved: false,
+            projectRecord: { kind: 'builtin', id: 'body-companion-v8' },
+            url: './assets/design/legs-v8/body.glb',
+          },
+          review: { view: 'right', skeleton: false, isolateLegs: true },
+        },
+        'legs-separated-v7': {
+          version: 'legs-v7', label: 'v7 · 左右独立腿脚', approved: false,
+          shapeSourceApproval: './docs/approvals/legs-v6-shape-approved.json',
+          binding: { version: 'rig-v7', approval: 'pending' },
+          projectRecord: { kind: 'builtin', id: 'legs-separated-v7' },
+          url: './assets/design/legs-v7/legs.glb',
+          companionBody: {
+            version: 'body-design-v7', label: 'v7 · 独立身体设计副本', approved: false,
+            projectRecord: { kind: 'builtin', id: 'body-companion-v7' },
+            url: './assets/design/legs-v7/body.glb',
+          },
+          review: { view: 'front', skeleton: false, isolateLegs: true },
+        },
         'body-legs-fair-v6': {
-          version: 'legs-v6', label: 'v6 · 身体与脚腕圆润过渡', approved: false,
+          version: 'legs-v6', label: 'v6 · 连续身体与腿脚', approved: true,
+          approvalFile: './docs/approvals/legs-v6-shape-approved.json',
+          binding: { version: 'rig-v6', approval: 'pending' },
           projectRecord: { kind: 'builtin', id: 'body-legs-fair-v6' },
           url: './assets/design/legs-v6/body-legs.glb', replacesBodyInDesign: true,
           review: { view: 'front', skeleton: false },
@@ -109,6 +136,42 @@ export const APP_CONFIG = freezeTree({
     projection: { axis: 'xy', fit: 'cover' },
   },
   design: {
+    bindingV8: {
+      version: 'rig-v8', approval: 'pending',
+      weights: { bodyFreeY: 13.447979927062988, bodyFullY: 40, centerHalfWidth: 5, kneeContribution: 0.1 },
+    },
+    legRefinementV8: {
+      version: 'legs-v8', symmetryCenterZ: 4,
+      sampling: { ringSpacing: 0.24, radial: 160, denseSteps: 2048 },
+      upper: {
+        crownY: 33.02327303808032, crownCenterZ: 4,
+        radiusCurvatureDecay: 1.2, radiusTaperRelaxation: 3, centerCurvatureDecay: 1.2,
+        centerXRelaxation: 5.5, derivativeStep: 0.002,
+      },
+    },
+    bodyLegBlendV8: {
+      version: 'legs-v8',
+      internalCaps: { depth: 2, rings: 72 },
+      surfaceClearance: { distance: 0.004, riseHeight: 1.2, fadeStartY: 17, fadeEndY: 20 },
+      field: { cellSize: 0.35, halfWidth: 29.4, halfDepth: 22.4, blendRadius: 4.5, stableLegDistance: true, distanceSamples: 2048 },
+      upper: { radiusCurvatureDecay: 1.2, centerCurvatureDecay: 1.2 },
+      transition: { footFadeEndY: 17, naturalBodyFade: true, bodyPreserveAboveY: 32.5, boundaryGap: 0.25 },
+      projection: { iterations: 3, derivativeStep: 0.002, relaxationPasses: 3, relaxationWeight: 0.4 },
+    },
+    legSeparationV7: {
+      source: './assets/design/legs-v6/body-legs.glb',
+      cut: { intercept: 14, slope: 0.5 },
+      caps: { rings: 16, legTopY: 31.5, legCenterX: 10, legCenterZ: 0, bodyInsetDepth: 3, tangentScale: 1, inwardBias: 1.5, bodyInwardBias: 3, targetSpacing: 0.35, arcSamples: 128 },
+      containment: { cellSize: 1, tolerance: 0.002 },
+    },
+    bindingV7: {
+      version: 'rig-v7', approval: 'pending',
+      weights: { bodyFreeY: 13.447979927062988, bodyFullY: 40, centerHalfWidth: 5, kneeContribution: 0.1 },
+    },
+    bindingV6: {
+      version: 'rig-v6', approval: 'pending',
+      weights: { bodyFreeY: 13.447979927062988, bodyFullY: 40, centerHalfWidth: 5, kneeContribution: 0.1 },
+    },
     binding: {
       version: 'rig-v1', approval: 'approved', selectedJoint: 'shoulderL', mirrorEdits: true,
       joints: {
